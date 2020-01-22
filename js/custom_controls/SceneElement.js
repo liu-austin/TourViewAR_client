@@ -11,7 +11,7 @@ import {
 /**
  * Pull in all the images needed for this control.
  */
-var infoIconImage = require('../res/scene_icon.png');
+var infoIconImage = require('../res/scene_icon.jpg');
 
 /**
  * Tags for referencing the animation component views used to execute animations on
