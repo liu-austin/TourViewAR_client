@@ -6,6 +6,7 @@ import { navigate } from "../redux/render/render.action";
 import { setTourId } from '../redux/tour/tour.action';
 import { selectTourName, selectTourId } from '../redux/tour/tour.selectors';
 import { selectPanoId, selectTourPanos } from '../redux/pano/pano.selectors';
+import { setTourPanos } from '../redux/pano/pano.action';
 import { selectUserId } from '../redux/user/user.selectors';
 import {
   Container,
@@ -56,7 +57,7 @@ class ImageUpload extends React.Component {
                   .then(results => {
                     axios.get(
                       `http://tourviewarserver.herokuapp.com/api/scenes/${this.props.selectTourId}`
-                    ).then(results => this.props.selectTourPanos(results.data))
+                    ).then(results => this.props.setTourPanos(results.data))
                     .then(() => this.props.navigate('EDIT_AR_PAGE'))
                     .catch(err => console.log(err));
                   })
@@ -94,7 +95,7 @@ class ImageUpload extends React.Component {
                 .then(results => this.props.setTourId(results.data.tourid))
                 .then(() => {
                   axios.get(`http://tourviewarserver.herokuapp.com/api/scenes/${this.props.selectTourId}`).
-                  then(results => this.props.selectTourPanos(results.data))
+                  then(results => this.props.setTourPanos(results.data))
                   .then(() => this.props.navigate('CREATE_AR_PAGE'))
                   .catch(err => console.log(err));
                 })
@@ -162,7 +163,8 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     navigate: render => dispatch(navigate(render)),
-    setTourId: id => dispatch(setTourId(id))
+    setTourId: id => dispatch(setTourId(id)),
+    setTourPanos: tours => dispatch(setTourPanos(tours))
   };
 };
 

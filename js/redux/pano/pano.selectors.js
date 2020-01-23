@@ -11,3 +11,8 @@ export const selectPanoImgUrl = createSelector(
   [selectPano],
   pano => pano.img_url
 );
+
+export const selectTourPanos = createSelector(
+  [selectPano],
+  pano => pano.panos
+);
