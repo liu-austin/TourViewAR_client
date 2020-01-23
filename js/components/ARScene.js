@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-
+import { connect } from "react-redux";
 import { StyleSheet } from "react-native";
 
 import axios from 'axios';
