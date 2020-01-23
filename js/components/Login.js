@@ -286,6 +286,7 @@ class Login extends Component {
     return <ViroARSceneNavigator initialScene={{ scene: initialScene }} />;
   }
   _getCreateARPage() {
+    alert('this is being called')
     let initialScene = (
       <ARScene
         editable={true}

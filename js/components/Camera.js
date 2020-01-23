@@ -20,15 +20,13 @@ import {
 } from "native-base";
 import axios from "axios";
 
-class UseCamera extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      canTakeImage: false
-    };
+const UseCamera = (props) => {
+
+  const propsvalue = () => {
+    return props.forobject;
   }
 
-  takePhoto() {
+  const takePhoto = (bool) => {
     let options = {
       storageOptions: {
         cameraRoll: true,
@@ -37,7 +35,7 @@ class UseCamera extends React.Component {
       }
     };
     ImagePicker.launchCamera(options, response => {
-      if (this.props.forobject) {
+      if (bool) {
         const source = { uri: response.uri };
         // alert(JSON.stringify(source));
         axios.get(`http://tourviewarserver.herokuapp.com/api/getpresignedurlforobject/arobjectimages`)
@@ -55,13 +53,13 @@ class UseCamera extends React.Component {
                 axios.post(`http://tourviewarserver.herokuapp.com/api/object`, {
                   object_type: 'image',
                   object_value: results.data.publicUrl,
-                  id_pano: this.props.selectPanoId
+                  id_pano: props.selectPanoId
                 })
                 .then(results => {
                   axios.get(
-                    `http://tourviewarserver.herokuapp.com/api/scenes/${this.props.selectTourId}`
-                  ).then(results => this.props.setTourPanos(results.data))
-                  .then(() => this.props.navigate('EDIT_AR_PAGE'))
+                    `http://tourviewarserver.herokuapp.com/api/scenes/${props.selectTourId}`
+                  ).then(results => props.setTourPanos(results.data))
+                  .then(() => props.navigate('EDIT_AR_PAGE'))
                   .catch(err => console.log(err));
                 })
                 .catch(err => alert(err));
@@ -88,18 +86,22 @@ class UseCamera extends React.Component {
             console.log(xhr.status);
             console.log(xhr);
             if (xhr.status === 200) {
-              alert("Image successfully uploaded to S3");
+              // alert("Image successfully uploaded to S3");
               axios.post(`http://tourviewarserver.herokuapp.com/api/newtour`, {
                 id: results.data.id,
                 img_url: results.data.publicUrl,
-                tour_name: this.props.selectTourName,
-                id_user: this.props.selectUserId
+                tour_name: props.selectTourName,
+                id_user: props.selectUserId
               })
-              .then(results => this.props.setTourId(results.data.tourid))
+              .then(results => props.setTourId(results.data.tourid))
               .then(() => {
-                axios.get(`http://tourviewarserver.herokuapp.com/api/scenes/${this.props.selectTourId}`)
-                .then(results => this.props.setTourPanos(results.data))
-                .then(() => this.props.navigate('CREATE_AR_PAGE'))
+                axios.get(`http://tourviewarserver.herokuapp.com/api/scenes/${props.selectTourId}`)
+                .then(results => {
+                  alert(results.data.rows)
+                  props.setTourPanos(results.data.rows);
+                  // props.navigate('CREATE_AR_PAGE')
+                })
+                .then(() => alert("hellooooo"))
                 .catch(err => console.log(err));
               })
               .catch(err => alert(err));
@@ -115,8 +117,6 @@ class UseCamera extends React.Component {
     }
     });
   }
-
-  render() {
     return (
       <Container style={{ width: 400, height: 700 }}>
         <Header>
@@ -125,7 +125,7 @@ class UseCamera extends React.Component {
               hasText
               transparent
               onPress={() => {
-                this.props.navigate("REACT_NATIVE_HOME");
+                props.navigate("REACT_NATIVE_HOME");
               }}
             >
               <Text>Back</Text>
@@ -135,13 +135,12 @@ class UseCamera extends React.Component {
           <Right />
         </Header>
         <View style={styles.container}>
-          <Text style={{ color: "#3FA4F0" }} onPress={this.takePhoto}>
+          <Text style={{ color: "#3FA4F0" }} onPress={() => takePhoto(propsvalue())}>
             Take A Photo
           </Text>
         </View>
       </Container>
     );
-  }
 }
 const styles = StyleSheet.create({
   container: {
