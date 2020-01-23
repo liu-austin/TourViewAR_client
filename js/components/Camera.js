@@ -93,13 +93,13 @@ const UseCamera = (props) => {
                 tour_name: props.selectTourName,
                 id_user: props.selectUserId
               })
-              .then(results => props.setTourId(results.data.tourid))
-              .then(() => {
-                axios.get(`http://tourviewarserver.herokuapp.com/api/scenes/${props.selectTourId}`)
+              .then(results => {props.setTourId(results.data.tourid); return results.data.tourid})
+              .then((id_tour) => {
+                axios.get(`http://tourviewarserver.herokuapp.com/api/scenes/${id_tour}`)
                 .then(results => {
-                  alert(results.data.rows)
+                  // alert(JSON.stringify(results.data.rows))
                   props.setTourPanos(results.data.rows);
-                  // props.navigate('CREATE_AR_PAGE')
+                  props.navigate('CREATE_AR_PAGE')
                 })
                 .then(() => alert("hellooooo"))
                 .catch(err => console.log(err));
