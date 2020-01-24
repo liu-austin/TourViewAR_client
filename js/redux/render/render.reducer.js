@@ -1,5 +1,6 @@
 const INITIAL_STATE = {
-  navigation: "LOGIN_PAGE"
+  navigation: "LOGIN_PAGE",
+  navigation2: []
 };
 
 const RenderReducer = (state = INITIAL_STATE, action) => {
@@ -8,6 +9,11 @@ const RenderReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         navigation: action.payload
+      };
+    case "RENDER_PAGE2":
+      return {
+        ...state,
+        navigation2: action.payload
       };
     default:
       return state;

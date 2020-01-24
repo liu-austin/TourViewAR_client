@@ -15,6 +15,6 @@ export const setPanoImgUrl = url => {
 export const setTourPanos = panos => {
   return ({
     type: 'SET_TOUR_PANOS',
-    paylod: panos
+    payload: panos
   });
 }

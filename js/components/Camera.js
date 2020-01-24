@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import { StyleSheet, View } from "react-native";
 import ImagePicker from "react-native-image-picker";
 import { connect } from "react-redux";
@@ -21,6 +21,7 @@ import {
 import axios from "axios";
 
 const UseCamera = (props) => {
+  [renderARButton, changeARButtonState] = useState(false);
 
   const propsvalue = () => {
     return props.forobject;
@@ -97,11 +98,9 @@ const UseCamera = (props) => {
               .then((id_tour) => {
                 axios.get(`http://tourviewarserver.herokuapp.com/api/scenes/${id_tour}`)
                 .then(results => {
-                  // alert(JSON.stringify(results.data.rows))
                   props.setTourPanos(results.data.rows);
-                  props.navigate('CREATE_AR_PAGE')
+                  changeARButtonState(true);
                 })
-                .then(() => alert("hellooooo"))
                 .catch(err => console.log(err));
               })
               .catch(err => alert(err));
@@ -135,9 +134,21 @@ const UseCamera = (props) => {
           <Right />
         </Header>
         <View style={styles.container}>
-          <Text style={{ color: "#3FA4F0" }} onPress={() => takePhoto(propsvalue())}>
-            Take A Photo
-          </Text>
+          {
+            renderARButton ? 
+            (
+              <Button onPress={() => alert(JSON.stringify(props.selectTourPanos))}>
+                <Text>Go To AR Scene</Text>
+              </Button>
+            ) 
+            : 
+            (
+              <Text style={{ color: "#3FA4F0" }} onPress={() => takePhoto(propsvalue())}>
+                Take A Photo
+              </Text>
+            )
+          }
+
         </View>
       </Container>
     );

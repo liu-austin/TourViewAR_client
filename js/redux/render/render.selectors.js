@@ -6,3 +6,8 @@ export const selectNavigator = createSelector(
   [selectRender],
   render => render.navigation
 );
+
+export const selectNavigator2 = createSelector(
+  [selectRender],
+  render => render.navigation2
+)

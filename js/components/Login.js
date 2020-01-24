@@ -113,6 +113,10 @@ class Login extends Component {
     this._loginHandler = this._loginHandler.bind(this);
     this._getARNavigatorTC = this._getARNavigatorTC.bind(this);
     this._getCreateOptions = this._getCreateOptions.bind(this);
+    this._getViewARPage = this._getViewARPage.bind(this);
+    this._getCreateARPage = this._getCreateARPage.bind(this);
+    this._getEditARPage = this._getEditARPage.bind(this);
+    this._getCameraPage = this._getCameraPage.bind(this);
   }
   render() {
     if (this.props.selectNavigator === LOGIN_PAGE) {
@@ -140,7 +144,7 @@ class Login extends Component {
     } else if (this.props.selectNavigator === VIEW_AR_PAGE) {
       return this._getViewARPage();
     } else if (this.props.selectNavigator === CREATE_AR_PAGE) {
-      return this.props._getCreateARPage();
+      return this._getCreateARPage(this.props.selectTourPanos);
     } else if (this.props.selectNavigator === EDIT_AR_PAGE) {
       return this._getEditARPage();
     } else if (this.props.selectNavigator === CAMERA_PAGE_OBJECT) {
@@ -285,14 +289,14 @@ class Login extends Component {
     );
     return <ViroARSceneNavigator initialScene={{ scene: initialScene }} />;
   }
-  _getCreateARPage() {
+  _getCreateARPage(tourPanos) {
     alert('this is being called')
     let initialScene = (
       <ARScene
         editable={true}
         isnew={false}
-        publicUrl={this.props.selectTourPanos[0].img_url}
-        scenes={this.props.selectTourPanos}
+        publicUrl={tourPanos[0].img_url}
+        scenes={tourPanos}
       />
     );
     return <ViroARSceneNavigator initialScene={{ scene: initialScene }} />;
