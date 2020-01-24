@@ -144,7 +144,7 @@ class Login extends Component {
     } else if (this.props.selectNavigator === VIEW_AR_PAGE) {
       return this._getViewARPage();
     } else if (this.props.selectNavigator === CREATE_AR_PAGE) {
-      return this._getCreateARPage(this.props.selectTourPanos);
+      return this._getCreateARPage();
     } else if (this.props.selectNavigator === EDIT_AR_PAGE) {
       return this._getEditARPage();
     } else if (this.props.selectNavigator === CAMERA_PAGE_OBJECT) {
@@ -289,14 +289,14 @@ class Login extends Component {
     );
     return <ViroARSceneNavigator initialScene={{ scene: initialScene }} />;
   }
-  _getCreateARPage(tourPanos) {
+  _getCreateARPage() {
     alert('this is being called')
     let initialScene = (
       <ARScene
         editable={true}
         isnew={false}
-        publicUrl={tourPanos[0].img_url}
-        scenes={tourPanos}
+        publicUrl={this.props.selectTourPanos[0].img_url}
+        scenes={this.props.selectTourPanos}
       />
     );
     return <ViroARSceneNavigator initialScene={{ scene: initialScene }} />;

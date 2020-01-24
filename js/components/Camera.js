@@ -137,7 +137,7 @@ const UseCamera = (props) => {
           {
             renderARButton ? 
             (
-              <Button onPress={() => alert(JSON.stringify(props.selectTourPanos))}>
+              <Button onPress={() => props.navigate('CREATE_AR_PAGE')}>
                 <Text>Go To AR Scene</Text>
               </Button>
             ) 
