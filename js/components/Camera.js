@@ -4,7 +4,7 @@ import ImagePicker from "react-native-image-picker";
 import { connect } from "react-redux";
 import { navigate } from "../redux/render/render.action";
 import {selectUserId} from '../redux/user/user.selectors';
-import { setTourId } from '../redux/tour/tour.action';
+import { setTourId, setIsEditable, setIsNew } from '../redux/tour/tour.action';
 import { selectTourName, selectTourId } from '../redux/tour/tour.selectors';
 import { setTourPanos } from '../redux/pano/pano.action';
 import { selectPanoId, selectTourPanos } from '../redux/pano/pano.selectors';
@@ -74,6 +74,8 @@ const UseCamera = (props) => {
         })
         .catch(err => alert(JSON.stringify(err)));
     } else {
+      props.setIsEditable(true);
+      props.setIsNew(true);
       const source = { uri: response.uri };
       // alert(JSON.stringify(source));
       axios.get(`http://tourviewarserver.herokuapp.com/api/getpresignedurl/panoimages`)
@@ -176,7 +178,9 @@ const mapDispatchToProps = dispatch => {
   return {
     navigate: render => dispatch(navigate(render)),
     setTourId: id => dispatch(setTourId(id)),
-    setTourPanos: tours => dispatch(setTourPanos(tours))
+    setTourPanos: tours => dispatch(setTourPanos(tours)),
+    setIsEditable: bool => dispatch(setIsEditable(bool)),
+    setIsNew: bool => dispatch(setIsNew(bool))
   };
 };
 

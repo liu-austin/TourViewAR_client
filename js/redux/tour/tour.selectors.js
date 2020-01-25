@@ -26,3 +26,13 @@ export const selectTourPicUrl = createSelector(
   [selectTour],
   tour => tour.pic_url
 );
+
+export const selectIsEditable = createSelector(
+  [selectTour],
+  tour => tour.iseditable
+);
+
+export const selectIsNew= createSelector(
+  [selectTour],
+  tour => tour.isnew
+);

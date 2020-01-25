@@ -3,7 +3,9 @@ const INITIAL_STATE = {
   tour_name: '',
   pano_photos: [],
   id_user: '',
-  pic_url: 'something random'
+  pic_url: 'something random',
+  iseditable: false,
+  isnew: false
 }
 
 const TourReducer = (state=INITIAL_STATE, action) => {
@@ -32,6 +34,16 @@ const TourReducer = (state=INITIAL_STATE, action) => {
       return ({
         ...state,
         pic_url: action.payload
+      });
+    case 'SET_IS_EDITABLE':
+      return ({
+        ...state,
+        iseditable: action.payload
+      });
+    case 'SET_IS_NEW':
+      return ({
+        ...state,
+        isnew: action.payload
       });
     default:
       return state;

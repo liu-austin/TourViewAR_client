@@ -40,6 +40,10 @@ import {
   selectUserProfilePic
 } from "../redux/user/user.selectors";
 
+import {
+  selectTourPanos
+} from '../redux/pano/pano.selectors';
+
 import { navigate } from "../redux/render/render.action";
 
 import {
@@ -63,7 +67,7 @@ import UseCamera from "./Camera";
 
 import Create from "./Create";
 import CreateOptions from "./CreateOptions";
-import ARScene from './ARScene';
+import ARScene from './ARScenes';
 
 var sharedProps = {
   apiKey: "API_KEY_HERE"
@@ -289,17 +293,11 @@ class Login extends Component {
     );
     return <ViroARSceneNavigator initialScene={{ scene: initialScene }} />;
   }
+
   _getCreateARPage() {
-    alert('this is being called')
-    let initialScene = (
-      <ARScene
-        editable={true}
-        isnew={false}
-        publicUrl={this.props.selectTourPanos[0].img_url}
-        scenes={this.props.selectTourPanos}
-      />
-    );
-    return <ViroARSceneNavigator initialScene={{ scene: initialScene }} />;
+    alert(JSON.stringify(this.props.selectTourPanos))
+    let initialARScene = require('./ARScene.js');
+    return <ViroARSceneNavigator {...this.state.sharedProps} initialScene={{ scene: initialARScene }} />;
   }
   _getEditARPage() {
     let initialScene = (
@@ -439,7 +437,8 @@ const mapStateToProps = state => {
   return {
     selectNavigator: selectNavigator(state),
     selectUserName: selectUserName(state),
-    selectUserPassword: selectUserPassword(state)
+    selectUserPassword: selectUserPassword(state),
+    selectTourPanos: selectTourPanos(state)
   };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(Login);

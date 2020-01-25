@@ -32,3 +32,17 @@ export const setTourPicUrl = url => {
     payload: url
   };
 };
+
+export const setIsNew = bool => {
+  return {
+    type: "SET_IS_NEW",
+    payload: bool
+  }
+};
+
+export const setIsEditable = bool => {
+  return {
+    type: "SET_IS_EDITABLE",
+    payload: bool
+  }
+};
