@@ -1,5 +1,3 @@
-"use strict";
-
 import React, { Component } from "react";
 
 import { StyleSheet } from "react-native";
@@ -44,8 +42,7 @@ export default class HelloWorldSceneAR extends Component {
       <ViroARScene onTrackingUpdated={this._onInitialized}>
         <Viro360Image
           source={{
-            uri:
-              "https://i.pinimg.com/originals/15/19/65/1519654484f5159bd5d0cd87f0a2c42f.jpg"
+            uri: this.props.sceneNavigator.viroAppProps.selectTourPanos[0].img_url
           }}
         />
         <ViroAmbientLight color={"#aaaaaa"} />
@@ -111,16 +108,3 @@ ViroAnimations.registerAnimations({
 });
 
 module.exports = HelloWorldSceneAR;
-
-{
-  /* <Viro360Image source={require('./res/amsterdam.jpg')} /> */
-}
-{
-  /* <ViroText text={this.state.text} scale={[.5, .5, .5]} position={[0, 0, -1]} style={styles.helloWorldTextStyle} /> */
-}
-{
-  /* <ViroBox position={[0, -.5, -1]} scale={[.3, .3, .1]} materials={["grid"]} animation={{name: "rotate", run: true, loop: true}} /> */
-}
-{
-  /* <Viro3DObject source={require('./res/emoji_smile/emoji_smile.vrx')} position={[0, -.5, 0]} scale={[.2, .2, .2]} type="VRX" /> */
-}

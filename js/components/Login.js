@@ -74,7 +74,7 @@ import UseCamera from "./Camera";
 
 import Create from "./Create";
 import CreateOptions from "./CreateOptions";
-import ARScene from './ARScenes';
+import ARScene from './ARScene';
 
 var sharedProps = {
   apiKey: "API_KEY_HERE"
@@ -302,9 +302,8 @@ class Login extends Component {
   }
 
   _getCreateARPage() {
-    alert(JSON.stringify(this.props.selectTourPanos))
     let initialARScene = require('./ARScene.js');
-    return <ViroARSceneNavigator {...this.state.sharedProps} viroAppProps={{selectObjectId: this.props.selectObjectId, selectPanoId: this.props.selectPanoId, setPanoId: this.props.setPanoId, setObjectId: this.props.setObjectId, selectIsNew: true, selectIsEditable: true, selectTourPanos: this.props.selectTourPanos}} initialScene={{ scene: initialARScene }} />;
+    return <ViroARSceneNavigator {...this.state.sharedProps} viroAppProps={{selectObjectId: this.props.selectObjectId, selectPanoId: this.props.selectPanoId, setPanoId: this.props.setPanoId, setObjectId: this.props.setObjectId, selectIsNew: true, selectIsEditable: true, selectTourPanos: this.props.selectTourPanos}} initialScene={{ scene: InitialARScene }} />;
   }
   _getEditARPage() {
     let initialScene = (
