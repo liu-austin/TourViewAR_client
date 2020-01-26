@@ -24,6 +24,8 @@ import {
   ViroImage
 } from "react-viro";
 
+import {Fab, View, Button, Container, Footer, FooterTab, Input, Item, Text, Label} from 'native-base';
+
 import axios from 'axios';
 
 var SceneElement = require('./custom_controls/SceneElement');
@@ -78,6 +80,7 @@ export default class HelloWorldSceneAR extends Component {
 
   render() {
     return (
+      <View>
       <ViroARScene onTrackingUpdated={this._onInitialized}>
         <Viro360Image
           source={{
@@ -87,34 +90,104 @@ export default class HelloWorldSceneAR extends Component {
         {
             this.state.objects.length ?
             (
-              <ViroNode
-              position={[0, -1, 0]}
-              dragType="FixedToWorld"
-              onDrag={() => {}}
-            >
+              this.state.objects.map((object, i) => {
+                  if (object.type === 'text') {
+                      return (
+                          <ViroNode objectid={object.id} key={i} position={[object.x, object.y, -2]} dragType="FixedToWorld" onDrag={() => this._onDrag}>
+                              <TextElement content={object.value} contentCardScale={[object.scale.x, object.scale.y, object.scale.z]} position={polarToCartesian([-5, 0, 0])}/>
+                          </ViroNode>
+                      );
+                  } else if (object.type === 'image') {
+                      return (
+                          <ViroNode objectid={object.id} key={i} position={[object.x, object.y, -2]} dragType="FixedToWorld" onDrag={() => this._onDrag}>
+                              <ImageElement content={object.value} contentCardScale={[object.scale.x, object.scale.y, object.scale.z]} position={polarToCartesian([-5, 0, 0])}/>
+                          </ViroNode>
+                      );
+                  } else {
+                      return null;
+                  }
+              })
+          ) 
+          : 
+          (
+            <ViroNode
+            position={[0, -1, 0]}
+            dragType="FixedToWorld"
+            onDrag={() => {}}>
               <InfoElement
                 content={slutWindowCard}
                 contentCardScale={[3.67, 4, 1]}
-                position={polarToCartesian([-5, 0, 0])}
-              />
+                position={polarToCartesian([-5, 0, 0])}/>
             </ViroNode>
-            ) 
-            : 
-            (
-              <ViroNode
-              position={[0, -1, 0]}
-              dragType="FixedToWorld"
-              onDrag={() => {}}
-            >
-              <InfoElement
-                content={slutWindowCard}
-                contentCardScale={[3.67, 4, 1]}
-                position={polarToCartesian([-5, 0, 0])}
-              />
-            </ViroNode>
-            )
+          )
         }
       </ViroARScene>
+        <Container>
+            <Footer>
+                <FooterTab>
+                    <Fab
+                    active={this.state.editmode}
+                    direction="up"
+                    containerStyle={{ }}
+                    style={{ backgroundColor: '#5067FF' }}
+                    position="bottomLeft"
+                    onPress={() => this.setState({ editmode: !this.state.editmode })}>
+                        <Button style={{ backgroundColor: '#34A34F' }}>
+                            <Text>{this.state.editmode ? `SAVE` : `EDIT`}</Text>
+                        </Button>  
+                        <Fab active={this.state.showtextinput} direction='right' onPress={() => this.setState({showtextinput: !this.state.showtextinput})}>
+                            <Button style={{ backgroundColor: '#34A34F' }}>
+                                <Text>ADD TEXT</Text>
+                            </Button>  
+                            <Item floatingLabel>
+                                <Label>ENTER TEXT VALUE</Label>
+                                <Input
+                                onChangeText={text => this.setState({objectname: text})}
+                                />
+                            </Item>
+                            <Button onPress={() => {
+                                this._createTextObject(this.state.objectname);
+                                this.setState({showtextinput: false});
+                            }}>
+                                <Text>Set Object Text</Text>
+                            </Button>
+                        </Fab>
+                        <Fab>
+                            <Button onPress={() => {
+                                this.setState({selectimage: !this.state.selectimage})
+                            }}>
+                                <Text>ADD IMAGE</Text>
+                            </Button>
+                        <Button style={{ backgroundColor: '#3B5998' }} onPress={() => {
+                            this.props.sceneNavigator.viroAppProps.navigate("CAMERA_PAGE_OBJECT")
+                        }}>
+                        <Text>TAKE PHOTO</Text>
+                        </Button>
+                        <Button style={{ backgroundColor: '#3B5998' }} onPress={() => {
+                            this.props.sceneNavigator.viroAppProps.navigate("IMAGE_PICKER_PAGE_OBJECT")
+                        }}>
+                        <Text>UPLOAD AN IMAGE</Text>
+                        </Button>
+                        </Fab>
+                        <Button disabled style={{ backgroundColor: '#DD5144' }}>
+                        <Text>ADD SCENE</Text>
+                        </Button>
+                    </Fab>
+                    <Fab
+                    position="bottomRight"
+                    style={{ backgroundColor: '#5067FF' }}
+                    onPress={() => {
+                        this.props.sceneNavigator.viroAppProps.navigate("PROFILE");
+                    }}
+                    >
+                    <Button style={{backgroundColor: '#3B5998'}}>
+                        <Text>CANCEL</Text>
+                    </Button>
+                    </Fab>
+                    </FooterTab>
+                </Footer>
+            </Container>
+      </View>
     );
   }
 

@@ -3,7 +3,7 @@ import { StyleSheet, View } from "react-native";
 import ImagePicker from "react-native-image-picker";
 import { connect } from "react-redux";
 import { navigate } from "../redux/render/render.action";
-import {selectUserId} from '../redux/user/user.selectors';
+import { selectUserId } from '../redux/user/user.selectors';
 import { setTourId, setIsEditable, setIsNew } from '../redux/tour/tour.action';
 import { selectTourName, selectTourId } from '../redux/tour/tour.selectors';
 import { setTourPanos } from '../redux/pano/pano.action';

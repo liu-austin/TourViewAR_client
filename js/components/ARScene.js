@@ -89,6 +89,8 @@ class ARScene extends Component {
 
   render() {
     return (
+        <View>
+            <View>
         <ViroARScene onTrackingUpdated={this._onInitialized}>
             {
                 this.props.sceneNavigator.viroAppProps.selectTourPanos.length ? 
@@ -131,6 +133,74 @@ class ARScene extends Component {
                     )
                 }
         </ViroARScene>
+        </View>
+        
+        <Container>
+                <Footer>
+                    <FooterTab>
+                    <Fab
+                    active={this.state.editmode}
+                    direction="up"
+                    containerStyle={{ }}
+                    style={{ backgroundColor: '#5067FF' }}
+                    position="bottomLeft"
+                    onPress={() => this.setState({ editmode: !this.state.editmode })}>
+                        <Button style={{ backgroundColor: '#34A34F' }}>
+                            <Text>{this.state.editmode ? `SAVE` : `EDIT`}</Text>
+                        </Button>  
+                        <Fab active={this.state.showtextinput} direction='right' onPress={() => this.setState({showtextinput: !this.state.showtextinput})}>
+                            <Button style={{ backgroundColor: '#34A34F' }}>
+                                <Text>ADD TEXT</Text>
+                            </Button>  
+                            <Item floatingLabel>
+                                <Label>ENTER TEXT VALUE</Label>
+                                <Input
+                                onChangeText={text => this.setState({objectname: text})}
+                                />
+                            </Item>
+                            <Button onPress={() => {
+                                this._createTextObject(this.state.objectname);
+                                this.setState({showtextinput: false});
+                            }}>
+                                <Text>Set Object Text</Text>
+                            </Button>
+                        </Fab>
+                        <Fab>
+                            <Button onPress={() => {
+                                this.setState({selectimage: !this.state.selectimage})
+                            }}>
+                                <Text>ADD IMAGE</Text>
+                            </Button>
+                        <Button style={{ backgroundColor: '#3B5998' }} onPress={() => {
+                            this.props.sceneNavigator.viroAppProps.navigate("CAMERA_PAGE_OBJECT")
+                        }}>
+                        <Text>TAKE PHOTO</Text>
+                        </Button>
+                        <Button style={{ backgroundColor: '#3B5998' }} onPress={() => {
+                            this.props.sceneNavigator.viroAppProps.navigate("IMAGE_PICKER_PAGE_OBJECT")
+                        }}>
+                        <Text>UPLOAD AN IMAGE</Text>
+                        </Button>
+                        </Fab>
+                        <Button disabled style={{ backgroundColor: '#DD5144' }}>
+                        <Text>ADD SCENE</Text>
+                        </Button>
+                    </Fab>
+                    <Fab
+                    position="bottomRight"
+                    style={{ backgroundColor: '#5067FF' }}
+                    onPress={() => {
+                        this.props.sceneNavigator.viroAppProps.navigate("PROFILE");
+                    }}
+                    >
+                    <Button style={{backgroundColor: '#3B5998'}}>
+                        <Text>CANCEL</Text>
+                    </Button>
+                    </Fab>
+                    </FooterTab>
+                </Footer>
+            </Container>
+        </View>
     )};
  
 

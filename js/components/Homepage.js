@@ -39,7 +39,7 @@ const HomePage = props => {
       <Header>
         <Left />
         <Body>
-          <Title>Tour AR</Title>
+          <Title>TourViewAR</Title>
         </Body>
         <Right />
       </Header>
