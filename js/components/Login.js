@@ -40,7 +40,6 @@ import {
   selectUserProfilePic
 } from "../redux/user/user.selectors";
 
-import { selectPanoId } from '../redux/pano/pano.selectors';
 import { setPanoId } from '../redux/pano/pano.action';
 
 import { setObjectId } from '../redux/object/object.action';
