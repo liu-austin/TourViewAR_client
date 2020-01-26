@@ -40,8 +40,16 @@ import {
   selectUserProfilePic
 } from "../redux/user/user.selectors";
 
+import { selectPanoId } from '../redux/pano/pano.selectors';
+import { setPanoId } from '../redux/pano/pano.action';
+
+import { setObjectId } from '../redux/object/object.action';
+import { selectObjectId } from '../redux/object/object.selectors';
+
 import {
-  selectTourPanos
+  selectTourPanos,
+  selectPanoId,
+
 } from '../redux/pano/pano.selectors';
 
 import { navigate } from "../redux/render/render.action";
@@ -297,7 +305,7 @@ class Login extends Component {
   _getCreateARPage() {
     alert(JSON.stringify(this.props.selectTourPanos))
     let initialARScene = require('./ARScene.js');
-    return <ViroARSceneNavigator {...this.state.sharedProps} initialScene={{ scene: initialARScene }} />;
+    return <ViroARSceneNavigator {...this.state.sharedProps} viroAppProps={{selectObjectId: this.props.selectObjectId, selectPanoId: this.props.selectPanoId, setPanoId: this.props.setPanoId, setObjectId: this.props.setObjectId, selectIsNew: true, selectIsEditable: true, selectTourPanos: this.props.selectTourPanos}} initialScene={{ scene: initialARScene }} />;
   }
   _getEditARPage() {
     let initialScene = (
@@ -308,7 +316,7 @@ class Login extends Component {
         scenes={this.props.selectTourPanos}
       />
     );
-    return <ViroARSceneNavigator initialScene={{ scene: initialScene }} />;
+    return <ViroARSceneNavigator viroAppProps={{selectIsNew: false, selectIsEditable: true, selectTourPanos: this.props.selectTourPanos}} initialScene={{ scene: initialScene }} />;
   }
   _getUserLogin() {
     axios
@@ -430,7 +438,9 @@ const mapDispatchToProps = dispatch => {
     setUserName: name => dispatch(setUserName(name)),
     setUserPassword: password => dispatch(setUserPassword(password)),
     setUserProfilePic: pic => dispatch(setUserProfilePic(pic)),
-    setUserId: id => dispatch(setUserId(id))
+    setUserId: id => dispatch(setUserId(id)),
+    setPanoId: panoid => dispatch(setPanoId(panoid)),
+    setObjectId: objectid => dispatch(setObjectId(objectid))
   };
 };
 const mapStateToProps = state => {
@@ -438,7 +448,9 @@ const mapStateToProps = state => {
     selectNavigator: selectNavigator(state),
     selectUserName: selectUserName(state),
     selectUserPassword: selectUserPassword(state),
-    selectTourPanos: selectTourPanos(state)
+    selectTourPanos: selectTourPanos(state),
+    selectPanoId: selectPanoId(state),
+    selectObjectId: selectObjectId(state)
   };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(Login);

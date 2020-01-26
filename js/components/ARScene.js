@@ -61,28 +61,28 @@ class ARScene extends Component {
   }
 
   componentDidMount() {
-      if (!this.props.selectIsNew && this.props.selectIsEditable) {
-        axios.get(`http://tourviewarserver.herokuapp.com/api/objects/${this.props.selectTourPanos[0].id}`)
+      if (!this.props.sceneNavigator.viroAppProps.selectIsNew && this.props.sceneNavigator.viroAppProps.selectIsEditable) {
+        axios.get(`http://tourviewarserver.herokuapp.com/api/objects/${this.props.sceneNavigator.viroAppProps.selectTourPanos[0].id}`)
         .then(results => {
-            this.setState({objects: results.data, currentSceneId: this.props.selectTourPanos[0].id, sceneIdHistory: [this.props.selectTourPanos[0].id]});
-            this.props.setPanoId(this.props.selectTourPanos[0].id);
+            this.setState({objects: results.data, currentSceneId: this.props.sceneNavigator.viroAppProps.selectTourPanos[0].id, sceneIdHistory: [this.props.sceneNavigator.viroAppProps.selectTourPanos[0].id]});
+            this.props.sceneNavigator.viroAppProps.setPanoId(this.props.sceneNavigator.viroAppProps.selectTourPanos[0].id);
         })
         .catch(err => {
             alert('There was an error loading this tour. Please try again.');
-            this.props.navigate('REACT_NATIVE_HOME');
+            this.props.sceneNavigator.viroAppProps.navigate('REACT_NATIVE_HOME');
         });
-      } else if (this.props.isnew) {
-          this.setState({currentSceneId: this.props.selectTourPanos[0].id, sceneIdHistory: [this.props.selectTourPanos[0].id]});
-          this.props.setPanoId(this.props.selectTourPanos[0].id);
+      } else if (this.props.sceneNavigator.viroAppProps.selectIsNew) {
+          this.setState({currentSceneId: this.props.sceneNavigator.viroAppProps.selectTourPanos[0].id, sceneIdHistory: [this.props.sceneNavigator.viroAppProps.selectTourPanos[0].id]});
+          this.props.sceneNavigator.viroAppProps.setPanoId(this.props.sceneNavigator.viroAppProps.selectTourPanos[0].id);
       } else {
-        axios.get(`http://tourviewarserver.herokuapp.com/api/objects/${this.props.scenes[0].id}`)
+        axios.get(`http://tourviewarserver.herokuapp.com/api/objects/${this.props.sceneNavigator.viroAppProps.selectTourPanos[0].id}`)
         .then(results => {
-            this.setState({objects: results.data, currentSceneId: this.props.selectTourPanos[0].id, sceneIdHistory: [this.props.selectTourPanos[0].id]});
-            this.props.setPanoId(this.props.selectTourPanos[0].id);
+            this.setState({objects: results.data, currentSceneId: this.props.sceneNavigator.viroAppProps.selectTourPanos[0].id, sceneIdHistory: [this.props.sceneNavigator.viroAppProps.selectTourPanos[0].id]});
+            this.props.sceneNavigator.viroAppProps.setPanoId(this.props.sceneNavigator.viroAppProps.selectTourPanos[0].id);
         })
         .catch(err => {
             alert('There was an error loading this tour. Please try again.');
-            this.props.navigate('REACT_NATIVE_HOME');
+            this.props.sceneNavigator.viroAppProps.navigate('REACT_NATIVE_HOME');
         });
       }
   }
@@ -91,53 +91,46 @@ class ARScene extends Component {
     return (
         <ViroARScene onTrackingUpdated={this._onInitialized}>
             {
-                <View>
-                    {
+                this.props.sceneNavigator.viroAppProps.selectTourPanos.length ? 
+                    (
                         <View>
-                this.props.selectTourPanos.length ? 
-                (
-                    <Viro360Image source={{ uri: this.props.selectTourPanos[0].img_url}}/>
-                    <View>
-                    {
-                        this.state.objects.length ?
-                        (
-                            this.state.objects.map((object, i) => {
-                                let toRender;
-                                if (object.type === 'text') {
-                                    toRender = (
-                                        <ViroNode objectid={object.id} key={i} position={[object.x, object.y, -2]} dragType="FixedToWorld" onDrag={() => this._onDrag}>
-                                            <TextElement content={object.value} contentCardScale={[object.scale.x, object.scale.y, object.scale.z]} position={polarToCartesian([-5, 0, 0])}/>
-                                        </ViroNode>
-                                    );
-                                } else if (object.type === 'image') {
-                                    toRender = (
-                                        <ViroNode objectid={object.id} key={i} position={[object.x, object.y, -2]} dragType="FixedToWorld" onDrag={() => this._onDrag}>
-                                            <ImageElement content={object.value} contentCardScale={[object.scale.x, object.scale.y, object.scale.z]} position={polarToCartesian([-5, 0, 0])}/>
-                                        </ViroNode>
-                                    );
-                                } else {
-                                    toRender = null;
-                                }
-                                return toRender;
-                            })
-                        ) 
-                        : 
-                        (
-                            null
-                        )
-                    }
-                    </View>
-                ) 
-                : 
-                (
-                    null
-                )
-                </View>
-            }
-            </View>
-    }
+                            <Viro360Image source={{ uri: this.props.sceneNavigator.viroAppProps.selectTourPanos[0].img_url}}/>
+                            {
+                                this.state.objects.length ?
+                                (
+                                    this.state.objects.map((object, i) => {
+                                        let toRender;
+                                        if (object.type === 'text') {
+                                            toRender = (
+                                                <ViroNode objectid={object.id} key={i} position={[object.x, object.y, -2]} dragType="FixedToWorld" onDrag={() => this._onDrag}>
+                                                    <TextElement content={object.value} contentCardScale={[object.scale.x, object.scale.y, object.scale.z]} position={polarToCartesian([-5, 0, 0])}/>
+                                                </ViroNode>
+                                            );
+                                        } else if (object.type === 'image') {
+                                            toRender = (
+                                                <ViroNode objectid={object.id} key={i} position={[object.x, object.y, -2]} dragType="FixedToWorld" onDrag={() => this._onDrag}>
+                                                    <ImageElement content={object.value} contentCardScale={[object.scale.x, object.scale.y, object.scale.z]} position={polarToCartesian([-5, 0, 0])}/>
+                                                </ViroNode>
+                                            );
+                                        } else {
+                                            toRender = null;
+                                        }
+                                        return toRender;
+                                    })
+                                ) 
+                                : 
+                                (
+                                    null
+                                )
+                            }
+                        </View>
+                    ) 
+                    : 
+                    (
+                        null
+                    )
+                }
         </ViroARScene>
-
     )};
  
 
@@ -146,9 +139,9 @@ class ARScene extends Component {
       axios.post(`http://tourviewarserver.herokuapp.com/api/object`, {
           object_type: 'text',
           object_value: text,
-          id_pano: this.props.selectPanoId
+          id_pano: this.props.sceneNavigator.viroAppProps.selectPanoId
       }).then((results) => {
-          this.props.setObjectId(results.data.id);
+          this.props.sceneNavigator.viroAppProps.setObjectId(results.data.id);
           let textobject = {
               id: results.data.id,
               type: 'text',
@@ -156,7 +149,7 @@ class ARScene extends Component {
               y: 0, 
               value: text,
               scale: {x: 1, y: 1, z: 1},
-              id_pano: this.props.selectPanoId
+              id_pano: this.props.sceneNavigator.viroAppProps.selectPanoId
           };
           this.setState({objects: [...this.state.objects, textobject]});
       }).catch(err => alert('There was an error creating this object'));
@@ -167,9 +160,9 @@ class ARScene extends Component {
       axios.post(`http://tourviewarserver.herokuapp.com/api/object`, {
           object_type: 'image',
           object_value: publicUrl,
-          id_pano: this.props.selectPanoId
+          id_pano: this.props.sceneNavigator.viroAppProps.selectPanoId
       }).then((results) => {
-          this.props.setObjectId(results.data.id);
+          this.props.sceneNavigator.viroAppProps.setObjectId(results.data.id);
           let textobject = {
               id: results.data.id,
               type: 'image',
@@ -177,7 +170,7 @@ class ARScene extends Component {
               y: 0,
               value: publicUrl,
               scale: {x: 1, y: 1, z: 1},
-              id_pano: this.props.selectPanoId
+              id_pano: this.props.sceneNavigator.viroAppProps.selectPanoId
           };
           this.setState({objects: [...this.state.objects, textobject]});
       }).catch(err => alert('There was an error creating this object'));
