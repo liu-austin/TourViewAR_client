@@ -26,6 +26,9 @@ import {
 
 import axios from 'axios';
 
+var SceneElement = require('./custom_controls/SceneElement');
+var TextElement = require('./custom_controls/TextElement');
+var ImageElement = require('./custom_controls/ImageElement');
 var InfoElement = require("./custom_controls/InfoElement");
 let polarToCartesian = ViroUtils.polarToCartesian;
 var slutWindowCard = require("./res/infocard_slut.png");
@@ -114,6 +117,60 @@ export default class HelloWorldSceneAR extends Component {
       // Handle loss of tracking
     }
   }
+
+  _onDrag(draggedToPosition, source) {
+
+    axios.put(`http://tourviewarserver.herokuapp.com/api/object`, {
+        x: draggedToPosition[0],
+        y: draggedToPosition[1],
+        scalex: 1,
+        scaley: 1,
+        scalez: 1,
+        id_object: this.props.selectObjectId
+    }).then(results => console.log(results))
+    .catch(err => console.log(err));
+  }
+
+  _createTextObject(text) {
+    axios.post(`http://tourviewarserver.herokuapp.com/api/object`, {
+        object_type: 'text',
+        object_value: text,
+        id_pano: this.props.sceneNavigator.viroAppProps.selectPanoId
+    }).then((results) => {
+        this.props.sceneNavigator.viroAppProps.setObjectId(results.data.id);
+        let textobject = {
+            id: results.data.id,
+            type: 'text',
+            x: 0,
+            y: 0, 
+            value: text,
+            scale: {x: 1, y: 1, z: 1},
+            id_pano: this.props.sceneNavigator.viroAppProps.selectPanoId
+        };
+        this.setState({objects: [...this.state.objects, textobject]});
+    }).catch(err => alert('There was an error creating this object'));
+
+}
+
+_createImageObject(publicUrl) {
+    axios.post(`http://tourviewarserver.herokuapp.com/api/object`, {
+        object_type: 'image',
+        object_value: publicUrl,
+        id_pano: this.props.sceneNavigator.viroAppProps.selectPanoId
+    }).then((results) => {
+        this.props.sceneNavigator.viroAppProps.setObjectId(results.data.id);
+        let textobject = {
+            id: results.data.id,
+            type: 'image',
+            x: 0, 
+            y: 0,
+            value: publicUrl,
+            scale: {x: 1, y: 1, z: 1},
+            id_pano: this.props.sceneNavigator.viroAppProps.selectPanoId
+        };
+        this.setState({objects: [...this.state.objects, textobject]});
+    }).catch(err => alert('There was an error creating this object'));
+}
 }
 
 /* ----- COMPONENT STYLES ----- */
