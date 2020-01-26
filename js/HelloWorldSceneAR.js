@@ -84,26 +84,36 @@ export default class HelloWorldSceneAR extends Component {
             uri: this.props.sceneNavigator.viroAppProps.selectTourPanos[0].img_url
           }}
         />
-        <ViroAmbientLight color={"#aaaaaa"} />
-        <ViroSpotLight
-          innerAngle={5}
-          outerAngle={90}
-          direction={[0, -1, -0.2]}
-          poition={[0, 3, 1]}
-          color="#ffffff"
-          castsShadow={true}
-        />
-        <ViroNode
-          position={[0, -1, 0]}
-          dragType="FixedToWorld"
-          onDrag={() => {}}
-        >
-          <InfoElement
-            content={slutWindowCard}
-            contentCardScale={[3.67, 4, 1]}
-            position={polarToCartesian([-5, 0, 0])}
-          />
-        </ViroNode>
+        {
+            this.state.objects.length ?
+            (
+              <ViroNode
+              position={[0, -1, 0]}
+              dragType="FixedToWorld"
+              onDrag={() => {}}
+            >
+              <InfoElement
+                content={slutWindowCard}
+                contentCardScale={[3.67, 4, 1]}
+                position={polarToCartesian([-5, 0, 0])}
+              />
+            </ViroNode>
+            ) 
+            : 
+            (
+              <ViroNode
+              position={[0, -1, 0]}
+              dragType="FixedToWorld"
+              onDrag={() => {}}
+            >
+              <InfoElement
+                content={slutWindowCard}
+                contentCardScale={[3.67, 4, 1]}
+                position={polarToCartesian([-5, 0, 0])}
+              />
+            </ViroNode>
+            )
+        }
       </ViroARScene>
     );
   }
