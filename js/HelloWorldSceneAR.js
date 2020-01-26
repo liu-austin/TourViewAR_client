@@ -24,6 +24,8 @@ import {
   ViroImage
 } from "react-viro";
 
+import axios from 'axios';
+
 var InfoElement = require("./custom_controls/InfoElement");
 let polarToCartesian = ViroUtils.polarToCartesian;
 var slutWindowCard = require("./res/infocard_slut.png");
@@ -32,10 +34,44 @@ export default class HelloWorldSceneAR extends Component {
   constructor() {
     super();
     this.state = {
-      text: "Initializing AR..."
+      text: "Initializing AR...",
+      editmode: false,
+      showtextinput: false,
+      objects: [],
+      objectname: '',
+      currentSceneId: null,
+      sceneIdHistory: [],
+      selectimage: false
     };
     this._onInitialized = this._onInitialized.bind(this);
   }
+
+  componentDidMount() {
+    if (!this.props.sceneNavigator.viroAppProps.selectIsNew && this.props.sceneNavigator.viroAppProps.selectIsEditable) {
+      axios.get(`http://tourviewarserver.herokuapp.com/api/objects/${this.props.sceneNavigator.viroAppProps.selectTourPanos[0].id}`)
+      .then(results => {
+          this.setState({objects: results.data, currentSceneId: this.props.sceneNavigator.viroAppProps.selectTourPanos[0].id, sceneIdHistory: [this.props.sceneNavigator.viroAppProps.selectTourPanos[0].id]});
+          this.props.sceneNavigator.viroAppProps.setPanoId(this.props.sceneNavigator.viroAppProps.selectTourPanos[0].id);
+      })
+      .catch(err => {
+          alert('There was an error loading this tour. Please try again.');
+          this.props.sceneNavigator.viroAppProps.navigate('REACT_NATIVE_HOME');
+      });
+    } else if (this.props.sceneNavigator.viroAppProps.selectIsNew) {
+        this.setState({currentSceneId: this.props.sceneNavigator.viroAppProps.selectTourPanos[0].id, sceneIdHistory: [this.props.sceneNavigator.viroAppProps.selectTourPanos[0].id]});
+        this.props.sceneNavigator.viroAppProps.setPanoId(this.props.sceneNavigator.viroAppProps.selectTourPanos[0].id);
+    } else {
+      axios.get(`http://tourviewarserver.herokuapp.com/api/objects/${this.props.sceneNavigator.viroAppProps.selectTourPanos[0].id}`)
+      .then(results => {
+          this.setState({objects: results.data, currentSceneId: this.props.sceneNavigator.viroAppProps.selectTourPanos[0].id, sceneIdHistory: [this.props.sceneNavigator.viroAppProps.selectTourPanos[0].id]});
+          this.props.sceneNavigator.viroAppProps.setPanoId(this.props.sceneNavigator.viroAppProps.selectTourPanos[0].id);
+      })
+      .catch(err => {
+          alert('There was an error loading this tour. Please try again.');
+          this.props.sceneNavigator.viroAppProps.navigate('REACT_NATIVE_HOME');
+      });
+    }
+}
 
   render() {
     return (
