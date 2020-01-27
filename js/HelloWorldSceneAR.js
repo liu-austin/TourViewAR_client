@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 
-import { StyleSheet } from "react-native";
+import { StyleSheet, View, Text, TouchableHighlight,  } from "react-native";
 
 import {
   ViroSceneNavigator,
@@ -23,8 +23,6 @@ import {
   ViroAnimations,
   ViroImage
 } from "react-viro";
-
-import {Fab, View, Button, Container, Footer, FooterTab, Input, Item, Text, Label} from 'native-base';
 
 import axios from 'axios';
 
@@ -80,7 +78,6 @@ export default class HelloWorldSceneAR extends Component {
 
   render() {
     return (
-      <View>
       <ViroARScene onTrackingUpdated={this._onInitialized}>
         <Viro360Image
           source={{
@@ -121,73 +118,21 @@ export default class HelloWorldSceneAR extends Component {
             </ViroNode>
           )
         }
+        {/* <View style={styles.editFooter}>
+            <TouchableHighlight style={styles.editButton} underlayColor={`#68a0ff`} onPress={() => this.setState({editmode: !this.state.editmode})}>
+              <Text styles={styles.textStyle}>
+                {
+                  this.state.editmode ? `SAVE` : `EDIT`
+                }
+              </Text>
+            </TouchableHighlight>
+            <TouchableHighlight style={styles.cancelButton} underlayColor={`#68a0ff`} onPress={() => this.props.sceneNavigator.viroAppProps.navigate('REACT_NATIVE_HOME')}>
+              <Text styles={styles.textStyle}>
+                CANCEL
+              </Text>
+            </TouchableHighlight>
+        </View> */}
       </ViroARScene>
-        <Container>
-            <Footer>
-                <FooterTab>
-                    <Fab
-                    active={this.state.editmode}
-                    direction="up"
-                    containerStyle={{ }}
-                    style={{ backgroundColor: '#5067FF' }}
-                    position="bottomLeft"
-                    onPress={() => this.setState({ editmode: !this.state.editmode })}>
-                        <Button style={{ backgroundColor: '#34A34F' }}>
-                            <Text>{this.state.editmode ? `SAVE` : `EDIT`}</Text>
-                        </Button>  
-                        <Fab active={this.state.showtextinput} direction='right' onPress={() => this.setState({showtextinput: !this.state.showtextinput})}>
-                            <Button style={{ backgroundColor: '#34A34F' }}>
-                                <Text>ADD TEXT</Text>
-                            </Button>  
-                            <Item floatingLabel>
-                                <Label>ENTER TEXT VALUE</Label>
-                                <Input
-                                onChangeText={text => this.setState({objectname: text})}
-                                />
-                            </Item>
-                            <Button onPress={() => {
-                                this._createTextObject(this.state.objectname);
-                                this.setState({showtextinput: false});
-                            }}>
-                                <Text>Set Object Text</Text>
-                            </Button>
-                        </Fab>
-                        <Fab>
-                            <Button onPress={() => {
-                                this.setState({selectimage: !this.state.selectimage})
-                            }}>
-                                <Text>ADD IMAGE</Text>
-                            </Button>
-                        <Button style={{ backgroundColor: '#3B5998' }} onPress={() => {
-                            this.props.sceneNavigator.viroAppProps.navigate("CAMERA_PAGE_OBJECT")
-                        }}>
-                        <Text>TAKE PHOTO</Text>
-                        </Button>
-                        <Button style={{ backgroundColor: '#3B5998' }} onPress={() => {
-                            this.props.sceneNavigator.viroAppProps.navigate("IMAGE_PICKER_PAGE_OBJECT")
-                        }}>
-                        <Text>UPLOAD AN IMAGE</Text>
-                        </Button>
-                        </Fab>
-                        <Button disabled style={{ backgroundColor: '#DD5144' }}>
-                        <Text>ADD SCENE</Text>
-                        </Button>
-                    </Fab>
-                    <Fab
-                    position="bottomRight"
-                    style={{ backgroundColor: '#5067FF' }}
-                    onPress={() => {
-                        this.props.sceneNavigator.viroAppProps.navigate("PROFILE");
-                    }}
-                    >
-                    <Button style={{backgroundColor: '#3B5998'}}>
-                        <Text>CANCEL</Text>
-                    </Button>
-                    </Fab>
-                    </FooterTab>
-                </Footer>
-            </Container>
-      </View>
     );
   }
 
@@ -264,8 +209,38 @@ var styles = StyleSheet.create({
     fontSize: 30,
     color: "#ffffff",
     textAlignVertical: "center",
-    textAlign: "center"
+    textAlign: "center",
+    flexGrow: 1
+  },
+
+  editFooter: {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    position: 'absolute',
+    bottom: 0,
+    width: `100%`
+  },
+
+  editButton: {
+    height: 50,
+    display: "flex",
+    justifyContent: "center",
+    flexGrow: 1
+  },
+
+   cancelButton: {
+     height: 50,
+     display: "flex",
+     justifyContent: "center",
+     flexGrow: 1
+   },
+
+   textStyle:{
+    color: '#fff',
+    fontSize:22
   }
+
 });
 
 ViroMaterials.createMaterials({

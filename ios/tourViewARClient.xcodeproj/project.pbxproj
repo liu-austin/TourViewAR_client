@@ -761,6 +761,8 @@
 				10D3ABD1307E416516B5B919 /* Copy ngrok endpoint */,
 				BC95AA5DDDE4AB88F27CC02B /* Execute Ngrok */,
 				D69152730393714E3BA63F08 /* Copy ngrok endpoint */,
+				21DD5BB2002BCA197DD954F1 /* Execute Ngrok */,
+				E7AA5C5A45006CF17C399316 /* Copy ngrok endpoint */,
 			);
 			buildRules = (
 			);
@@ -1320,6 +1322,24 @@
 			shellPath = /bin/sh;
 			shellScript = "$SRCROOT/ngrok_launch.sh";
 		};
+		21DD5BB2002BCA197DD954F1 /* Execute Ngrok */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Execute Ngrok";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "$SRCROOT/ngrok_launch.sh";
+		};
 		2C4DB9644CADC11637FAE0AF /* Copy ngrok endpoint */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -1635,6 +1655,24 @@
 			shellScript = "DEST=$CONFIGURATION_BUILD_DIR/$UNLOCALIZED_RESOURCES_FOLDER_PATH\nendpointfile=\"ngrokendpoint.txt\"\nif [[ -e \"$SRCROOT/$endpointfile\" ]]; then\necho \"Ngrok endpoint file found, copying over...\"\ncp \"$SRCROOT/$endpointfile\" \"$DEST/$endpointfile\"\nbreak;\nfi";
 		};
 		DE5EE0A45C70CD3FB88F169B /* Copy ngrok endpoint */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Copy ngrok endpoint";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "DEST=$CONFIGURATION_BUILD_DIR/$UNLOCALIZED_RESOURCES_FOLDER_PATH\nendpointfile=\"ngrokendpoint.txt\"\nif [[ -e \"$SRCROOT/$endpointfile\" ]]; then\necho \"Ngrok endpoint file found, copying over...\"\ncp \"$SRCROOT/$endpointfile\" \"$DEST/$endpointfile\"\nbreak;\nfi";
+		};
+		E7AA5C5A45006CF17C399316 /* Copy ngrok endpoint */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
