@@ -310,12 +310,12 @@ class Login extends Component {
       <ViroARSceneNavigator {...this.state.sharedProps} viroAppProps={{selectObjectId: this.props.selectObjectId, selectPanoId: this.props.selectPanoId, setPanoId: this.props.setPanoId, setObjectId: this.props.setObjectId, selectIsNew: true, selectIsEditable: true, selectTourPanos: this.props.selectTourPanos}} initialScene={{ scene: InitialARScene }} />
       <View style={styles.editFooter}>
         <TouchableHighlight style={styles.editButton} underlayColor={`#68a0ff`} onPress={() => this.setState({editmode: !this.state.editmode})}>
-          <Text styles={styles.textStyle}>
+          <Text style={styles.textStyle}>
             EDIT
           </Text>
         </TouchableHighlight>
         <TouchableHighlight style={styles.cancelButton} underlayColor={`#68a0ff`} onPress={() => this.props.sceneNavigator.viroAppProps.navigate('REACT_NATIVE_HOME')}>
-          <Text styles={styles.textStyle}>
+          <Text style={styles.textStyle}>
             CANCEL
           </Text>
         </TouchableHighlight>
@@ -459,6 +459,9 @@ const styles = StyleSheet.create({
   },
 
   editButton: {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
     height: 80,
     width: 150,
     paddingTop:20,
@@ -472,6 +475,9 @@ const styles = StyleSheet.create({
   },
 
    cancelButton: {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
     marginLeft: 15,
     height: 80,
     width: 150,
@@ -486,9 +492,9 @@ const styles = StyleSheet.create({
    },
 
    textStyle:{
-    color:'#fff',
+    color:'#ffffff',
     textAlign:'center',
-    fontSize : 20
+    fontSize : 30
   }
 });
 const mapDispatchToProps = dispatch => {
