@@ -57,7 +57,7 @@ const Create = props => {
             }}
             full
           >
-            <Text>Submit</Text>
+            <Text>SUBMIT</Text>
           </Button>
         </View>
       </Content>

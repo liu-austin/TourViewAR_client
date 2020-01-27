@@ -118,20 +118,6 @@ export default class HelloWorldSceneAR extends Component {
             </ViroNode>
           )
         }
-        {/* <View style={styles.editFooter}>
-            <TouchableHighlight style={styles.editButton} underlayColor={`#68a0ff`} onPress={() => this.setState({editmode: !this.state.editmode})}>
-              <Text styles={styles.textStyle}>
-                {
-                  this.state.editmode ? `SAVE` : `EDIT`
-                }
-              </Text>
-            </TouchableHighlight>
-            <TouchableHighlight style={styles.cancelButton} underlayColor={`#68a0ff`} onPress={() => this.props.sceneNavigator.viroAppProps.navigate('REACT_NATIVE_HOME')}>
-              <Text styles={styles.textStyle}>
-                CANCEL
-              </Text>
-            </TouchableHighlight>
-        </View> */}
       </ViroARScene>
     );
   }
@@ -229,14 +215,14 @@ var styles = StyleSheet.create({
     flexGrow: 1
   },
 
-   cancelButton: {
+  cancelButton: {
      height: 50,
      display: "flex",
      justifyContent: "center",
      flexGrow: 1
    },
 
-   textStyle:{
+  textStyle: {
     color: '#fff',
     fontSize:22
   }

@@ -303,7 +303,25 @@ class Login extends Component {
 
   _getCreateARPage() {
     let initialARScene = require('./ARScene.js');
-    return <ViroARSceneNavigator {...this.state.sharedProps} viroAppProps={{selectObjectId: this.props.selectObjectId, selectPanoId: this.props.selectPanoId, setPanoId: this.props.setPanoId, setObjectId: this.props.setObjectId, selectIsNew: true, selectIsEditable: true, selectTourPanos: this.props.selectTourPanos}} initialScene={{ scene: InitialARScene }} />;
+    return (
+    <View style={{
+      flex: 1,
+    }}>
+      <ViroARSceneNavigator {...this.state.sharedProps} viroAppProps={{selectObjectId: this.props.selectObjectId, selectPanoId: this.props.selectPanoId, setPanoId: this.props.setPanoId, setObjectId: this.props.setObjectId, selectIsNew: true, selectIsEditable: true, selectTourPanos: this.props.selectTourPanos}} initialScene={{ scene: InitialARScene }} />
+      <View style={styles.editFooter}>
+        <TouchableHighlight style={styles.editButton} underlayColor={`#68a0ff`} onPress={() => this.setState({editmode: !this.state.editmode})}>
+          <Text styles={styles.textStyle}>
+            EDIT
+          </Text>
+        </TouchableHighlight>
+        <TouchableHighlight style={styles.cancelButton} underlayColor={`#68a0ff`} onPress={() => this.props.sceneNavigator.viroAppProps.navigate('REACT_NATIVE_HOME')}>
+          <Text styles={styles.textStyle}>
+            CANCEL
+          </Text>
+        </TouchableHighlight>
+      </View>
+    </View>
+    );
   }
   _getEditARPage() {
     let initialScene = (
@@ -428,6 +446,49 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     borderWidth: 1,
     borderColor: "#fff"
+  },
+  
+  editFooter: {
+    width : '100%',
+    position : 'absolute',
+    top : 700,
+    left: 310,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+
+  editButton: {
+    height: 80,
+    width: 150,
+    paddingTop:20,
+    paddingBottom:20,
+    marginTop: 10,
+    marginBottom: 10,
+    backgroundColor:'rgba(123,123,231,.4)',
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: 'rgba(123,087,231,.4)'
+  },
+
+   cancelButton: {
+    marginLeft: 15,
+    height: 80,
+    width: 150,
+    paddingTop:20,
+    paddingBottom:20,
+    marginTop: 10,
+    marginBottom: 10,
+    backgroundColor:'rgba(123,123,231,.4)',
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: 'rgba(123,087,231,.4)'
+   },
+
+   textStyle:{
+    color:'#fff',
+    textAlign:'center',
+    fontSize : 20
   }
 });
 const mapDispatchToProps = dispatch => {
