@@ -40,16 +40,12 @@ import {
   selectUserProfilePic
 } from "../redux/user/user.selectors";
 
-import { setPanoId } from '../redux/pano/pano.action';
+import { setPanoId } from "../redux/pano/pano.action";
 
-import { setObjectId } from '../redux/object/object.action';
-import { selectObjectId } from '../redux/object/object.selectors';
+import { setObjectId } from "../redux/object/object.action";
+import { selectObjectId } from "../redux/object/object.selectors";
 
-import {
-  selectTourPanos,
-  selectPanoId,
-
-} from '../redux/pano/pano.selectors';
+import { selectTourPanos, selectPanoId } from "../redux/pano/pano.selectors";
 
 import { navigate } from "../redux/render/render.action";
 
@@ -74,7 +70,7 @@ import UseCamera from "./Camera";
 
 import Create from "./Create";
 import CreateOptions from "./CreateOptions";
-import ARScene from './ARScene';
+import ARScene from "./ARScene";
 
 var sharedProps = {
   apiKey: "API_KEY_HERE"
@@ -115,7 +111,9 @@ class Login extends Component {
     this._getExperienceSelector = this._getExperienceSelector.bind(this);
     this._getARNavigator = this._getARNavigator.bind(this);
     this._getReactNativeHome = this._getReactNativeHome.bind(this);
-    this._getExperienceButtonOnPress = this._getExperienceButtonOnPress.bind(this);
+    this._getExperienceButtonOnPress = this._getExperienceButtonOnPress.bind(
+      this
+    );
     this._getProfilePage = this._getProfilePage.bind(this);
     this._getImageUpload = this._getImageUpload.bind(this);
     this._getSearchPage = this._getSearchPage.bind(this);
@@ -275,10 +273,10 @@ class Login extends Component {
     return <Profile />;
   }
   _getImageUpload(forobject) {
-    return <ImageUpload forobject={forobject}/>;
+    return <ImageUpload forobject={forobject} />;
   }
   _getCameraPage(forobject) {
-    return <UseCamera forobject={forobject}/>;
+    return <UseCamera forobject={forobject} />;
   }
   _getSearchPage() {
     return <Search />;
@@ -302,25 +300,45 @@ class Login extends Component {
   }
 
   _getCreateARPage() {
-    let initialARScene = require('./ARScene.js');
+    let initialARScene = require("./ARScene.js");
     return (
-    <View style={{
-      flex: 1,
-    }}>
-      <ViroARSceneNavigator {...this.state.sharedProps} viroAppProps={{selectObjectId: this.props.selectObjectId, selectPanoId: this.props.selectPanoId, setPanoId: this.props.setPanoId, setObjectId: this.props.setObjectId, selectIsNew: true, selectIsEditable: true, selectTourPanos: this.props.selectTourPanos}} initialScene={{ scene: InitialARScene }} />
-      <View style={styles.editFooter}>
-        <TouchableHighlight style={styles.editButton} underlayColor={`#68a0ff`} onPress={() => this.setState({editmode: !this.state.editmode})}>
-          <Text style={styles.textStyle}>
-            EDIT
-          </Text>
-        </TouchableHighlight>
-        <TouchableHighlight style={styles.cancelButton} underlayColor={`#68a0ff`} onPress={() => this.props.sceneNavigator.viroAppProps.navigate('REACT_NATIVE_HOME')}>
-          <Text style={styles.textStyle}>
-            CANCEL
-          </Text>
-        </TouchableHighlight>
+      <View
+        style={{
+          flex: 1
+        }}
+      >
+        <ViroARSceneNavigator
+          {...this.state.sharedProps}
+          viroAppProps={{
+            selectObjectId: this.props.selectObjectId,
+            selectPanoId: this.props.selectPanoId,
+            setPanoId: this.props.setPanoId,
+            setObjectId: this.props.setObjectId,
+            selectIsNew: true,
+            selectIsEditable: true,
+            selectTourPanos: this.props.selectTourPanos
+          }}
+          initialScene={{ scene: InitialARScene }}
+        />
+        <View style={styles.editFooter}>
+          <TouchableHighlight
+            style={styles.editButton}
+            underlayColor={`#68a0ff`}
+            onPress={() => this.setState({ editmode: !this.state.editmode })}
+          >
+            <Text style={styles.textStyle}>
+              {this.state.editmode ? "SAVE" : "EDIT"}
+            </Text>
+          </TouchableHighlight>
+          <TouchableHighlight
+            style={styles.cancelButton}
+            underlayColor={`#68a0ff`}
+            onPress={() => this.props.navigate("REACT_NATIVE_HOME")}
+          >
+            <Text style={styles.textStyle}>CANCEL</Text>
+          </TouchableHighlight>
+        </View>
       </View>
-    </View>
     );
   }
   _getEditARPage() {
@@ -332,7 +350,16 @@ class Login extends Component {
         scenes={this.props.selectTourPanos}
       />
     );
-    return <ViroARSceneNavigator viroAppProps={{selectIsNew: false, selectIsEditable: true, selectTourPanos: this.props.selectTourPanos}} initialScene={{ scene: initialScene }} />;
+    return (
+      <ViroARSceneNavigator
+        viroAppProps={{
+          selectIsNew: false,
+          selectIsEditable: true,
+          selectTourPanos: this.props.selectTourPanos
+        }}
+        initialScene={{ scene: initialScene }}
+      />
+    );
   }
   _getUserLogin() {
     axios
@@ -447,15 +474,15 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "#fff"
   },
-  
+
   editFooter: {
-    width : '100%',
-    position : 'absolute',
-    top : 700,
+    width: "100%",
+    position: "absolute",
+    top: 700,
     left: 310,
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center"
   },
 
   editButton: {
@@ -464,37 +491,37 @@ const styles = StyleSheet.create({
     alignItems: "center",
     height: 80,
     width: 150,
-    paddingTop:20,
-    paddingBottom:20,
+    paddingTop: 20,
+    paddingBottom: 20,
     marginTop: 10,
     marginBottom: 10,
-    backgroundColor:'rgba(123,123,231,.4)',
+    backgroundColor: "rgba(123,123,231,.4)",
     borderRadius: 10,
     borderWidth: 1,
-    borderColor: 'rgba(123,087,231,.4)'
+    borderColor: "rgba(123,087,231,.4)"
   },
 
-   cancelButton: {
+  cancelButton: {
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
     marginLeft: 15,
     height: 80,
     width: 150,
-    paddingTop:20,
-    paddingBottom:20,
+    paddingTop: 20,
+    paddingBottom: 20,
     marginTop: 10,
     marginBottom: 10,
-    backgroundColor:'rgba(123,123,231,.4)',
+    backgroundColor: "rgba(123,123,231,.4)",
     borderRadius: 10,
     borderWidth: 1,
-    borderColor: 'rgba(123,087,231,.4)'
-   },
+    borderColor: "rgba(123,087,231,.4)"
+  },
 
-   textStyle:{
-    color:'#ffffff',
-    textAlign:'center',
-    fontSize : 30
+  textStyle: {
+    color: "#ffffff",
+    textAlign: "center",
+    fontSize: 30
   }
 });
 const mapDispatchToProps = dispatch => {
