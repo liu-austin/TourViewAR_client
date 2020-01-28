@@ -46,7 +46,14 @@ import { setObjectId } from "../redux/object/object.action";
 import { selectObjectId } from "../redux/object/object.selectors";
 
 import { selectTourPanos, selectPanoId } from "../redux/pano/pano.selectors";
-
+import {
+  setObjectXCoordinate,
+  setObjectYCoordinate
+} from "../redux/object/object.action";
+import {
+  selectObjectXCoordinate,
+  selectObjectYCoordinate
+} from "../redux/object/object.selectors";
 import { navigate } from "../redux/render/render.action";
 
 import {
@@ -108,7 +115,9 @@ class Login extends Component {
       navigatorType: defaultNavigatorType,
       sharedProps: sharedProps,
       editmode: false,
-      objects: []
+      objects: [],
+      textinput: "",
+      entertext: false
     };
     this._getExperienceSelector = this._getExperienceSelector.bind(this);
     this._getARNavigator = this._getARNavigator.bind(this);
@@ -130,6 +139,7 @@ class Login extends Component {
     this._getCameraPage = this._getCameraPage.bind(this);
     this._createImageObject = this._createImageObject.bind(this);
     this._createTextObject = this._createTextObject.bind(this);
+    this._saveChanges = this._saveChanges.bind(this);
   }
   render() {
     if (this.props.selectNavigator === LOGIN_PAGE) {
@@ -304,6 +314,7 @@ class Login extends Component {
   }
 
   _createTextObject(text) {
+    this.setState({ entertext: false });
     axios
       .post(`http://tourviewarserver.herokuapp.com/api/object`, {
         object_type: "text",
@@ -321,7 +332,9 @@ class Login extends Component {
           scale: { x: 1, y: 1, z: 1 },
           id_pano: this.props.selectPanoId
         };
-        this.setState({ objects: [...this.state.objects, textobject] });
+        this.setState({ objects: [...this.state.objects, textobject] }, () =>
+          this.props.navigate("EDIT_AR_PAGE")
+        );
       })
       .catch(err => alert("There was an error creating this object"));
   }
@@ -373,18 +386,33 @@ class Login extends Component {
         <View style={styles.addButtons}>
           {this.state.editmode ? (
             <View>
-              <TouchableHighlight style={styles.textButton}>
-                <Text style={styles.textStyle}>ADD TEXT</Text>
+              <TouchableHighlight
+                style={styles.textButton}
+                onPress={() => {
+                  this.setState({ entertext: true });
+                }}
+              >
+                <Text style={styles.textStyle2}>ADD TEXT</Text>
               </TouchableHighlight>
               <TouchableHighlight style={styles.textButton}>
-                <Text style={styles.textStyle}>ADD IMAGE</Text>
+                <Text style={styles.textStyle2}>ADD IMAGE</Text>
               </TouchableHighlight>
               <TouchableHighlight style={styles.textButton}>
-                <Text style={styles.textStyle}>ADD SCENE</Text>
+                <Text style={styles.textStyle2}>ADD SCENE</Text>
               </TouchableHighlight>
             </View>
           ) : null}
         </View>
+        {this.state.entertext ? (
+          <View style={styles.addTextField}>
+            <Input onChangeText={text => this.setState({ textinput: text })} />
+            <Button
+              onPress={() => this._createTextObject(this.state.textinput)}
+            >
+              <Text>ADD AR TEXT</Text>
+            </Button>
+          </View>
+        ) : null}
         <View style={styles.editFooter}>
           <TouchableHighlight
             style={styles.editButton}
@@ -408,25 +436,104 @@ class Login extends Component {
   }
 
   _getEditARPage() {
-    let initialScene = (
-      <ARScene
-        editable={true}
-        isnew={false}
-        publicUrl={this.props.selectTourPanos[0].img_url}
-        scenes={this.props.selectTourPanos}
-      />
-    );
+    let initialARScene = require("./ARScene.js");
     return (
-      <ViroARSceneNavigator
-        viroAppProps={{
-          selectIsNew: false,
-          selectIsEditable: true,
-          selectTourPanos: this.props.selectTourPanos
+      <View
+        style={{
+          flex: 1
         }}
-        initialScene={{ scene: initialScene }}
-      />
+      >
+        <ViroARSceneNavigator
+          {...this.state.sharedProps}
+          viroAppProps={{
+            selectObjectId: this.props.selectObjectId,
+            selectPanoId: this.props.selectPanoId,
+            setPanoId: this.props.setPanoId,
+            setObjectId: this.props.setObjectId,
+            selectIsNew: false,
+            selectIsEditable: true,
+            selectTourPanos: this.props.selectTourPanos,
+            setObjectXCoordinate: this.props.setObjectXCoordinate,
+            setObjectYCoordinate: this.props.setObjectYCoordinate,
+            selectObjectXCoordinate: this.props.selectObjectXCoordinate,
+            selectObjectYCoordinate: this.props.selectObjectYCoordinate
+          }}
+          initialScene={{ scene: InitialARScene }}
+        />
+        <View style={styles.addButtons}>
+          {this.state.editmode ? (
+            <View>
+              <TouchableHighlight
+                style={styles.textButton}
+                onPress={() => {
+                  this.setState({ entertext: true });
+                }}
+              >
+                <Text style={styles.textStyle2}>ADD TEXT</Text>
+              </TouchableHighlight>
+              <TouchableHighlight style={styles.textButton}>
+                <Text style={styles.textStyle2}>ADD IMAGE</Text>
+              </TouchableHighlight>
+              <TouchableHighlight style={styles.textButton}>
+                <Text style={styles.textStyle2}>ADD SCENE</Text>
+              </TouchableHighlight>
+            </View>
+          ) : null}
+        </View>
+        {this.state.entertext ? (
+          <View style={styles.addTextField}>
+            <Input onChangeText={text => this.setState({ textinput: text })} />
+            <Button
+              onPress={() => this._createTextObject(this.state.textinput)}
+            >
+              <Text>ADD AR TEXT</Text>
+            </Button>
+          </View>
+        ) : null}
+        <View style={styles.editFooter}>
+          <TouchableHighlight
+            style={styles.editButton}
+            underlayColor={`#68a0ff`}
+            onPress={() => {
+              if (!this.state.editmode) {
+                this.setState({ editmode: !this.state.editmode });
+              } else {
+                this.setState({ editmode: !this.state.editmode }, () => {
+                  this._saveChanges();
+                });
+              }
+            }}
+          >
+            <Text style={styles.textStyle}>
+              {this.state.editmode ? "SAVE" : "EDIT"}
+            </Text>
+          </TouchableHighlight>
+          <TouchableHighlight
+            style={styles.cancelButton}
+            underlayColor={`#68a0ff`}
+            onPress={() => this.props.navigate("REACT_NATIVE_HOME")}
+          >
+            <Text style={styles.textStyle}>CANCEL</Text>
+          </TouchableHighlight>
+        </View>
+      </View>
     );
   }
+
+  _saveChanges() {
+    axios
+      .put(`http://tourviewarserver.herokuapp.com/api/object`, {
+        x: this.props.selectObjectXCoordinate,
+        y: this.props.selectObjectYCoordinate,
+        scalex: 1,
+        scaley: 1,
+        scalez: 1,
+        id_object: this.props.selectObjectId
+      })
+      .then(results => alert(results))
+      .catch(err => console.log(err));
+  }
+
   _getUserLogin() {
     axios
       .get(
@@ -561,10 +668,10 @@ const styles = StyleSheet.create({
     paddingBottom: 20,
     marginTop: 10,
     marginBottom: 10,
-    backgroundColor: "rgba(123,123,231,.4)",
+    backgroundColor: "rgba(23,243,11,.4)",
     borderRadius: 10,
     borderWidth: 1,
-    borderColor: "rgba(123,087,231,.4)"
+    borderColor: "rgba(23,243,11,.4)"
   },
 
   cancelButton: {
@@ -578,10 +685,10 @@ const styles = StyleSheet.create({
     paddingBottom: 20,
     marginTop: 10,
     marginBottom: 10,
-    backgroundColor: "rgba(123,123,231,.4)",
+    backgroundColor: "rgba(231,13,21,.4)",
     borderRadius: 10,
     borderWidth: 1,
-    borderColor: "rgba(123,087,231,.4)"
+    borderColor: "rgba(231,13,21,.4)"
   },
 
   textButton: {
@@ -590,13 +697,13 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginLeft: 15,
     height: 80,
-    width: 150,
+    width: 80,
     paddingTop: 20,
     paddingBottom: 20,
     marginTop: 10,
     marginBottom: 10,
     backgroundColor: "rgba(123,123,231,.4)",
-    borderRadius: 10,
+    borderRadius: 40,
     borderWidth: 1,
     borderColor: "rgba(123,087,231,.4)"
   },
@@ -604,7 +711,7 @@ const styles = StyleSheet.create({
   addButtons: {
     width: "100%",
     position: "absolute",
-    top: 200,
+    top: 225,
     left: 310,
     flexDirection: "row",
     justifyContent: "center",
@@ -615,6 +722,19 @@ const styles = StyleSheet.create({
     color: "#ffffff",
     textAlign: "center",
     fontSize: 30
+  },
+  textStyle2: {
+    color: "#ffffff",
+    textAlign: "center",
+    fontSize: 14
+  },
+  addTextField: {
+    position: "absolute",
+    top: 425,
+    left: 310,
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center"
   }
 });
 const mapDispatchToProps = dispatch => {
@@ -625,7 +745,9 @@ const mapDispatchToProps = dispatch => {
     setUserProfilePic: pic => dispatch(setUserProfilePic(pic)),
     setUserId: id => dispatch(setUserId(id)),
     setPanoId: panoid => dispatch(setPanoId(panoid)),
-    setObjectId: objectid => dispatch(setObjectId(objectid))
+    setObjectId: objectid => dispatch(setObjectId(objectid)),
+    setObjectXCoordinate: x => dispatch(setObjectXCoordinate(x)),
+    setObjectYCoordinate: y => dispatch(setObjectYCoordinate(y))
   };
 };
 const mapStateToProps = state => {
@@ -635,7 +757,9 @@ const mapStateToProps = state => {
     selectUserPassword: selectUserPassword(state),
     selectTourPanos: selectTourPanos(state),
     selectPanoId: selectPanoId(state),
-    selectObjectId: selectObjectId(state)
+    selectObjectId: selectObjectId(state),
+    selectObjectXCoordinate: selectObjectXCoordinate(state),
+    selectObjectYCoordinate: selectObjectYCoordinate(state)
   };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(Login);

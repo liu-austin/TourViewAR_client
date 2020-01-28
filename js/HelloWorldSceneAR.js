@@ -43,7 +43,9 @@ export default class HelloWorldSceneAR extends Component {
       objectname: "",
       currentSceneId: null,
       sceneIdHistory: [],
-      selectimage: false
+      selectimage: false,
+      draggedtox: null,
+      draggedtoy: null
     };
     this._onInitialized = this._onInitialized.bind(this);
   }
@@ -121,13 +123,14 @@ export default class HelloWorldSceneAR extends Component {
         {this.state.objects.length ? (
           this.state.objects.map((object, i) => {
             if (object.type === "text") {
+              let onDrag = this._onDragCreate(object.id);
               return (
                 <ViroNode
                   objectid={object.id}
                   key={i}
                   position={[object.x, object.y, -2]}
                   dragType="FixedToWorld"
-                  onDrag={() => this._onDrag}
+                  onDrag={() => onDrag}
                 >
                   <TextElement
                     content={object.value}
@@ -189,20 +192,19 @@ export default class HelloWorldSceneAR extends Component {
       // Handle loss of tracking
     }
   }
-  _onDrag(draggedToPosition, source) {
-    axios
-      .put(`http://tourviewarserver.herokuapp.com/api/object`, {
-        x: draggedToPosition[0],
-        y: draggedToPosition[1],
-        scalex: 1,
-        scaley: 1,
-        scalez: 1,
-        id_object: this.props.selectObjectId
-      })
-      .then(results => console.log(results))
-      .catch(err => console.log(err));
+  _onDragCreate(id) {
+    return function(draggedToPosition, source) {
+      this.props.sceneNavigator.viroAppProps.setObjectId(id);
+      this.props.sceneNavigator.viroAppProps.setObjectXCoordinate(
+        draggedToPosition[0]
+      );
+      this.props.sceneNavigator.viroAppProps.setObjectYCoordinate(
+        draggedToPosition[1]
+      );
+    };
   }
 }
+
 /* ----- COMPONENT STYLES ----- */
 ViroMaterials.createMaterials({
   grid: {
