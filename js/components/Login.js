@@ -106,7 +106,9 @@ class Login extends Component {
     super();
     this.state = {
       navigatorType: defaultNavigatorType,
-      sharedProps: sharedProps
+      sharedProps: sharedProps,
+      editmode: false,
+      objects: []
     };
     this._getExperienceSelector = this._getExperienceSelector.bind(this);
     this._getARNavigator = this._getARNavigator.bind(this);
@@ -126,6 +128,8 @@ class Login extends Component {
     this._getCreateARPage = this._getCreateARPage.bind(this);
     this._getEditARPage = this._getEditARPage.bind(this);
     this._getCameraPage = this._getCameraPage.bind(this);
+    this._createImageObject = this._createImageObject.bind(this);
+    this._createTextObject = this._createTextObject.bind(this);
   }
   render() {
     if (this.props.selectNavigator === LOGIN_PAGE) {
@@ -299,6 +303,52 @@ class Login extends Component {
     return <ViroARSceneNavigator initialScene={{ scene: initialScene }} />;
   }
 
+  _createTextObject(text) {
+    axios
+      .post(`http://tourviewarserver.herokuapp.com/api/object`, {
+        object_type: "text",
+        object_value: text,
+        id_pano: this.props.selectPanoId
+      })
+      .then(results => {
+        this.props.setObjectId(results.data.id);
+        let textobject = {
+          id: results.data.id,
+          type: "text",
+          x: 0,
+          y: 0,
+          value: text,
+          scale: { x: 1, y: 1, z: 1 },
+          id_pano: this.props.selectPanoId
+        };
+        this.setState({ objects: [...this.state.objects, textobject] });
+      })
+      .catch(err => alert("There was an error creating this object"));
+  }
+
+  _createImageObject(publicUrl) {
+    axios
+      .post(`http://tourviewarserver.herokuapp.com/api/object`, {
+        object_type: "image",
+        object_value: publicUrl,
+        id_pano: this.props.selectPanoId
+      })
+      .then(results => {
+        this.props.setObjectId(results.data.id);
+        let textobject = {
+          id: results.data.id,
+          type: "image",
+          x: 0,
+          y: 0,
+          value: publicUrl,
+          scale: { x: 1, y: 1, z: 1 },
+          id_pano: this.props.selectPanoId
+        };
+        this.setState({ objects: [...this.state.objects, textobject] });
+      })
+      .catch(err => alert("There was an error creating this object"));
+  }
+
   _getCreateARPage() {
     let initialARScene = require("./ARScene.js");
     return (
@@ -320,6 +370,21 @@ class Login extends Component {
           }}
           initialScene={{ scene: InitialARScene }}
         />
+        <View style={styles.addButtons}>
+          {this.state.editmode ? (
+            <View>
+              <TouchableHighlight style={styles.textButton}>
+                <Text style={styles.textStyle}>ADD TEXT</Text>
+              </TouchableHighlight>
+              <TouchableHighlight style={styles.textButton}>
+                <Text style={styles.textStyle}>ADD IMAGE</Text>
+              </TouchableHighlight>
+              <TouchableHighlight style={styles.textButton}>
+                <Text style={styles.textStyle}>ADD SCENE</Text>
+              </TouchableHighlight>
+            </View>
+          ) : null}
+        </View>
         <View style={styles.editFooter}>
           <TouchableHighlight
             style={styles.editButton}
@@ -341,6 +406,7 @@ class Login extends Component {
       </View>
     );
   }
+
   _getEditARPage() {
     let initialScene = (
       <ARScene
@@ -516,6 +582,33 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     borderWidth: 1,
     borderColor: "rgba(123,087,231,.4)"
+  },
+
+  textButton: {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    marginLeft: 15,
+    height: 80,
+    width: 150,
+    paddingTop: 20,
+    paddingBottom: 20,
+    marginTop: 10,
+    marginBottom: 10,
+    backgroundColor: "rgba(123,123,231,.4)",
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: "rgba(123,087,231,.4)"
+  },
+
+  addButtons: {
+    width: "100%",
+    position: "absolute",
+    top: 200,
+    left: 310,
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center"
   },
 
   textStyle: {
