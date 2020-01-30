@@ -46,14 +46,17 @@ import { setObjectId } from "../redux/object/object.action";
 import { selectObjectId } from "../redux/object/object.selectors";
 
 import { selectTourPanos, selectPanoId } from "../redux/pano/pano.selectors";
+
 import {
   setObjectXCoordinate,
   setObjectYCoordinate
 } from "../redux/object/object.action";
+
 import {
   selectObjectXCoordinate,
   selectObjectYCoordinate
 } from "../redux/object/object.selectors";
+
 import { navigate } from "../redux/render/render.action";
 
 import {
@@ -74,9 +77,10 @@ import Search from "./Search";
 import ImageUpload from "./ImagePicker";
 
 import UseCamera from "./Camera";
-
+import CreateTextObject from "./CreateTextObject";
 import Create from "./Create";
 import CreateOptions from "./CreateOptions";
+import CreateOptionsObject from "./CreateOptionsObject";
 import ARScene from "./ARScene";
 
 var sharedProps = {
@@ -105,6 +109,8 @@ var VIEW_AR_PAGE = "VIEW_AR_PAGE";
 var EDIT_AR_PAGE = "EDIT_AR_PAGE";
 var CAMERA_PAGE_OBJECT = "CAMERA_PAGE_OBJECT";
 var IMAGE_PICKER_PAGE_OBJECT = "IMAGE_PICKER_PAGE_OBJECT";
+var CREATE_TEXT_OBJECT = "CREATE_TEXT_OBJECT";
+var CREATE_IMAGE_OBJECT = "CREATE_IMAGE_OBJECT";
 // This determines which type of experience to launch in, or UNSET, if the user should
 // be presented with a choice of AR or VR. By default, we offer the user a choice.
 var defaultNavigatorType = UNSET;
@@ -174,6 +180,10 @@ class Login extends Component {
       return this._getCameraPage(true);
     } else if (this.props.selectNavigator === IMAGE_PICKER_PAGE_OBJECT) {
       return this._getImageUpload(true);
+    } else if (this.props.selectNavigator === CREATE_TEXT_OBJECT) {
+      return this._createTextObject();
+    } else if (this.props.selectNavigator === CREATE_IMAGE_OBJECT) {
+      return this._createImageObject();
     }
   }
   _loginHandler() {}
@@ -184,7 +194,7 @@ class Login extends Component {
         <Header>
           <Left />
           <Body>
-            <Title>Tour AR</Title>
+            <Title>TourViewAR</Title>
           </Body>
           <Right />
         </Header>
@@ -313,53 +323,32 @@ class Login extends Component {
     return <ViroARSceneNavigator initialScene={{ scene: initialScene }} />;
   }
 
-  _createTextObject(text) {
-    this.setState({ entertext: false });
-    axios
-      .post(`http://tourviewarserver.herokuapp.com/api/object`, {
-        object_type: "text",
-        object_value: text,
-        id_pano: this.props.selectPanoId
-      })
-      .then(results => {
-        this.props.setObjectId(results.data.id);
-        let textobject = {
-          id: results.data.id,
-          type: "text",
-          x: 0,
-          y: 0,
-          value: text,
-          scale: { x: 1, y: 1, z: 1 },
-          id_pano: this.props.selectPanoId
-        };
-        this.setState({ objects: [...this.state.objects, textobject] }, () =>
-          this.props.navigate("EDIT_AR_PAGE")
-        );
-      })
-      .catch(err => alert("There was an error creating this object"));
+  _createTextObject() {
+    return <CreateTextObject />;
   }
 
-  _createImageObject(publicUrl) {
-    axios
-      .post(`http://tourviewarserver.herokuapp.com/api/object`, {
-        object_type: "image",
-        object_value: publicUrl,
-        id_pano: this.props.selectPanoId
-      })
-      .then(results => {
-        this.props.setObjectId(results.data.id);
-        let textobject = {
-          id: results.data.id,
-          type: "image",
-          x: 0,
-          y: 0,
-          value: publicUrl,
-          scale: { x: 1, y: 1, z: 1 },
-          id_pano: this.props.selectPanoId
-        };
-        this.setState({ objects: [...this.state.objects, textobject] });
-      })
-      .catch(err => alert("There was an error creating this object"));
+  _createImageObject() {
+    return <CreateOptionsObject />;
+    // axios
+    //   .post(`http://tourviewarserver.herokuapp.com/api/object`, {
+    //     object_type: "image",
+    //     object_value: publicUrl,
+    //     id_pano: this.props.selectPanoId
+    //   })
+    //   .then(results => {
+    //     this.props.setObjectId(results.data.id);
+    //     let textobject = {
+    //       id: results.data.id,
+    //       type: "image",
+    //       x: 0,
+    //       y: 0,
+    //       value: publicUrl,
+    //       scale: { x: 1, y: 1, z: 1 },
+    //       id_pano: this.props.selectPanoId
+    //     };
+    //     this.setState({ objects: [...this.state.objects, textobject] });
+    //   })
+    //   .catch(err => alert("There was an error creating this object"));
   }
 
   _getCreateARPage() {
@@ -389,7 +378,7 @@ class Login extends Component {
               <TouchableHighlight
                 style={styles.textButton}
                 onPress={() => {
-                  this.setState({ entertext: true });
+                  this.props.navigate("CREATE_TEXT_OBJECT");
                 }}
               >
                 <Text style={styles.textStyle2}>ADD TEXT</Text>
@@ -403,16 +392,6 @@ class Login extends Component {
             </View>
           ) : null}
         </View>
-        {this.state.entertext ? (
-          <View style={styles.addTextField}>
-            <Input onChangeText={text => this.setState({ textinput: text })} />
-            <Button
-              onPress={() => this._createTextObject(this.state.textinput)}
-            >
-              <Text>ADD AR TEXT</Text>
-            </Button>
-          </View>
-        ) : null}
         <View style={styles.editFooter}>
           <TouchableHighlight
             style={styles.editButton}
@@ -466,12 +445,17 @@ class Login extends Component {
               <TouchableHighlight
                 style={styles.textButton}
                 onPress={() => {
-                  this.setState({ entertext: true });
+                  this.props.navigate("CREATE_TEXT_OBJECT");
                 }}
               >
                 <Text style={styles.textStyle2}>ADD TEXT</Text>
               </TouchableHighlight>
-              <TouchableHighlight style={styles.textButton}>
+              <TouchableHighlight
+                style={styles.textButton}
+                onPress={() => {
+                  this.props.navigate("CREATE_IMAGE_OBJECT");
+                }}
+              >
                 <Text style={styles.textStyle2}>ADD IMAGE</Text>
               </TouchableHighlight>
               <TouchableHighlight style={styles.textButton}>
@@ -480,16 +464,6 @@ class Login extends Component {
             </View>
           ) : null}
         </View>
-        {this.state.entertext ? (
-          <View style={styles.addTextField}>
-            <Input onChangeText={text => this.setState({ textinput: text })} />
-            <Button
-              onPress={() => this._createTextObject(this.state.textinput)}
-            >
-              <Text>ADD AR TEXT</Text>
-            </Button>
-          </View>
-        ) : null}
         <View style={styles.editFooter}>
           <TouchableHighlight
             style={styles.editButton}
@@ -530,7 +504,7 @@ class Login extends Component {
         scalez: 1,
         id_object: this.props.selectObjectId
       })
-      .then(results => alert(results))
+      .then(results => alert("Changes Saved"))
       .catch(err => console.log(err));
   }
 
