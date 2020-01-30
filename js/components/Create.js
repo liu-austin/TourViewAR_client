@@ -36,9 +36,7 @@ const Create = props => {
           </Button>
         </Left>
         <Body />
-        <Right>
-          <Text>{`${props.selectTourName}`} </Text>
-        </Right>
+        <Right></Right>
       </Header>
       <Content>
         <View style={{ marginTop: 50 }}>
