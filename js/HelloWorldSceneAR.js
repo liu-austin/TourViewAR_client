@@ -94,7 +94,7 @@ export default class HelloWorldSceneAR extends Component {
         )
         .then(results => {
           this.setState({
-            objects: results.data,
+            objects: results.data.rows,
             currentSceneId: this.props.sceneNavigator.viroAppProps
               .selectTourPanos[0].id,
             sceneIdHistory: [
