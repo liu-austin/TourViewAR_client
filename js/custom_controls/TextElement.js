@@ -13,7 +13,7 @@ import {
 /**
  * Pull in all the images needed for this control.
  */
-var infoIconImage = require('../res/icon_info.png');
+var infoIconImage = require('../res/text_info.png');
 let polarToCartesian = ViroUtils.polarToCartesian;
 /**
  * Tags for referencing the animation component views used to execute animations on
