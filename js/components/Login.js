@@ -25,7 +25,8 @@ import {
   Text,
   Left,
   Body,
-  Right
+  Right,
+  TabHeading
 } from "native-base";
 
 import { ViroVRSceneNavigator, ViroARSceneNavigator } from "react-viro";
@@ -42,8 +43,8 @@ import {
 
 import { setPanoId } from "../redux/pano/pano.action";
 
-import { setObjectId } from "../redux/object/object.action";
-import { selectObjectId } from "../redux/object/object.selectors";
+import { setObjectId, setSelectedText } from "../redux/object/object.action";
+import { selectObjectId, selectSelectedText } from "../redux/object/object.selectors";
 
 import { selectTourPanos, selectPanoId } from "../redux/pano/pano.selectors";
 
@@ -393,7 +394,7 @@ class Login extends Component {
           ) : null}
         </View>
         <View style={styles.editFooter}>
-          <Button
+          <TouchableHighlight
             style={styles.editButton}
             underlayColor={`#68a0ff`}
             onPress={() => this.setState({ editmode: !this.state.editmode })}
@@ -401,7 +402,7 @@ class Login extends Component {
             <Text style={styles.textStyle}>
               {this.state.editmode ? "SAVE" : "EDIT"}
             </Text>
-          </Button>
+          </TouchableHighlight>
           <TouchableHighlight
             style={styles.cancelButton}
             underlayColor={`#68a0ff`}
@@ -425,6 +426,8 @@ class Login extends Component {
         <ViroARSceneNavigator
           {...this.state.sharedProps}
           viroAppProps={{
+            setSelectedText: this.props.setSelectedText,
+            selectSelectedText: this.props.selectSelectedText,
             selectObjectId: this.props.selectObjectId,
             selectPanoId: this.props.selectPanoId,
             setPanoId: this.props.setPanoId,
@@ -439,6 +442,13 @@ class Login extends Component {
           }}
           initialScene={{ scene: InitialARScene }}
         />
+        <View style={styles.selectedTextContainer}>
+          <TouchableHighlight style={styles.topButton}>
+            <Text style={styles.textStyle2}>
+              {this.props.selectSelectedText}
+            </Text>
+          </TouchableHighlight>
+        </View>
         <View style={styles.addButtons}>
           {this.state.editmode ? (
             <View>
@@ -456,10 +466,10 @@ class Login extends Component {
                   this.props.navigate("CREATE_IMAGE_OBJECT");
                 }}
               >
-                <Text style={styles.textStyle2}>ADD IMAGES</Text>
+                <Text style={styles.textStyle2}>ADD IMAGE</Text>
               </TouchableHighlight>
               <TouchableHighlight style={styles.textButton}>
-                <Text style={styles.textStyle2}>ADD SCENES</Text>
+                <Text style={styles.textStyle2}>ADD SCENE</Text>
               </TouchableHighlight>
             </View>
           ) : null}
@@ -709,6 +719,31 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center"
+  },
+  selectedTextContainer: {
+    width: "100%",
+    position: "absolute",
+    top: 25,
+    left: 310,
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center"
+  },
+  topButton: {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    marginLeft: 15,
+    height: 80,
+    width: 80,
+    paddingTop: 20,
+    paddingBottom: 20,
+    marginTop: 10,
+    marginBottom: 10,
+    backgroundColor: "rgba(123,123,231,.4)",
+    borderRadius: 40,
+    borderWidth: 1,
+    borderColor: "rgba(123,087,231,.4)"
   }
 });
 const mapDispatchToProps = dispatch => {
@@ -721,7 +756,8 @@ const mapDispatchToProps = dispatch => {
     setPanoId: panoid => dispatch(setPanoId(panoid)),
     setObjectId: objectid => dispatch(setObjectId(objectid)),
     setObjectXCoordinate: x => dispatch(setObjectXCoordinate(x)),
-    setObjectYCoordinate: y => dispatch(setObjectYCoordinate(y))
+    setObjectYCoordinate: y => dispatch(setObjectYCoordinate(y)),
+    setSelectedText: text => dispatch(setSelectedText(text))
   };
 };
 const mapStateToProps = state => {
@@ -733,7 +769,8 @@ const mapStateToProps = state => {
     selectPanoId: selectPanoId(state),
     selectObjectId: selectObjectId(state),
     selectObjectXCoordinate: selectObjectXCoordinate(state),
-    selectObjectYCoordinate: selectObjectYCoordinate(state)
+    selectObjectYCoordinate: selectObjectYCoordinate(state),
+    selectSelectedText: selectSelectedText(state)
   };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(Login);

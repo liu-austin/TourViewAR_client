@@ -53,3 +53,10 @@ export const setObjectText = (text) => {
     payload: text
   });
 };
+
+export const setSelectedText = (text) => {
+  return ({
+    type: 'SET_SELECTED_TEXT',
+    payload: text
+  });
+};

@@ -57,6 +57,7 @@ export default class HelloWorldSceneAR extends Component {
       !this.props.sceneNavigator.viroAppProps.selectIsNew &&
       this.props.sceneNavigator.viroAppProps.selectIsEditable
     ) {
+      this.props.sceneNavigator.viroAppProps.setSelectedText('');
       axios
         .get(
           `http://tourviewarserver.herokuapp.com/api/objects/${this.props.sceneNavigator.viroAppProps.selectTourPanos[0].id}`
@@ -91,6 +92,7 @@ export default class HelloWorldSceneAR extends Component {
         this.props.sceneNavigator.viroAppProps.selectTourPanos[0].id
       );
     } else {
+      this.props.sceneNavigator.viroAppProps.setSelectedText('');
       axios
         .get(
           `http://tourviewarserver.herokuapp.com/api/objects/${this.props.sceneNavigator.viroAppProps.selectTourPanos[0].id}`
@@ -128,58 +130,19 @@ export default class HelloWorldSceneAR extends Component {
             if (object.object_type === "text") {
               let onDrag = this._onDragCreate(object.id);
               return (
-              //   <ViroNode
-              //   position={[0, -1, 0]}
-              //   dragType="FixedDistance"
-              //   onDrag={() => {}}
-              // >
-              //   <InfoElement
-              //     content={slutWindowCard}
-              //     contentCardScale={[3.67, 4, 1]}
-              //     position={polarToCartesian([-5, 0, 0])}
-              //   />
-              // </ViroNode>
-              // <ViroFlexView materials="bg" style={{ flex: 0.3, flexDirection: 'column' }} >
-              //     <ViroText
-              //      style={{ flex: 1, color: 'purple', marginLeft:.2 }}
-              //      text={object.object_value}
-              //      fontSize={12} />
-              // </ViroFlexView>
                 <ViroNode
                 key={i}
                 position={[0, -1, 0]}
                 dragType="FixedDistance"
-                onDrag={() => onDrag}
+                onDrag={() => {}}
               >
-                <ViroText
-                text={object.object_value}
-                // textAlign="left"
-                // textAlignVertical="top"
-                // textLineBreakMode="Justify"
-                // textClipMode="ClipToBounds"
-                color="#fff"
-                width={2} height={2}
-                style={{fontFamily:"Arial", fontSize:12, fontWeight:'400', fontStyle:"italic", color:"#fff"}}
-                position={polarToCartesian([-5, 0, 0])}
+                <TextElement
+                  objectValue={object.object_value}
+                  pickText={() => this.props.sceneNavigator.viroAppProps.setSelectedText(object.object_value)}
+                  contentCardScale={[1, 1, 1]}
+                  position={polarToCartesian([-5, 0, 0])}
                 />
-                </ViroNode>
-                // <ViroNode
-                //   objectid={object.id}
-                //   key={i}
-                //   position={[object.x, object.y, -2]}
-                //   dragType="FixedToWorld"
-                //   onDrag={() => onDrag}
-                // >
-                //   <TextElement
-                //     content={object.value}
-                //     contentCardScale={[
-                //       object.scale.x,
-                //       object.scale.y,
-                //       object.scale.z
-                //     ]}
-                //     position={polarToCartesian([-5, 0, 0])}
-                //   />
-                // </ViroNode>
+              </ViroNode>
               );
             } else if (object.object_type === "image") {
               let onDrag = this._onDragCreate(object.id);
@@ -261,7 +224,16 @@ ViroMaterials.createMaterials({
   },
   grid: {
     diffuseTexture: require("./res/grid_bg.jpg")
-  }
+  },
+  frontMaterial: {
+    diffuseColor: '#FFFFFF',
+  },
+  backMaterial: {
+    diffuseColor: '#FF0000',
+  },
+  sideMaterial: {
+    diffuseColor: '#0000FF',
+  },
 });
 ViroAnimations.registerAnimations({
   rotate: {

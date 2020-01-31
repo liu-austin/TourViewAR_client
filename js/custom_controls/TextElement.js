@@ -5,18 +5,22 @@ import {
   ViroImage,
   ViroNode,
   ViroAnimations,
+  ViroText,
   ViroAnimatedComponent,
+  ViroUtils
 } from 'react-viro';
 
 /**
  * Pull in all the images needed for this control.
  */
-var infoIconImage = require('../res/text_icon.png');
-
+var infoIconImage = require('../res/icon_info.png');
+let polarToCartesian = ViroUtils.polarToCartesian;
 /**
  * Tags for referencing the animation component views used to execute animations on
  * our Icon Card and our Content Card views.
  */
+var CONTENT_CARD_REF = 'contentCard';
+var ICON_CARD_REF = 'iconCard';
 
 /**
  * Custom control that toggles between two viro images: an Icon Card and a Content Card.
@@ -30,7 +34,6 @@ var infoIconImage = require('../res/text_icon.png');
 
 export default class TextElement extends Component {
     static propTypes = {
-        content: PropTypes.number, // Opaque type returned by require('./image.jpg')
         contentCardScale: PropTypes.arrayOf(PropTypes.number),
     }
 
@@ -43,7 +46,6 @@ export default class TextElement extends Component {
         contentCardAnimation:"hideAnim",
         runInfoCardAnimation:false,
         runIconCardAnimation:false,
-        showText: false
       }
 
       // bind `this` to functions
@@ -54,44 +56,43 @@ export default class TextElement extends Component {
       this._animateContentCardFinished = this._animateContentCardFinished.bind(this);
     }
 
-
+    /**
+     * Displays either an Icon Card or a Content Card. The Icon Card is displayed by default
+     * until the user does click it (_onCardClick). We then animate the Icon Card out, and the Content
+     * Card in, and vice versa if the user clicks on it again.
+     */
     render() {
       return (
-        <ViroNode onClick={this._toggleText} {...this.props}>
-          {
-            this.state.showText ? 
-            (
-                // <ViroNode scale={[this.props.contentCardScale[0], this.props.contentCardScale[1], this.props.contentCardScale[2]]}
-                // transformBehaviors={["billboard"]}>
-                  <ViroText
-                  text={this.props.content}
-                  textAlign="left"
-                  textAlignVertical="top"
-                  textLineBreakMode="justify"
-                  textClipMode="clipToBounds"
-                  color="#ff0000"
-                  width={2} height={2}
-                  style={{fontFamily:"Arial", fontSize:20, fontWeight:400, fontStyle:"italic", color:"#0000FF"}}
-                  position={[0,0,-2]}/>
-                // </ViroNode>
-            ) 
-            : 
-            (
-              <ViroImage
-              transformBehaviors={["billboard"]}
+        <ViroNode onClick={this._onCardClick} {...this.props}>
+          {/* Info Card */}
+          <ViroImage
+            transformBehaviors={["billboard"]}
+            width={1}
+            height={1}
+            opacity={1.0}
+            scale={[0.5, 0.5, 0.5]}
+            source={infoIconImage}
+            animation={{ name:this.state.iconCardAnimation,
+                         run : this.state.runIconCardAnimation,
+                         loop:false,
+                         onFinish:this._animateIconCardFinished }}/>
+
+          {/* Content Card*/}
+          <ViroNode scale={[this.props.contentCardScale[0], this.props.contentCardScale[1], this.props.contentCardScale[2]]}
+                    transformBehaviors={["billboard"]}>
+            <ViroImage
               width={1}
               height={1}
               opacity={1.0}
-              scale={[0.5, 0.5, 0.5]}
-              source={infoIconImage}/>
-            )
-          }
+              scale={[.5,.5,.5]}
+              source={infoIconImage}
+              animation={{ name:this.state.iconCardAnimation,
+                           run : this.state.runIconCardAnimation,
+                           loop:false,
+                           onFinish:this._animateIconCardFinished }}/>
+          </ViroNode>
         </ViroNode>
       );
-    }
-
-    _toggleText() {
-      this.setState({showText: !this.state.showText})
     }
 
     /**
@@ -99,12 +100,13 @@ export default class TextElement extends Component {
      * animate in / out either the Icon or Content card correspondingly.
      */
     _onCardClick() {
-        var showContentCard = this.state.contentCardAnimation == "hideAnim";
-        if (showContentCard == true) {
-            this._animateIconCard(!showContentCard);
-        } else {
-            this._animateContentCard(showContentCard);
-        }
+        // var showContentCard = this.state.contentCardAnimation == "hideAnim";
+        // if (showContentCard == true) {
+        //     this._animateIconCard(!showContentCard);
+        // } else {
+        //     this._animateContentCard(showContentCard);
+        // }
+        this.props.pickText();
     }
 
     /**
@@ -147,3 +149,5 @@ ViroAnimations.registerAnimations({
     showContentCardAnim: {properties:{scaleX:1, scaleY:1, scaleZ:1, opacity:1.0}, easing:"PowerDecel", duration:150},
     showIconAnim: {properties:{scaleX:.5, scaleY:.5, scaleZ:.5, opacity:1.0}, easing:"PowerDecel", duration:150},
 });
+
+module.exports = TextElement;

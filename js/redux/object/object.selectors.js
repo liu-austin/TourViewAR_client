@@ -41,3 +41,8 @@ export const selectObjects = createSelector(
   [selectObject],
   object => object.objects
 );
+
+export const selectSelectedText = createSelector(
+  [selectObject],
+  object => object.selected_text
+);

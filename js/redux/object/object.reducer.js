@@ -6,7 +6,8 @@ const INITIAL_STATE = {
   scale: [],
   id_pano: '',
   object_text: '',
-  objects: []
+  objects: [],
+  selected_text: 'TESTING'
 }
 
 const ObjectReducer = (state=INITIAL_STATE, action) => {
@@ -15,6 +16,11 @@ const ObjectReducer = (state=INITIAL_STATE, action) => {
       return ({
         ...state,
         object_text: action.payload
+      });
+    case 'SET_SELECTED_TEXT':
+      return ({
+        ...state,
+        selected_text: action.payload
       });
     case 'SET_OBJECTS':
       return ({
