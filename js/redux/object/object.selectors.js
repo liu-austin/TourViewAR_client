@@ -31,3 +31,13 @@ export const selectObjectIdPano = createSelector(
   [selectObject],
   object => object.id_pano
 );
+
+export const selectObjectText = createSelector(
+  [selectObject],
+  object => object.object_text
+);
+
+export const selectObjects = createSelector(
+  [selectObject],
+  object => object.objects
+);

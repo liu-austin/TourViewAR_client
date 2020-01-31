@@ -393,7 +393,7 @@ class Login extends Component {
           ) : null}
         </View>
         <View style={styles.editFooter}>
-          <TouchableHighlight
+          <Button
             style={styles.editButton}
             underlayColor={`#68a0ff`}
             onPress={() => this.setState({ editmode: !this.state.editmode })}
@@ -401,7 +401,7 @@ class Login extends Component {
             <Text style={styles.textStyle}>
               {this.state.editmode ? "SAVE" : "EDIT"}
             </Text>
-          </TouchableHighlight>
+          </Button>
           <TouchableHighlight
             style={styles.cancelButton}
             underlayColor={`#68a0ff`}
@@ -456,10 +456,10 @@ class Login extends Component {
                   this.props.navigate("CREATE_IMAGE_OBJECT");
                 }}
               >
-                <Text style={styles.textStyle2}>ADD IMAGE</Text>
+                <Text style={styles.textStyle2}>ADD IMAGES</Text>
               </TouchableHighlight>
               <TouchableHighlight style={styles.textButton}>
-                <Text style={styles.textStyle2}>ADD SCENE</Text>
+                <Text style={styles.textStyle2}>ADD SCENES</Text>
               </TouchableHighlight>
             </View>
           ) : null}

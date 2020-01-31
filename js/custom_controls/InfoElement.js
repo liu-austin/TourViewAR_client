@@ -5,14 +5,16 @@ import {
   ViroImage,
   ViroNode,
   ViroAnimations,
+  ViroText,
   ViroAnimatedComponent,
+  ViroUtils
 } from 'react-viro';
 
 /**
  * Pull in all the images needed for this control.
  */
 var infoIconImage = require('../res/icon_info.png');
-
+let polarToCartesian = ViroUtils.polarToCartesian;
 /**
  * Tags for referencing the animation component views used to execute animations on
  * our Icon Card and our Content Card views.
@@ -89,6 +91,17 @@ export default class InfoElement extends Component {
                            run : this.state.runInfoCardAnimation,
                            loop:false,
                            onFinish:this._animateContentCardFinished }}/>
+                                           {/* <ViroText
+                text={'WELCOME'}
+                // textAlign="left"
+                // textAlignVertical="top"
+                // textLineBreakMode="Justify"
+                // textClipMode="ClipToBounds"
+                color="#fff"
+                width={2} height={2}
+                style={{fontFamily:"Arial", fontSize:16, fontWeight:'400', fontStyle:"italic", color:"#fff"}}
+                position={polarToCartesian([-5, 0, 0])}
+                /> */}
           </ViroNode>
         </ViroNode>
       );

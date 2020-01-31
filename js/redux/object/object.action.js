@@ -5,6 +5,13 @@ export const setObjectId = (id) => {
   });
 };
 
+export const setObjects = (objects) => {
+  return ({
+    type: 'SET_OBJECTS',
+    payload: objects
+  });
+};
+
 export const setObjectXCoordinate = (coordinate) => {
   return ({
     type: 'SET_X_COORDINATE',
@@ -37,5 +44,12 @@ export const setObjectIdPano = (id) => {
   return ({
     type: 'SET_ID_PANO',
     payload: id
+  });
+};
+
+export const setObjectText = (text) => {
+  return ({
+    type: 'SET_OBJECT_TEXT',
+    payload: text
   });
 };

@@ -4,11 +4,23 @@ const INITIAL_STATE = {
   y: 0,
   object_value: '',
   scale: [],
-  id_pano: ''
+  id_pano: '',
+  object_text: '',
+  objects: []
 }
 
 const ObjectReducer = (state=INITIAL_STATE, action) => {
   switch (action.type) {
+    case 'SET_OBJECT_TEXT':
+      return ({
+        ...state,
+        object_text: action.payload
+      });
+    case 'SET_OBJECTS':
+      return ({
+        ...state,
+        objects: []
+      });
     case 'SET_ID':
       return ({
         ...state,

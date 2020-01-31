@@ -58,12 +58,11 @@ export default class TextElement extends Component {
     render() {
       return (
         <ViroNode onClick={this._toggleText} {...this.props}>
-          {/* Info Card */}
           {
             this.state.showText ? 
             (
-                <ViroNode scale={[this.props.contentCardScale[0], this.props.contentCardScale[1], this.props.contentCardScale[2]]}
-                transformBehaviors={["billboard"]}>
+                // <ViroNode scale={[this.props.contentCardScale[0], this.props.contentCardScale[1], this.props.contentCardScale[2]]}
+                // transformBehaviors={["billboard"]}>
                   <ViroText
                   text={this.props.content}
                   textAlign="left"
@@ -73,8 +72,8 @@ export default class TextElement extends Component {
                   color="#ff0000"
                   width={2} height={2}
                   style={{fontFamily:"Arial", fontSize:20, fontWeight:400, fontStyle:"italic", color:"#0000FF"}}
-                  position={[0,0,-5]}/>
-                </ViroNode>
+                  position={[0,0,-2]}/>
+                // </ViroNode>
             ) 
             : 
             (
@@ -87,7 +86,6 @@ export default class TextElement extends Component {
               source={infoIconImage}/>
             )
           }
-          {/* Content Text*/}
         </ViroNode>
       );
     }

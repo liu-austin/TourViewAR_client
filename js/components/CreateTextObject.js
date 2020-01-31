@@ -43,7 +43,7 @@ const CreateTextObject = props => {
       <Content>
         <View style={{ marginTop: 50 }}>
           <Item floatingLabel>
-            <Label>ENTER TEXT FOR AR OBJECT TO DISPLAY</Label>
+            <Label>ENTER AR TEXT</Label>
             <Input
               onChangeText={text => {
                 props.setObjectText(text);

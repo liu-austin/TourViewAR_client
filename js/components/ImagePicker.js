@@ -155,7 +155,7 @@ const ImageUpload = props => {
       </Header>
       <View style={styles.container}>
         {props.forobject ? (
-          <div>
+          <View>
             {renderARButton ? (
               <Button onPress={() => props.navigate("EDIT_AR_PAGE")}>
                 <Text>Go To AR Scene</Text>
@@ -168,9 +168,9 @@ const ImageUpload = props => {
                 Upload A Photo
               </Text>
             )}
-          </div>
+          </View>
         ) : (
-          <div>
+          <View>
             {renderARButton ? (
               <Button onPress={() => props.navigate("CREATE_AR_PAGE")}>
                 <Text>Go To AR Scene</Text>
@@ -183,7 +183,7 @@ const ImageUpload = props => {
                 Upload A Photo
               </Text>
             )}
-          </div>
+          </View>
         )}
       </View>
     </Container>
