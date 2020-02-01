@@ -100,7 +100,7 @@ export default class SceneElement extends Component {
         // } else {
         //     this._animateContentCard(showContentCard);
         // }
-        this.props.pickText();
+      this.props.switchScenes();
     }
 
     /**

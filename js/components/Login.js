@@ -41,12 +41,12 @@ import {
   selectUserProfilePic
 } from "../redux/user/user.selectors";
 
-import { setPanoId } from "../redux/pano/pano.action";
+import { setPanoId, setSceneHistory } from "../redux/pano/pano.action";
 
 import { setObjectId, setSelectedText } from "../redux/object/object.action";
 import { selectObjectId, selectSelectedText } from "../redux/object/object.selectors";
 
-import { selectTourPanos, selectPanoId } from "../redux/pano/pano.selectors";
+import { selectTourPanos, selectPanoId, selectSceneHistory } from "../redux/pano/pano.selectors";
 
 import {
   setObjectXCoordinate,
@@ -133,9 +133,7 @@ class Login extends Component {
     this._getExperienceSelector = this._getExperienceSelector.bind(this);
     this._getARNavigator = this._getARNavigator.bind(this);
     this._getReactNativeHome = this._getReactNativeHome.bind(this);
-    this._getExperienceButtonOnPress = this._getExperienceButtonOnPress.bind(
-      this
-    );
+    this._getExperienceButtonOnPress = this._getExperienceButtonOnPress.bind(this);
     this._getProfilePage = this._getProfilePage.bind(this);
     this._getImageUpload = this._getImageUpload.bind(this);
     this._getSearchPage = this._getSearchPage.bind(this);
@@ -407,7 +405,7 @@ class Login extends Component {
                 <Text style={styles.textStyle2}>ADD IMAGE</Text>
               </TouchableHighlight>
               <TouchableHighlight style={styles.textButton} onPress={() => {
-                  this.props.navigate("CREATE_IMAGE_OBJECT");
+                  this.props.navigate("CREATE_OPTIONS_SCENE");
                 }}>
                 <Text style={styles.textStyle2}>ADD SCENE</Text>
               </TouchableHighlight>
@@ -459,7 +457,9 @@ class Login extends Component {
             setObjectXCoordinate: this.props.setObjectXCoordinate,
             setObjectYCoordinate: this.props.setObjectYCoordinate,
             selectObjectXCoordinate: this.props.selectObjectXCoordinate,
-            selectObjectYCoordinate: this.props.selectObjectYCoordinate
+            selectObjectYCoordinate: this.props.selectObjectYCoordinate,
+            setSceneHistory: this.props.setSceneHistory,
+            selectSceneHistory: this.props.selectSceneHistory
           }}
           initialScene={{ scene: InitialARScene }}
         />
@@ -492,7 +492,9 @@ class Login extends Component {
                                   this.props.navigate("CREATE_IMAGE_OBJECT");
                                 }}>ADD IMAGE</Text>
               </TouchableHighlight>
-              <TouchableHighlight style={styles.textButton}>
+              <TouchableHighlight style={styles.textButton} onPress={() => {
+                  this.props.navigate("CREATE_OPTIONS_SCENE");
+                }}>
                 <Text style={styles.textStyle2}>ADD SCENE</Text>
               </TouchableHighlight>
             </View>
@@ -781,7 +783,8 @@ const mapDispatchToProps = dispatch => {
     setObjectId: objectid => dispatch(setObjectId(objectid)),
     setObjectXCoordinate: x => dispatch(setObjectXCoordinate(x)),
     setObjectYCoordinate: y => dispatch(setObjectYCoordinate(y)),
-    setSelectedText: text => dispatch(setSelectedText(text))
+    setSelectedText: text => dispatch(setSelectedText(text)),
+    setSceneHistory: scenes => dispatch(setSceneHistory(scenes))
   };
 };
 const mapStateToProps = state => {
@@ -794,7 +797,8 @@ const mapStateToProps = state => {
     selectObjectId: selectObjectId(state),
     selectObjectXCoordinate: selectObjectXCoordinate(state),
     selectObjectYCoordinate: selectObjectYCoordinate(state),
-    selectSelectedText: selectSelectedText(state)
+    selectSelectedText: selectSelectedText(state),
+    selectSceneHistory: selectSceneHistory(state)
   };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(Login);

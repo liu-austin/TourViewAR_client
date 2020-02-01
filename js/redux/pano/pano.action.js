@@ -18,3 +18,10 @@ export const setTourPanos = panos => {
     payload: panos
   });
 }
+
+export const setSceneHistory = scenes => {
+  return ({
+    type: 'SET_SCENE_HISTORY',
+    payload: scenes
+  });
+};

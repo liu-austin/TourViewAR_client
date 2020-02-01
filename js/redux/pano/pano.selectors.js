@@ -16,3 +16,8 @@ export const selectTourPanos = createSelector(
   [selectPano],
   pano => pano.panos
 );
+
+export const selectSceneHistory = createSelector(
+  [selectPano],
+  pano => pano.scenehistory
+);

@@ -60,3 +60,4 @@ export const setSelectedText = (text) => {
     payload: text
   });
 };
+

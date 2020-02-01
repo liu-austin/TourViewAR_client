@@ -97,8 +97,6 @@ const UseCamera = props => {
               xhr.open("PUT", results.data.presignedUrl);
               xhr.onreadystatechange = function() {
                 if (xhr.readyState === 4) {
-                  console.log(xhr.status);
-                  console.log(xhr);
                   if (xhr.status === 200) {
                     // alert("Image successfully uploaded to S3");
                     axios
@@ -107,13 +105,13 @@ const UseCamera = props => {
                         object_value: results.data.publicUrl,
                         id_pano: props.selectPanoId
                       })
-                      .then(results => {
+                      .then(() => {
                         axios
                           .get(
                             `http://tourviewarserver.herokuapp.com/api/scenes/${props.selectTourId}`
                           )
-                          .then(results => {
-                            props.setTourPanos(results.data.rows);
+                          .then(scenes => {
+                            props.setTourPanos(scenes.data.rows);
                             changeARButtonState(true);
                           })
                           .catch(err => console.log(err));
@@ -146,8 +144,6 @@ const UseCamera = props => {
               xhr.open("PUT", results.data.presignedUrl);
               xhr.onreadystatechange = function() {
                 if (xhr.readyState === 4) {
-                  console.log(xhr.status);
-                  console.log(xhr);
                   if (xhr.status === 200) {
                     // alert("Image successfully uploaded to S3");
                     axios
