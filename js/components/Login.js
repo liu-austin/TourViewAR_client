@@ -384,7 +384,9 @@ class Login extends Component {
             setObjectId: this.props.setObjectId,
             selectIsNew: true,
             selectIsEditable: true,
-            selectTourPanos: this.props.selectTourPanos
+            selectTourPanos: this.props.selectTourPanos,
+            setSceneHistory: this.props.setSceneHistory,
+            selectSceneHistory: this.props.selectSceneHistory
           }}
           initialScene={{ scene: InitialARScene }}
         />

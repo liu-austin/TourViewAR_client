@@ -30,8 +30,6 @@ export default class HelloWorldSceneAR extends Component {
       showtextinput: false,
       objects: [],
       objectname: "",
-      currentSceneId: null,
-      sceneIdHistory: [],
       selectimage: false,
       draggedtox: null,
       draggedtoy: null,
@@ -43,23 +41,20 @@ export default class HelloWorldSceneAR extends Component {
 
   componentDidMount() {
     if (!this.props.sceneNavigator.viroAppProps.selectIsNew && this.props.sceneNavigator.viroAppProps.selectIsEditable) {
+      if (this.props.sceneNavigator.viroAppProps.selectSceneHistory[this.props.sceneNavigator.viroAppProps.selectSceneHistory.length - 1] !== this.props.sceneNavigator.viroAppProps.selectPanoId) {
+        this.props.sceneNavigator.viroAppProps.setSceneHistory(this.props.sceneNavigator.viroAppProps.selectSceneHistory.concat([this.props.sceneNavigator.viroAppProps.selectPanoId]));
+      }
       this.setState({uri: this.props.sceneNavigator.viroAppProps.selectTourPanos[0].img_url}, () => {
         this.props.sceneNavigator.viroAppProps.setSelectedText('');
         axios.get(`http://tourviewarserver.herokuapp.com/api/objects/${this.props.sceneNavigator.viroAppProps.selectTourPanos[0].id}`)
           .then(results => {
             // alert(JSON.stringify(results.data.rows))
-            this.props.sceneNavigator.viroAppProps.setSceneHistory([this.props.sceneNavigator.viroAppProps.selectTourPanos[0].id]);
             this.setState({
-              objects: results.data.rows,
-              currentSceneId: this.props.sceneNavigator.viroAppProps
-                .selectTourPanos[0].id,
-              sceneIdHistory: [
-                this.props.sceneNavigator.viroAppProps.selectTourPanos[0].id
-              ]
+              objects: results.data.rows
             });
-            this.props.sceneNavigator.viroAppProps.setPanoId(
-              this.props.sceneNavigator.viroAppProps.selectTourPanos[0].id
-            );
+            // this.props.sceneNavigator.viroAppProps.setPanoId(
+            //   this.props.sceneNavigator.viroAppProps.selectTourPanos[0].id
+            // );
           })
           .catch(err => {
             alert("There was an error loading this tour. Please try again.");
@@ -67,16 +62,10 @@ export default class HelloWorldSceneAR extends Component {
           });
       });
     } else if (this.props.sceneNavigator.viroAppProps.selectIsNew) {
-      if (this.props.sceneNavigator.viroAppProps.selectSceneHistory[this.props.sceneNavigator.viroAppProps.selectSceneHistory.length - 1] !== this.props.sceneNavigator.viroAppProps.selectPanoId) {
-        this.props.sceneNavigator.viroAppProps.setSceneHistory(this.props.sceneNavigator.viroAppProps.selectSceneHistory.concat([this.props.sceneNavigator.viroAppProps.selectPanoId]));
-      }
+      this.props.sceneNavigator.viroAppProps.setSelectedText('');
+      this.props.sceneNavigator.viroAppProps.setSceneHistory([this.props.sceneNavigator.viroAppProps.selectTourPanos[0].id]);
       this.setState({
-        uri: this.props.sceneNavigator.viroAppProps.selectTourPanos[0].img_url,
-        currentSceneId: this.props.sceneNavigator.viroAppProps
-          .selectTourPanos[0].id,
-        sceneIdHistory: [
-          this.props.sceneNavigator.viroAppProps.selectTourPanos[0].id
-        ]
+        uri: this.props.sceneNavigator.viroAppProps.selectTourPanos[0].img_url
       });
       this.props.sceneNavigator.viroAppProps.setPanoId(
         this.props.sceneNavigator.viroAppProps.selectTourPanos[0].id
@@ -88,12 +77,7 @@ export default class HelloWorldSceneAR extends Component {
         axios.get(`http://tourviewarserver.herokuapp.com/api/objects/${this.props.sceneNavigator.viroAppProps.selectTourPanos[0].id}`)
           .then(results => {
             this.setState({
-              objects: results.data.rows,
-              currentSceneId: this.props.sceneNavigator.viroAppProps
-                .selectTourPanos[0].id,
-              sceneIdHistory: [
-                this.props.sceneNavigator.viroAppProps.selectTourPanos[0].id
-              ]
+              objects: results.data.rows
             });
             this.props.sceneNavigator.viroAppProps.setPanoId(
               this.props.sceneNavigator.viroAppProps.selectTourPanos[0].id
@@ -168,8 +152,7 @@ export default class HelloWorldSceneAR extends Component {
             } else if (object.object_type === "scene") {
               let onDrag = this._onDragCreate(object.id);
                 let switchScene = () => {
-                  this.setState({uri: object.object_value, currentSceneId: object.id_pano,
-                  sceneIdHistory: [this.props.sceneNavigator.viroAppProps.selectSceneHistory.concat([object.id_pano])]}, () => {
+                  this.setState({uri: object.object_value}, () => {
                     this.props.sceneNavigator.viroAppProps.setSelectedText('');
                     axios.get(`http://tourviewarserver.herokuapp.com/api/objects/${object.id_pano}`)
                     .then(results => {

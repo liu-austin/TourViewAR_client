@@ -6,7 +6,7 @@ import { navigate } from "../redux/render/render.action";
 import { selectUserId } from "../redux/user/user.selectors";
 import { setTourId, setIsEditable, setIsNew } from "../redux/tour/tour.action";
 import { selectTourName, selectTourId } from "../redux/tour/tour.selectors";
-import { setTourPanos } from "../redux/pano/pano.action";
+import { setTourPanos, setPanoId } from "../redux/pano/pano.action";
 import { selectPanoId, selectTourPanos } from "../redux/pano/pano.selectors";
 import {
   Container,
@@ -53,12 +53,14 @@ const UseCamera = props => {
                     id: props.selectTourId,
                     img_url: results.data.publicUrl
                   })
+                  .then((data) => props.setPanoId(data.data.panoId))
                   .then(() => {
                     axios.post(`http://tourviewarserver.herokuapp.com/api/object`, {
                       object_type: "scene",
                       object_value: results.data.publicUrl,
                       id_pano: props.selectPanoId
                     })
+                  })          
                     .then(() => {
                       axios.get(`http://tourviewarserver.herokuapp.com/api/scenes/${props.selectTourId}`)
                         .then(scenes => {
@@ -68,7 +70,6 @@ const UseCamera = props => {
                         .catch(err => console.log(err));
                     })
                     .catch(err => alert(err));
-                  })
               } else {
                 alert("Error while sending the image to S3");
               }
@@ -265,7 +266,8 @@ const mapDispatchToProps = dispatch => {
     setTourId: id => dispatch(setTourId(id)),
     setTourPanos: tours => dispatch(setTourPanos(tours)),
     setIsEditable: bool => dispatch(setIsEditable(bool)),
-    setIsNew: bool => dispatch(setIsNew(bool))
+    setIsNew: bool => dispatch(setIsNew(bool)),
+    setPanoId: id => dispatch(setPanoId(id))
   };
 };
 
