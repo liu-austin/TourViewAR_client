@@ -4,21 +4,17 @@ import PropTypes from 'prop-types';
 import {
   ViroImage,
   ViroNode,
-  ViroAnimations,
-  ViroAnimatedComponent,
+  ViroAnimations
 } from 'react-viro';
 
 /**
  * Pull in all the images needed for this control.
  */
 var infoIconImage = require('../res/scene_icon.png');
-
 /**
  * Tags for referencing the animation component views used to execute animations on
  * our Icon Card and our Content Card views.
  */
-var CONTENT_CARD_REF = 'contentCard';
-var ICON_CARD_REF = 'iconCard';
 
 /**
  * Custom control that toggles between two viro images: an Icon Card and a Content Card.
@@ -32,7 +28,6 @@ var ICON_CARD_REF = 'iconCard';
 
 export default class SceneElement extends Component {
     static propTypes = {
-        content: PropTypes.number, // Opaque type returned by require('./image.jpg')
         contentCardScale: PropTypes.arrayOf(PropTypes.number),
     }
 
@@ -82,13 +77,13 @@ export default class SceneElement extends Component {
             <ViroImage
               width={1}
               height={1}
-              opacity={0.0}
-              scale={[.1,.1,.1]}
-              source={this.props.content}
-              animation={{ name:this.state.contentCardAnimation,
-                           run : this.state.runInfoCardAnimation,
+              opacity={1.0}
+              scale={[.5,.5,.5]}
+              source={infoIconImage}
+              animation={{ name:this.state.iconCardAnimation,
+                           run : this.state.runIconCardAnimation,
                            loop:false,
-                           onFinish:this._animateContentCardFinished }}/>
+                           onFinish:this._animateIconCardFinished }}/>
           </ViroNode>
         </ViroNode>
       );
@@ -99,12 +94,13 @@ export default class SceneElement extends Component {
      * animate in / out either the Icon or Content card correspondingly.
      */
     _onCardClick() {
-        var showContentCard = this.state.contentCardAnimation == "hideAnim";
-        if (showContentCard == true) {
-            this._animateIconCard(!showContentCard);
-        } else {
-            this._animateContentCard(showContentCard);
-        }
+        // var showContentCard = this.state.contentCardAnimation == "hideAnim";
+        // if (showContentCard == true) {
+        //     this._animateIconCard(!showContentCard);
+        // } else {
+        //     this._animateContentCard(showContentCard);
+        // }
+        this.props.pickText();
     }
 
     /**

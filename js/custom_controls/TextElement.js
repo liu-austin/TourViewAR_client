@@ -4,23 +4,17 @@ import PropTypes from 'prop-types';
 import {
   ViroImage,
   ViroNode,
-  ViroAnimations,
-  ViroText,
-  ViroAnimatedComponent,
-  ViroUtils
+  ViroAnimations
 } from 'react-viro';
 
 /**
  * Pull in all the images needed for this control.
  */
-var infoIconImage = require('../res/text_info.png');
-let polarToCartesian = ViroUtils.polarToCartesian;
+var infoIconImage = require('../res/text_icon.png');
 /**
  * Tags for referencing the animation component views used to execute animations on
  * our Icon Card and our Content Card views.
  */
-var CONTENT_CARD_REF = 'contentCard';
-var ICON_CARD_REF = 'iconCard';
 
 /**
  * Custom control that toggles between two viro images: an Icon Card and a Content Card.

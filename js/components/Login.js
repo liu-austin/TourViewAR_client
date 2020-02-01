@@ -82,6 +82,7 @@ import CreateTextObject from "./CreateTextObject";
 import Create from "./Create";
 import CreateOptions from "./CreateOptions";
 import CreateOptionsObject from "./CreateOptionsObject";
+import CreateOptionsScene from "./CreateOptionsScene";
 import ARScene from "./ARScene";
 
 var sharedProps = {
@@ -112,6 +113,9 @@ var CAMERA_PAGE_OBJECT = "CAMERA_PAGE_OBJECT";
 var IMAGE_PICKER_PAGE_OBJECT = "IMAGE_PICKER_PAGE_OBJECT";
 var CREATE_TEXT_OBJECT = "CREATE_TEXT_OBJECT";
 var CREATE_IMAGE_OBJECT = "CREATE_IMAGE_OBJECT";
+var CREATE_OPTIONS_SCENE = "CREATE_OPTIONS_SCENE";
+var CAMERA_PAGE_SCENE = "CAMERA_PAGE_SCENE";
+var IMAGE_PICKER_PAGE_SCENE = "IMAGE_PICKER_PAGE_SCENE";
 // This determines which type of experience to launch in, or UNSET, if the user should
 // be presented with a choice of AR or VR. By default, we offer the user a choice.
 var defaultNavigatorType = UNSET;
@@ -147,6 +151,8 @@ class Login extends Component {
     this._createImageObject = this._createImageObject.bind(this);
     this._createTextObject = this._createTextObject.bind(this);
     this._saveChanges = this._saveChanges.bind(this);
+    this._addScenePhoto = this._addScenePhoto.bind(this);
+    this._uploadScenePhoto = this._uploadScenePhoto.bind(this);
   }
   render() {
     if (this.props.selectNavigator === LOGIN_PAGE) {
@@ -162,9 +168,9 @@ class Login extends Component {
     } else if (this.props.selectNavigator === PROFILE) {
       return this._getProfilePage();
     } else if (this.props.selectNavigator === IMAGE_UPLOAD) {
-      return this._getImageUpload(false);
+      return this._getImageUpload(false, false);
     } else if (this.props.selectNavigator === CAMERA_PAGE) {
-      return this._getCameraPage(false);
+      return this._getCameraPage(false, false);
     } else if (this.props.selectNavigator === SEARCH_PAGE) {
       return this._getSearchPage();
     } else if (this.props.selectNavigator === CREATE_TOUR) {
@@ -178,15 +184,26 @@ class Login extends Component {
     } else if (this.props.selectNavigator === EDIT_AR_PAGE) {
       return this._getEditARPage();
     } else if (this.props.selectNavigator === CAMERA_PAGE_OBJECT) {
-      return this._getCameraPage(true);
+      return this._getCameraPage(true, false);
     } else if (this.props.selectNavigator === IMAGE_PICKER_PAGE_OBJECT) {
-      return this._getImageUpload(true);
+      return this._getImageUpload(true, false);
     } else if (this.props.selectNavigator === CREATE_TEXT_OBJECT) {
       return this._createTextObject();
     } else if (this.props.selectNavigator === CREATE_IMAGE_OBJECT) {
       return this._createImageObject();
+    } else if (this.props.selectNavigator === CREATE_OPTIONS_SCENE) {
+      return this._createOptionsScene();
+    } else if (this.props.selectNavigator === CAMERA_PAGE_SCENE) {
+      return this._getCameraPage(false, true);
+    } else if (this.props.selectNavigator === IMAGE_PICKER_PAGE_SCENE) {
+      return this._getImageUpload(false, true);
     }
   }
+
+  _createOptionsScene() {
+    return (<CreateOptionsScene />);
+  }
+
   _loginHandler() {}
   // Presents the user with a choice of an AR or VR experience
   _getExperienceSelector() {
@@ -297,11 +314,11 @@ class Login extends Component {
   _getProfilePage() {
     return <Profile />;
   }
-  _getImageUpload(forobject) {
-    return <ImageUpload forobject={forobject} />;
+  _getImageUpload(forobject, forscene) {
+    return <ImageUpload forobject={forobject} forscene={forscene}/>;
   }
-  _getCameraPage(forobject) {
-    return <UseCamera forobject={forobject} />;
+  _getCameraPage(forobject, forscene) {
+    return <UseCamera forobject={forobject} forscene={forscene}/>;
   }
   _getSearchPage() {
     return <Search />;
@@ -380,14 +397,18 @@ class Login extends Component {
                 style={styles.textButton}
                 onPress={() => {
                   this.props.navigate("CREATE_TEXT_OBJECT");
-                }}
-              >
+                }}>
                 <Text style={styles.textStyle2}>ADD TEXT</Text>
               </TouchableHighlight>
-              <TouchableHighlight style={styles.textButton}>
+              <TouchableHighlight style={styles.textButton} 
+                onPress={() => {
+                  this.props.navigate("CREATE_IMAGE_OBJECT");
+                }}>
                 <Text style={styles.textStyle2}>ADD IMAGE</Text>
               </TouchableHighlight>
-              <TouchableHighlight style={styles.textButton}>
+              <TouchableHighlight style={styles.textButton} onPress={() => {
+                  this.props.navigate("CREATE_IMAGE_OBJECT");
+                }}>
                 <Text style={styles.textStyle2}>ADD SCENE</Text>
               </TouchableHighlight>
             </View>
@@ -408,7 +429,7 @@ class Login extends Component {
             underlayColor={`#68a0ff`}
             onPress={() => this.props.navigate("REACT_NATIVE_HOME")}
           >
-            <Text style={styles.textStyle}>CANCEL</Text>
+            <Text style={styles.textStyle}>HOME</Text>
           </TouchableHighlight>
         </View>
       </View>
@@ -466,7 +487,10 @@ class Login extends Component {
                   this.props.navigate("CREATE_IMAGE_OBJECT");
                 }}
               >
-                <Text style={styles.textStyle2}>ADD IMAGE</Text>
+                <Text style={styles.textStyle2}
+                                onPress={() => {
+                                  this.props.navigate("CREATE_IMAGE_OBJECT");
+                                }}>ADD IMAGE</Text>
               </TouchableHighlight>
               <TouchableHighlight style={styles.textButton}>
                 <Text style={styles.textStyle2}>ADD SCENE</Text>
@@ -497,7 +521,7 @@ class Login extends Component {
             underlayColor={`#68a0ff`}
             onPress={() => this.props.navigate("REACT_NATIVE_HOME")}
           >
-            <Text style={styles.textStyle}>CANCEL</Text>
+            <Text style={styles.textStyle}>HOME</Text>
           </TouchableHighlight>
         </View>
       </View>
@@ -740,10 +764,10 @@ const styles = StyleSheet.create({
     paddingBottom: 20,
     marginTop: 10,
     marginBottom: 10,
-    backgroundColor: "rgba(123,123,231,.4)",
+    backgroundColor: "rgba(123,123,231,0)",
     borderRadius: 40,
     borderWidth: 1,
-    borderColor: "rgba(123,087,231,.4)"
+    borderColor: "rgba(123,087,231,0)"
   }
 });
 const mapDispatchToProps = dispatch => {

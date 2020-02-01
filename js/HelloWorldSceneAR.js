@@ -2,29 +2,19 @@ import React, { Component } from "react";
 import { StyleSheet, View, Text, TouchableHighlight } from "react-native";
 
 import {
-  ViroSceneNavigator,
-  ViroScene,
-  Viro360Video,
+  ViroSpinner,
   Viro360Image,
   ViroUtils,
-  ViroFlexView,
-  ViroPortal,
-  ViroPortalScene,
   ViroARScene,
-  ViroText,
   ViroConstants,
-  ViroBox,
   ViroMaterials,
-  Viro3DObject,
-  ViroAmbientLight,
-  ViroSpotLight,
-  ViroARPlaneSelector,
   ViroNode,
   ViroAnimations,
   ViroImage
 } from "react-viro";
 
 import axios from "axios";
+import { setObjectId } from "./redux/object/object.action";
 
 var SceneElement = require("./custom_controls/SceneElement");
 var TextElement = require("./custom_controls/TextElement");
@@ -47,7 +37,8 @@ export default class HelloWorldSceneAR extends Component {
       sceneIdHistory: [],
       selectimage: false,
       draggedtox: null,
-      draggedtoy: null
+      draggedtoy: null,
+      sceneloaded: false
     };
     this._onInitialized = this._onInitialized.bind(this);
   }
@@ -124,7 +115,21 @@ export default class HelloWorldSceneAR extends Component {
             uri: this.props.sceneNavigator.viroAppProps.selectTourPanos[0]
               .img_url
           }}
+          onLoadEnd={() => this.setState({sceneloaded: true})}
         />
+        {
+          this.state.sceneloaded ? 
+          (
+            null
+          ) 
+          : 
+          (
+            <ViroSpinner 
+              type='light'
+              position={[0, 0, -2]}
+            />
+          )
+        }
         {this.state.objects.length ? (
           this.state.objects.map((object, i) => {
             if (object.object_type === "text") {
@@ -132,12 +137,11 @@ export default class HelloWorldSceneAR extends Component {
               return (
                 <ViroNode
                 key={i}
-                position={[0, -1, 0]}
+                position={[object.x, object.y, -1]}
                 dragType="FixedDistance"
-                onDrag={() => {}}
+                onDrag={(dragToPos, source) => onDrag(dragToPos, source)}
               >
                 <TextElement
-                  objectValue={object.object_value}
                   pickText={() => this.props.sceneNavigator.viroAppProps.setSelectedText(object.object_value)}
                   contentCardScale={[1, 1, 1]}
                   position={polarToCartesian([-5, 0, 0])}
@@ -157,9 +161,9 @@ export default class HelloWorldSceneAR extends Component {
                   <ImageElement
                     content={object.object_value}
                     contentCardScale={[
-                      object.scale.x,
-                      object.scale.y,
-                      object.scale.z
+                      2,
+                      2,
+                      2
                     ]}
                     position={polarToCartesian([-5, 0, 0])}
                   />
@@ -181,16 +185,6 @@ export default class HelloWorldSceneAR extends Component {
             position={polarToCartesian([-5, 0, 0])}
           />
         </ViroNode>
-          // <ViroText
-          // text={'Welcome To AR Sceme'}
-          // textAlign="left"
-          // textAlignVertical="top"
-          // textLineBreakMode="Justify"
-          // textClipMode="ClipToBounds"
-          // color="#ff0000"
-          // width={2} height={2}
-          // style={{fontFamily:"Arial", fontSize:12, fontWeight:'400', fontStyle:"italic", color:"#0000FF"}}
-          // position={[0,0,-2]}/>
         )}
       </ViroARScene>
     );
@@ -204,15 +198,38 @@ export default class HelloWorldSceneAR extends Component {
       // Handle loss of tracking
     }
   }
+
   _onDragCreate(id) {
     return function(draggedToPosition, source) {
-      this.props.sceneNavigator.viroAppProps.setObjectId(id);
-      this.props.sceneNavigator.viroAppProps.setObjectXCoordinate(
-        draggedToPosition[0]
-      );
-      this.props.sceneNavigator.viroAppProps.setObjectYCoordinate(
-        draggedToPosition[1]
-      );
+      if (this.props.sceneNavigator.viroAppProps.selectObjectId !== id && this.props.sceneNavigator.viroAppProps.selectObjectId) {
+        axios
+        .put(`http://tourviewarserver.herokuapp.com/api/object`, {
+          x: this.props.sceneNavigator.viroAppProps.selectObjectXCoordinate,
+          y: this.props.sceneNavigator.viroAppProps.selectObjectYCoordinate,
+          scalex: 1,
+          scaley: 1,
+          scalez: 1,
+          id_object: this.props.sceneNavigator.viroAppProps.selectObjectId
+        })
+        .then(results => {
+          this.props.sceneNavigator.viroAppProps.setObjectId(id);
+          this.props.sceneNavigator.viroAppProps.setObjectXCoordinate(
+            draggedToPosition[0]
+          );
+          this.props.sceneNavigator.viroAppProps.setObjectYCoordinate(
+            draggedToPosition[1]
+          );
+        })
+        .catch(err => console.log(err));
+      } else {
+        this.props.sceneNavigator.viroAppProps.setObjectId(id);
+        this.props.sceneNavigator.viroAppProps.setObjectXCoordinate(
+          draggedToPosition[0]
+        );
+        this.props.sceneNavigator.viroAppProps.setObjectYCoordinate(
+          draggedToPosition[1]
+        );
+      }
     };
   }
 }

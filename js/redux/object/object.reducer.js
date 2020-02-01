@@ -7,7 +7,7 @@ const INITIAL_STATE = {
   id_pano: '',
   object_text: '',
   objects: [],
-  selected_text: 'TESTING'
+  selected_text: ''
 }
 
 const ObjectReducer = (state=INITIAL_STATE, action) => {

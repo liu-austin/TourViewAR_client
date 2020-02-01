@@ -29,109 +29,152 @@ const ImageUpload = props => {
   const chooseFile = bool => {
     const options = {};
     ImagePicker.launchImageLibrary(options, response => {
-      if (bool) {
+      if (props.forscene) {
         props.setIsEditable(true);
         props.setIsNew(false);
         const source = { uri: response.uri };
-        // alert(JSON.stringify(source));
-        axios
-          .get(
-            `http://tourviewarserver.herokuapp.com/api/getpresignedurlforobject/arobjectimages`
-          )
-          .then(results => {
-            const xhr = new XMLHttpRequest();
-            xhr.open("PUT", results.data.presignedUrl);
-            xhr.onreadystatechange = function() {
-              if (xhr.readyState === 4) {
-                console.log(xhr.status);
-                console.log(xhr);
-                if (xhr.status === 200) {
-                  // alert("Image successfully uploaded to S3");
-                  axios
-                    .post(`http://tourviewarserver.herokuapp.com/api/object`, {
-                      object_type: "image",
+
+        axios.get(`http://tourviewarserver.herokuapp.com/api/getpresignedurl/panoimages`)
+        .then(results => {
+          const xhr = new XMLHttpRequest();
+          xhr.open("PUT", results.data.presignedUrl);
+          xhr.onreadystatechange = function() {
+            if (xhr.readyState === 4) {
+              if (xhr.status === 200) {
+                // alert("Image successfully uploaded to S3");
+                axios.post(`http://tourviewarserver.herokuapp.com/api/scenes`, {
+                    id: props.selectTourId,
+                    img_url: results.data.publicUrl
+                  })
+                  .then(() => {
+                    axios.post(`http://tourviewarserver.herokuapp.com/api/object`, {
+                      object_type: "scene",
                       object_value: results.data.publicUrl,
                       id_pano: props.selectPanoId
                     })
-                    .then(results => {
-                      axios
-                        .get(
-                          `http://tourviewarserver.herokuapp.com/api/scenes/${props.selectTourId}`
-                        )
-                        .then(results => {
-                          props.setTourPanos(results.data.rows);
+                    .then(() => {
+                      axios.get(`http://tourviewarserver.herokuapp.com/api/scenes/${props.selectTourId}`)
+                        .then(scenes => {
+                          props.setTourPanos(scenes.data.rows);
                           changeARButtonState(true);
                         })
                         .catch(err => console.log(err));
                     })
                     .catch(err => alert(err));
-                } else {
-                  alert("Error while sending the image to S3");
-                }
+                  })
+              } else {
+                alert("Error while sending the image to S3");
               }
-            };
-            xhr.setRequestHeader("Content-Type", "image/jpeg");
-            xhr.send({
-              uri: source.uri,
-              type: "image/jpeg",
-              name: "cameratest.jpg"
-            });
-          })
-          .catch(err => alert(JSON.stringify(err)));
+            }
+          };
+          xhr.setRequestHeader("Content-Type", "image/jpeg");
+          xhr.send({
+            uri: source.uri,
+            type: "image/jpeg",
+            name: "pickertest.jpg"
+          });
+        })
+        .catch(err => alert(JSON.stringify(err)));
       } else {
-        props.setIsEditable(true);
-        props.setIsNew(true);
-        const source = { uri: response.uri };
-        // alert(JSON.stringify(source));
-        axios
-          .get(
-            `http://tourviewarserver.herokuapp.com/api/getpresignedurl/panoimages`
-          )
-          .then(results => {
-            const xhr = new XMLHttpRequest();
-            xhr.open("PUT", results.data.presignedUrl);
-            xhr.onreadystatechange = function() {
-              if (xhr.readyState === 4) {
-                console.log(xhr.status);
-                console.log(xhr);
-                if (xhr.status === 200) {
-                  // alert("Image successfully uploaded to S3");
-                  axios
-                    .post(`http://tourviewarserver.herokuapp.com/api/newtour`, {
-                      id: results.data.id,
-                      img_url: results.data.publicUrl,
-                      tour_name: props.selectTourName,
-                      id_user: props.selectUserId
-                    })
-                    .then(results => {
-                      props.setTourId(results.data.tourid);
-                      return results.data.tourid;
-                    })
-                    .then(id_tour => {
-                      axios
-                        .get(
-                          `http://tourviewarserver.herokuapp.com/api/scenes/${id_tour}`
-                        )
-                        .then(results => {
-                          props.setTourPanos(results.data.rows);
-                          changeARButtonState(true);
-                        })
-                        .catch(err => console.log(err));
-                    })
-                    .catch(err => alert(err));
-                } else {
-                  alert("Error while sending the image to S3");
+        if (bool) {
+          props.setIsEditable(true);
+          props.setIsNew(false);
+          const source = { uri: response.uri };
+          // alert(JSON.stringify(source));
+          axios.get(`http://tourviewarserver.herokuapp.com/api/getpresignedurlforobject/arobjectimages`)
+            .then(results => {
+              const xhr = new XMLHttpRequest();
+              xhr.open("PUT", results.data.presignedUrl);
+              xhr.onreadystatechange = function() {
+                if (xhr.readyState === 4) {
+                  if (xhr.status === 200) {
+                    // alert("Image successfully uploaded to S3");
+                    axios
+                      .post(`http://tourviewarserver.herokuapp.com/api/object`, {
+                        object_type: "image",
+                        object_value: results.data.publicUrl,
+                        id_pano: props.selectPanoId
+                      })
+                      .then(results => {
+                        axios
+                          .get(
+                            `http://tourviewarserver.herokuapp.com/api/scenes/${props.selectTourId}`
+                          )
+                          .then(results => {
+                            props.setTourPanos(results.data.rows);
+                            changeARButtonState(true);
+                          })
+                          .catch(err => console.log(err));
+                      })
+                      .catch(err => alert(err));
+                  } else {
+                    alert("Error while sending the image to S3");
+                  }
                 }
-              }
-            };
-            xhr.setRequestHeader("Content-Type", "image/jpeg");
-            xhr.send({
-              uri: source.uri,
-              type: "image/jpeg",
-              name: "pickertest.jpg"
-            });
-          })
-          .catch(err => alert(JSON.stringify(err)));
+              };
+              xhr.setRequestHeader("Content-Type", "image/jpeg");
+              xhr.send({
+                uri: source.uri,
+                type: "image/jpeg",
+                name: "cameratest.jpg"
+              });
+            })
+            .catch(err => alert(JSON.stringify(err)));
+        } else {
+          props.setIsEditable(true);
+          props.setIsNew(true);
+          const source = { uri: response.uri };
+          // alert(JSON.stringify(source));
+          axios
+            .get(
+              `http://tourviewarserver.herokuapp.com/api/getpresignedurl/panoimages`
+            )
+            .then(results => {
+              const xhr = new XMLHttpRequest();
+              xhr.open("PUT", results.data.presignedUrl);
+              xhr.onreadystatechange = function() {
+                if (xhr.readyState === 4) {
+                  console.log(xhr.status);
+                  console.log(xhr);
+                  if (xhr.status === 200) {
+                    // alert("Image successfully uploaded to S3");
+                    axios
+                      .post(`http://tourviewarserver.herokuapp.com/api/newtour`, {
+                        id: results.data.id,
+                        img_url: results.data.publicUrl,
+                        tour_name: props.selectTourName,
+                        id_user: props.selectUserId
+                      })
+                      .then(results => {
+                        props.setTourId(results.data.tourid);
+                        return results.data.tourid;
+                      })
+                      .then(id_tour => {
+                        axios
+                          .get(
+                            `http://tourviewarserver.herokuapp.com/api/scenes/${id_tour}`
+                          )
+                          .then(results => {
+                            props.setTourPanos(results.data.rows);
+                            changeARButtonState(true);
+                          })
+                          .catch(err => console.log(err));
+                      })
+                      .catch(err => alert(err));
+                  } else {
+                    alert("Error while sending the image to S3");
+                  }
+                }
+              };
+              xhr.setRequestHeader("Content-Type", "image/jpeg");
+              xhr.send({
+                uri: source.uri,
+                type: "image/jpeg",
+                name: "pickertest.jpg"
+              });
+            })
+            .catch(err => alert(JSON.stringify(err)));
+        }
       }
     });
   };
