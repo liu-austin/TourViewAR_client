@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { StyleSheet, View, Text, TouchableHighlight } from "react-native";
 
 import {
   ViroSpinner,
@@ -13,7 +12,6 @@ import {
 } from "react-viro";
 
 import axios from "axios";
-import { setObjectId } from "./redux/object/object.action";
 
 var SceneElement = require("./custom_controls/SceneElement");
 var TextElement = require("./custom_controls/TextElement");
@@ -168,6 +166,7 @@ export default class HelloWorldSceneAR extends Component {
                 </ViroNode>
               );
             } else if (object.object_type === "scene") {
+              let onDrag = this._onDragCreate(object.id);
                 let switchScene = () => {
                   this.setState({uri: object.object_value, currentSceneId: object.id_pano,
                   sceneIdHistory: [this.props.sceneNavigator.viroAppProps.selectSceneHistory.concat([object.id_pano])]}, () => {
