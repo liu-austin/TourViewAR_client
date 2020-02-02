@@ -21,3 +21,8 @@ export const selectSceneHistory = createSelector(
   [selectPano],
   pano => pano.scenehistory
 );
+
+export const selectGoBack = createSelector(
+  [selectPano],
+  pano => pano.goback
+);

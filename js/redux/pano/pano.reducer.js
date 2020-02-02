@@ -2,7 +2,8 @@ const INITIAL_STATE = {
   id: '',
   img_url: '',
   panos: [],
-  scenehistory: []
+  scenehistory: [],
+  goback: false
 }
 
 const PanoReducer = (state=INITIAL_STATE, action) => {
@@ -27,6 +28,11 @@ const PanoReducer = (state=INITIAL_STATE, action) => {
         ...state,
         scenehistory: action.payload
       });
+    case 'SET_GO_BACK':
+    return ({
+      ...state,
+      goback: action.payload
+    });
     default:
       return state;
   }

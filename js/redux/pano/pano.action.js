@@ -25,3 +25,10 @@ export const setSceneHistory = scenes => {
     payload: scenes
   });
 };
+
+export const setGoBack = bool => {
+  return ({
+    type: 'SET_GO_BACK',
+    payload: bool
+  });
+};

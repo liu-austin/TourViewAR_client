@@ -46,11 +46,12 @@ const ImageUpload = props => {
                     id: props.selectTourId,
                     img_url: results.data.publicUrl
                   })
-                  .then((data) => props.setPanoId(data.data.panoId))
-                  .then(() => {
+                  .then((data) => {
                     axios.post(`http://tourviewarserver.herokuapp.com/api/object`, {
                       object_type: "scene",
-                      object_value: results.data.publicUrl,
+                      // object_value: results.data.publicUrl,
+                      // id_pano: props.selectPanoId
+                      object_value: JSON.stringify([data.data.panoId, results.data.publicUrl]),
                       id_pano: props.selectPanoId
                     })
                   })          

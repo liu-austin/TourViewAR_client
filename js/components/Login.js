@@ -41,12 +41,12 @@ import {
   selectUserProfilePic
 } from "../redux/user/user.selectors";
 
-import { setPanoId, setSceneHistory } from "../redux/pano/pano.action";
+import { setPanoId, setSceneHistory, setGoBack } from "../redux/pano/pano.action";
 
 import { setObjectId, setSelectedText } from "../redux/object/object.action";
 import { selectObjectId, selectSelectedText } from "../redux/object/object.selectors";
 
-import { selectTourPanos, selectPanoId, selectSceneHistory } from "../redux/pano/pano.selectors";
+import { selectTourPanos, selectPanoId, selectSceneHistory, selectGoBack } from "../redux/pano/pano.selectors";
 
 import {
   setObjectXCoordinate,
@@ -360,6 +360,8 @@ class Login extends Component {
         <ViroARSceneNavigator
           {...this.state.sharedProps}
           viroAppProps={{
+            goBack: false,
+            setGoBack: this.props.setGoBack,
             setSelectedText: this.props.setSelectedText,
             selectSelectedText: this.props.selectSelectedText,
             selectObjectId: this.props.selectObjectId,
@@ -374,6 +376,22 @@ class Login extends Component {
           }}
           initialScene={{ scene: InitialARScene }}
         />
+        <View style={styles.selectedTextContainer}>
+          <TouchableHighlight style={styles.previousButton} onPress={() => {
+            this.props.setGoBack(true);
+            if (this.props.selectSceneHistory.length === 1) {
+              this.props.navigate("REACT_NATIVE_HOME");
+            } else {
+              this.props.setPanoId(this.props.selectSceneHistory[this.props.selectSceneHistory.length - 2]);
+              this.props.setSceneHistory(this.props.selectSceneHistory.slice(0, this.props.selectSceneHistory.length - 1));
+              this.props.navigate("EDIT_AR_PAGE");
+            }
+          }}>
+            <Text style={styles.textStyle}>
+              PREVIOUS
+            </Text>
+          </TouchableHighlight>
+        </View>
         <View style={styles.addButtons}>
           {this.state.editmode ? (
             <View>
@@ -430,6 +448,8 @@ class Login extends Component {
         <ViroARSceneNavigator
           {...this.state.sharedProps}
           viroAppProps={{
+            goBack: this.props.goBack,
+            setGoBack: this.props.setGoBack,
             setSelectedText: this.props.setSelectedText,
             selectSelectedText: this.props.selectSelectedText,
             selectObjectId: this.props.selectObjectId,
@@ -451,6 +471,20 @@ class Login extends Component {
           initialScene={{ scene: InitialARScene }}
         />
         <View style={styles.selectedTextContainer}>
+        <TouchableHighlight style={styles.previousButton} onPress={() => {
+          this.props.setGoBack(true);
+          if (this.props.selectSceneHistory.length === 1) {
+            this.props.navigate("REACT_NATIVE_HOME");
+          } else {
+            this.props.setPanoId(this.props.selectSceneHistory[this.props.selectSceneHistory.length - 2]);
+            this.props.setSceneHistory(this.props.selectSceneHistory.slice(0, this.props.selectSceneHistory.length - 1));
+            this.props.navigate("EDIT_AR_PAGE");
+          }
+        }}>
+            <Text style={styles.textStyle}>
+              PREVIOUS
+            </Text>
+          </TouchableHighlight>
           <TouchableHighlight style={styles.topButton}>
             <Text style={styles.textStyle2}>
               {this.props.selectSelectedText}
@@ -724,7 +758,7 @@ const styles = StyleSheet.create({
   textStyle2: {
     color: "#ffffff",
     textAlign: "center",
-    fontSize: 14
+    fontSize: 16
   },
   addTextField: {
     position: "absolute",
@@ -733,6 +767,22 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center"
+  },
+  previousButton: {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    marginLeft: 0,
+    height: 80,
+    width: 80,
+    paddingTop: 20,
+    paddingBottom: 20,
+    marginTop: 10,
+    marginBottom: 10,
+    backgroundColor: "rgba(123,123,231,0.4)",
+    borderRadius: 40,
+    borderWidth: 1,
+    borderColor: "rgba(123,087,231,0.4)"
   },
   selectedTextContainer: {
     width: "100%",
@@ -747,7 +797,7 @@ const styles = StyleSheet.create({
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    marginLeft: 15,
+    marginLeft: 0,
     height: 80,
     width: 80,
     paddingTop: 20,
@@ -773,7 +823,8 @@ const mapDispatchToProps = dispatch => {
     setObjectYCoordinate: y => dispatch(setObjectYCoordinate(y)),
     setObjectZCoordinate: z => dispatch(setObjectZCoordinate(z)),
     setSelectedText: text => dispatch(setSelectedText(text)),
-    setSceneHistory: scenes => dispatch(setSceneHistory(scenes))
+    setSceneHistory: scenes => dispatch(setSceneHistory(scenes)),
+    setGoBack: bool => dispatch(setGoBack(bool))
   };
 };
 const mapStateToProps = state => {
@@ -788,7 +839,8 @@ const mapStateToProps = state => {
     selectObjectYCoordinate: selectObjectYCoordinate(state),
     selectObjectZCoordinate: selectObjectZCoordinate(state),
     selectSelectedText: selectSelectedText(state),
-    selectSceneHistory: selectSceneHistory(state)
+    selectSceneHistory: selectSceneHistory(state),
+    selectGoBack: selectGoBack(state)
   };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(Login);
