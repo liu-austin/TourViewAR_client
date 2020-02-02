@@ -17,6 +17,11 @@ export const selectObjectYCoordinate = createSelector(
   object => object.y
 );
 
+export const selectObjectZCoordinate = createSelector(
+  [selectObject],
+  object => object.z
+);
+
 export const selectObjectValue = createSelector(
   [selectObject],
   object => object.object_value

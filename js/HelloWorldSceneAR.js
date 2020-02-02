@@ -37,11 +37,12 @@ export default class HelloWorldSceneAR extends Component {
       uri: ''
     };
     this._onInitialized = this._onInitialized.bind(this);
+    this._onDragCreate = this._onDragCreate.bind(this);
   }
 
   componentDidMount() {
     if (!this.props.sceneNavigator.viroAppProps.selectIsNew && this.props.sceneNavigator.viroAppProps.selectIsEditable) {
-      if (this.props.sceneNavigator.viroAppProps.selectSceneHistory[this.props.sceneNavigator.viroAppProps.selectSceneHistory.length - 1] !== this.props.sceneNavigator.viroAppProps.selectPanoId) {
+      if (this.props.sceneNavigator.viroAppProps.selectSceneHistory[this.props.sceneNavigator.viroAppProps.selectSceneHistory.length - 1] !== (this.props.sceneNavigator.viroAppProps.selectPanoId)) {
         this.props.sceneNavigator.viroAppProps.setSceneHistory(this.props.sceneNavigator.viroAppProps.selectSceneHistory.concat([this.props.sceneNavigator.viroAppProps.selectPanoId]));
       }
       this.setState({uri: this.props.sceneNavigator.viroAppProps.selectTourPanos[0].img_url}, () => {
@@ -52,9 +53,6 @@ export default class HelloWorldSceneAR extends Component {
             this.setState({
               objects: results.data.rows
             });
-            // this.props.sceneNavigator.viroAppProps.setPanoId(
-            //   this.props.sceneNavigator.viroAppProps.selectTourPanos[0].id
-            // );
           })
           .catch(err => {
             alert("There was an error loading this tour. Please try again.");
@@ -107,19 +105,19 @@ export default class HelloWorldSceneAR extends Component {
           : 
           (
             <ViroSpinner 
-              type='light'
-              position={[0, 0, -2]}
+              type='Light'
+              position={[0, 0, -1]}
             />
           )
         }
         {this.state.objects.length ? (
           this.state.objects.map((object, i) => {
             if (object.object_type === "text") {
-              let onDrag = this._onDragCreate(object.id);
+              let onDrag = this._onDragCreate(object.id, this.props.sceneNavigator.viroAppProps.selectObjectId, this.props.sceneNavigator.viroAppProps.setObjectId, this.props.sceneNavigator.viroAppProps.selectObjectXCoordinate, this.props.sceneNavigator.viroAppProps.setObjectXCoordinate, this.props.sceneNavigator.viroAppProps.selectObjectYCoordinate, this.props.sceneNavigator.viroAppProps.setObjectYCoordinate, this.props.sceneNavigator.viroAppProps.selectObjectZCoordinate, this.props.sceneNavigator.viroAppProps.setObjectZCoordinate);
               return (
                 <ViroNode
                 key={i}
-                position={[object.x, object.y, -1]}
+                position={[Number(object.x), Number(object.y), Number(object.z)]}
                 dragType="FixedDistance"
                 onDrag={(dragToPos, source) => onDrag(dragToPos, source)}
               >
@@ -136,7 +134,7 @@ export default class HelloWorldSceneAR extends Component {
                 <ViroNode
                   objectid={object.id}
                   key={i}
-                  position={[object.x, object.y, -2]}
+                  position={[Number(object.x), Number(object.y), Number(object.z)]}
                   dragType="FixedToWorld"
                   onDrag={(dragToPos, source) => onDrag(dragToPos, source)}>
                   <ImageElement
@@ -170,9 +168,9 @@ export default class HelloWorldSceneAR extends Component {
               return (
                 <ViroNode
                 key={i}
-                position={[object.x, object.y, -1]}
+                position={[Number(object.x), Number(object.y), Number(object.z)]}
                 dragType="FixedDistance"
-                onDrag={(dragToPos, source) => onDrag(dragToPos, source)}>
+                onPress={(dragToPos, source) => onDrag(dragToPos, source)}>
                   <SceneElement
                     switchScenes={() => switchScene()}
                     contentCardScale={[1, 1, 1]}
@@ -208,38 +206,75 @@ export default class HelloWorldSceneAR extends Component {
     }
   }
 
-  _onDragCreate(id) {
+  _onDragCreate(id, objectid, setobjectid, xcoordinate, setxcoordinate, ycoordinate, setycoordinate, zcoordinate, setzcoordinate ) {
     return function(draggedToPosition, source) {
-      if (this.props.sceneNavigator.viroAppProps.selectObjectId !== id && this.props.sceneNavigator.viroAppProps.selectObjectId) {
+      if (objectid !== id && objectid) {
         axios
         .put(`http://tourviewarserver.herokuapp.com/api/object`, {
-          x: this.props.sceneNavigator.viroAppProps.selectObjectXCoordinate,
-          y: this.props.sceneNavigator.viroAppProps.selectObjectYCoordinate,
+          x: Number(xcoordinate.toFixed(2)),
+          y: Number(ycoordinate.toFixed(2)),
+          z: Number(zcoordinate.toFixed(2)),
           scalex: 1,
           scaley: 1,
           scalez: 1,
-          id_object: this.props.sceneNavigator.viroAppProps.selectObjectId
+          id_object: objectid
         })
         .then(results => {
-          this.props.sceneNavigator.viroAppProps.setObjectId(id);
-          this.props.sceneNavigator.viroAppProps.setObjectXCoordinate(
+          setobjectid(id);
+          setxcoordinate(
             draggedToPosition[0]
           );
-          this.props.sceneNavigator.viroAppProps.setObjectYCoordinate(
+          setycoordinate(
             draggedToPosition[1]
+          );
+          setzcoordinate(
+            draggedToPosition[2]
           );
         })
         .catch(err => console.log(err));
       } else {
-        this.props.sceneNavigator.viroAppProps.setObjectId(id);
-        this.props.sceneNavigator.viroAppProps.setObjectXCoordinate(
+        setobjectid(id);
+        setxcoordinate(
           draggedToPosition[0]
         );
-        this.props.sceneNavigator.viroAppProps.setObjectYCoordinate(
+        setycoordinate(
           draggedToPosition[1]
+        );
+        setzcoordinate(
+          draggedToPosition[2]
         );
       }
     };
+    //   if (this.props.sceneNavigator.viroAppProps.selectObjectId !== id && this.props.sceneNavigator.viroAppProps.selectObjectId) {
+    //     axios
+    //     .put(`http://tourviewarserver.herokuapp.com/api/object`, {
+    //       x: this.props.sceneNavigator.viroAppProps.selectObjectXCoordinate,
+    //       y: this.props.sceneNavigator.viroAppProps.selectObjectYCoordinate,
+    //       scalex: 1,
+    //       scaley: 1,
+    //       scalez: 1,
+    //       id_object: this.props.sceneNavigator.viroAppProps.selectObjectId
+    //     })
+    //     .then(results => {
+    //       this.props.sceneNavigator.viroAppProps.setObjectId(id);
+    //       this.props.sceneNavigator.viroAppProps.setObjectXCoordinate(
+    //         draggedToPosition[0]
+    //       );
+    //       this.props.sceneNavigator.viroAppProps.setObjectYCoordinate(
+    //         draggedToPosition[1]
+    //       );
+    //     })
+    //     .catch(err => console.log(err));
+    //   } else {
+    //     this.props.sceneNavigator.viroAppProps.setObjectId(id);
+    //     this.props.sceneNavigator.viroAppProps.setObjectXCoordinate(
+    //       draggedToPosition[0]
+    //     );
+    //     this.props.sceneNavigator.viroAppProps.setObjectYCoordinate(
+    //       draggedToPosition[1]
+    //     );
+    //   }
+    // };
   }
 }
 
