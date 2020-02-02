@@ -129,23 +129,20 @@ export default class HelloWorldSceneAR extends Component {
               </ViroNode>
               );
             } else if (object.object_type === "image") {
-              let onDrag = this._onDragCreate(object.id);
+              let onDrag = this._onDragCreate(object.id, this.props.sceneNavigator.viroAppProps.selectObjectId, this.props.sceneNavigator.viroAppProps.setObjectId, this.props.sceneNavigator.viroAppProps.selectObjectXCoordinate, this.props.sceneNavigator.viroAppProps.setObjectXCoordinate, this.props.sceneNavigator.viroAppProps.selectObjectYCoordinate, this.props.sceneNavigator.viroAppProps.setObjectYCoordinate, this.props.sceneNavigator.viroAppProps.selectObjectZCoordinate, this.props.sceneNavigator.viroAppProps.setObjectZCoordinate);
               return (
                 <ViroNode
-                  objectid={object.id}
-                  key={i}
-                  position={[Number(object.x), Number(object.y), Number(object.z)]}
-                  dragType="FixedToWorld"
-                  onDrag={(dragToPos, source) => onDrag(dragToPos, source)}>
-                  <ImageElement
-                    content={object.object_value}
-                    contentCardScale={[
-                      2,
-                      2,
-                      2
-                    ]}
-                    position={polarToCartesian([-5, 0, 0])}/>
-                </ViroNode>
+                key={i}
+                position={[Number(object.x), Number(object.y), Number(object.z)]}
+                dragType="FixedDistance"
+                onDrag={(dragToPos, source) => onDrag(dragToPos, source)}
+              >
+                <InfoElement
+                  content={object.object_value}
+                  contentCardScale={[1.5, 1.5, 1]}
+                  position={polarToCartesian([-5, 0, 0])}
+                />
+              </ViroNode>
               );
             } else if (object.object_type === "scene") {
               let onDrag = this._onDragCreate(object.id);
@@ -187,8 +184,8 @@ export default class HelloWorldSceneAR extends Component {
           onDrag={() => {}}
         >
           <InfoElement
-            content={slutWindowCard}
-            contentCardScale={[3.67, 4, 1]}
+            content={'https://panoimages.s3-us-west-1.amazonaws.com/images/myimage239.jpg'}
+            contentCardScale={[1, 1, 1]}
             position={polarToCartesian([-5, 0, 0])}
           />
         </ViroNode>
