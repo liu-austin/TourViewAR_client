@@ -11,8 +11,8 @@ import {
 /**
  * Pull in all the images needed for this control.
  */
-var IconImage = require('../res/icon_info.png');
 
+var infoIconImage = require('../res/icon_info.png');
 export default class ImageElement extends Component {
     constructor(props) {
       super(props);
@@ -57,7 +57,7 @@ export default class ImageElement extends Component {
               height={1}
               opacity={0.0}
               scale={[.1,.1,.1]}
-              source={{uri: this.props.content}}
+              source={this.props.content}
               animation={{ name:this.state.contentCardAnimation,
                            run : this.state.runInfoCardAnimation,
                            loop:false,
@@ -115,3 +115,5 @@ ViroAnimations.registerAnimations({
     showContentCardAnim: {properties:{scaleX:1, scaleY:1, scaleZ:1, opacity:1.0}, easing:"PowerDecel", duration:150},
     showIconAnim: {properties:{scaleX:.5, scaleY:.5, scaleZ:.5, opacity:1.0}, easing:"PowerDecel", duration:150},
 });
+
+module.exports = ImageElement;

@@ -91,13 +91,14 @@ const UseCamera = props => {
           // alert(JSON.stringify(source));
           axios
             .get(
-              `http://tourviewarserver.herokuapp.com/api/getpresignedurlforobject/arobjectimages`
+              `http://tourviewarserver.herokuapp.com/api/getpresignedurlforobject/panoimages`
             )
             .then(results => {
               const xhr = new XMLHttpRequest();
               xhr.open("PUT", results.data.presignedUrl);
               xhr.onreadystatechange = function() {
                 if (xhr.readyState === 4) {
+                  // alert(xhr.status);
                   if (xhr.status === 200) {
                     // alert("Image successfully uploaded to S3");
                     axios

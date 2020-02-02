@@ -34,7 +34,7 @@ var ICON_CARD_REF = 'iconCard';
 
 export default class InfoElement extends Component {
     static propTypes = {
-        content: PropTypes.number, // Opaque type returned by require('./image.jpg')
+        content: PropTypes.string, // Opaque type returned by require('./image.jpg')
         contentCardScale: PropTypes.arrayOf(PropTypes.number),
     }
 
@@ -86,7 +86,7 @@ export default class InfoElement extends Component {
               height={1}
               opacity={0.0}
               scale={[.1,.1,.1]}
-              source={this.props.content}
+              source={{uri: this.props.content}}
               animation={{ name:this.state.contentCardAnimation,
                            run : this.state.runInfoCardAnimation,
                            loop:false,
