@@ -50,12 +50,14 @@ import { selectTourPanos, selectPanoId, selectSceneHistory } from "../redux/pano
 
 import {
   setObjectXCoordinate,
-  setObjectYCoordinate
+  setObjectYCoordinate,
+  setObjectZCoordinate
 } from "../redux/object/object.action";
 
 import {
   selectObjectXCoordinate,
-  selectObjectYCoordinate
+  selectObjectYCoordinate,
+  selectObjectZCoordinate
 } from "../redux/object/object.selectors";
 
 import { navigate } from "../redux/render/render.action";
@@ -149,8 +151,8 @@ class Login extends Component {
     this._createImageObject = this._createImageObject.bind(this);
     this._createTextObject = this._createTextObject.bind(this);
     this._saveChanges = this._saveChanges.bind(this);
-    this._addScenePhoto = this._addScenePhoto.bind(this);
-    this._uploadScenePhoto = this._uploadScenePhoto.bind(this);
+    // this._addScenePhoto = this._addScenePhoto.bind(this);
+    // this._uploadScenePhoto = this._uploadScenePhoto.bind(this);
   }
   render() {
     if (this.props.selectNavigator === LOGIN_PAGE) {
@@ -345,26 +347,6 @@ class Login extends Component {
 
   _createImageObject() {
     return <CreateOptionsObject />;
-    // axios
-    //   .post(`http://tourviewarserver.herokuapp.com/api/object`, {
-    //     object_type: "image",
-    //     object_value: publicUrl,
-    //     id_pano: this.props.selectPanoId
-    //   })
-    //   .then(results => {
-    //     this.props.setObjectId(results.data.id);
-    //     let textobject = {
-    //       id: results.data.id,
-    //       type: "image",
-    //       x: 0,
-    //       y: 0,
-    //       value: publicUrl,
-    //       scale: { x: 1, y: 1, z: 1 },
-    //       id_pano: this.props.selectPanoId
-    //     };
-    //     this.setState({ objects: [...this.state.objects, textobject] });
-    //   })
-    //   .catch(err => alert("There was an error creating this object"));
   }
 
   _getCreateARPage() {
@@ -378,6 +360,8 @@ class Login extends Component {
         <ViroARSceneNavigator
           {...this.state.sharedProps}
           viroAppProps={{
+            setSelectedText: this.props.setSelectedText,
+            selectSelectedText: this.props.selectSelectedText,
             selectObjectId: this.props.selectObjectId,
             selectPanoId: this.props.selectPanoId,
             setPanoId: this.props.setPanoId,
@@ -404,7 +388,7 @@ class Login extends Component {
                 onPress={() => {
                   this.props.navigate("CREATE_IMAGE_OBJECT");
                 }}>
-                <Text style={styles.textStyle2}>ADD IMAGE</Text>
+                <Text style={styles.textStyle2}>ADD IMG</Text>
               </TouchableHighlight>
               <TouchableHighlight style={styles.textButton} onPress={() => {
                   this.props.navigate("CREATE_OPTIONS_SCENE");
@@ -442,8 +426,7 @@ class Login extends Component {
       <View
         style={{
           flex: 1
-        }}
-      >
+        }}>
         <ViroARSceneNavigator
           {...this.state.sharedProps}
           viroAppProps={{
@@ -458,6 +441,8 @@ class Login extends Component {
             selectTourPanos: this.props.selectTourPanos,
             setObjectXCoordinate: this.props.setObjectXCoordinate,
             setObjectYCoordinate: this.props.setObjectYCoordinate,
+            setObjectZCoordinate: this.props.setObjectZCoordinate,
+            selectObjectZCoordinate: this.props.selectObjectZCoordinate,
             selectObjectXCoordinate: this.props.selectObjectXCoordinate,
             selectObjectYCoordinate: this.props.selectObjectYCoordinate,
             setSceneHistory: this.props.setSceneHistory,
@@ -492,7 +477,7 @@ class Login extends Component {
                 <Text style={styles.textStyle2}
                                 onPress={() => {
                                   this.props.navigate("CREATE_IMAGE_OBJECT");
-                                }}>ADD IMAGE</Text>
+                                }}>ADD IMG</Text>
               </TouchableHighlight>
               <TouchableHighlight style={styles.textButton} onPress={() => {
                   this.props.navigate("CREATE_OPTIONS_SCENE");
@@ -535,8 +520,9 @@ class Login extends Component {
   _saveChanges() {
     axios
       .put(`http://tourviewarserver.herokuapp.com/api/object`, {
-        x: this.props.selectObjectXCoordinate,
-        y: this.props.selectObjectYCoordinate,
+        x: Number(this.props.selectObjectXCoordinate.toFixed(2)),
+        y: Number(this.props.selectObjectYCoordinate.toFixed(2)),
+        z: Number(this.props.selectObjectZCoordinate.toFixed(2)),
         scalex: 1,
         scaley: 1,
         scalez: 1,
@@ -785,6 +771,7 @@ const mapDispatchToProps = dispatch => {
     setObjectId: objectid => dispatch(setObjectId(objectid)),
     setObjectXCoordinate: x => dispatch(setObjectXCoordinate(x)),
     setObjectYCoordinate: y => dispatch(setObjectYCoordinate(y)),
+    setObjectZCoordinate: z => dispatch(setObjectZCoordinate(z)),
     setSelectedText: text => dispatch(setSelectedText(text)),
     setSceneHistory: scenes => dispatch(setSceneHistory(scenes))
   };
@@ -799,6 +786,7 @@ const mapStateToProps = state => {
     selectObjectId: selectObjectId(state),
     selectObjectXCoordinate: selectObjectXCoordinate(state),
     selectObjectYCoordinate: selectObjectYCoordinate(state),
+    selectObjectZCoordinate: selectObjectZCoordinate(state),
     selectSelectedText: selectSelectedText(state),
     selectSceneHistory: selectSceneHistory(state)
   };

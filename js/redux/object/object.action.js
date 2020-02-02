@@ -26,6 +26,13 @@ export const setObjectYCoordinate = (coordinate) => {
   });
 };
 
+export const setObjectZCoordinate = (coordinate) => {
+  return ({
+    type: 'SET_Z_COORDINATE',
+    payload: coordinate
+  });
+};
+
 export const setObjectValue = (value) => {
   return ({
     type: 'SET_OBJECT_VALUE',

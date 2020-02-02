@@ -1,7 +1,8 @@
 const INITIAL_STATE = {
-  id: '',
+  id: null,
   x: 0,
   y: 0,
+  z: 0,
   object_value: '',
   scale: [],
   id_pano: '',
@@ -41,6 +42,11 @@ const ObjectReducer = (state=INITIAL_STATE, action) => {
       return ({
         ...state,
         y: action.payload
+      });
+    case 'SET_Z_COORDINATE':
+      return ({
+        ...state,
+        z: action.payload
       });
     case 'SET_OBJECT_VALUE':
       return ({
