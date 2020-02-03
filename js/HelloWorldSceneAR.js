@@ -42,6 +42,7 @@ export default class HelloWorldSceneAR extends Component {
       // if (this.props.sceneNavigator.viroAppProps.selectSceneHistory[this.props.sceneNavigator.viroAppProps.selectSceneHistory.length - 1] !== (this.props.sceneNavigator.viroAppProps.selectPanoId)) {
       //   this.props.sceneNavigator.viroAppProps.setSceneHistory(this.props.sceneNavigator.viroAppProps.selectSceneHistory.concat([this.props.sceneNavigator.viroAppProps.selectPanoId]));
       // }
+      alert('In Edit')
       this.setState({uri: this.props.sceneNavigator.viroAppProps.selectTourPanos[this.props.sceneNavigator.viroAppProps.selectSceneHistory.length - 1].img_url}, () => {
         this.props.sceneNavigator.viroAppProps.setSelectedText('');
         axios.get(`http://tourviewarserver.herokuapp.com/api/objects/${this.props.sceneNavigator.viroAppProps.selectTourPanos[this.props.sceneNavigator.viroAppProps.selectSceneHistory.length-1].id}`)
@@ -58,6 +59,7 @@ export default class HelloWorldSceneAR extends Component {
           });
       });
     } else if (this.props.sceneNavigator.viroAppProps.selectIsNew) {
+      alert('In New')
       this.props.sceneNavigator.viroAppProps.setGoBack(false);
       this.props.sceneNavigator.viroAppProps.setSelectedText('');
       this.props.sceneNavigator.viroAppProps.setSceneHistory([this.props.sceneNavigator.viroAppProps.selectTourPanos[0].id]);
@@ -69,6 +71,7 @@ export default class HelloWorldSceneAR extends Component {
       );
       alert(JSON.stringify(this.props.sceneNavigator.viroAppProps.selectSceneHistory))
     } else if (this.props.sceneNavigator.viroAppProps.goBack) {
+      alert('In Go Back')
       this.props.sceneNavigator.viroAppProps.setGoBack(false);
       this.props.sceneNavigator.viroAppProps.setSelectedText('');
       this.setState({uri: this.props.sceneNavigator.viroAppProps.selectTourPanos[this.props.sceneNavigator.viroAppProps.selectSceneHistory.length - 1].img_url}, () => {
@@ -85,6 +88,7 @@ export default class HelloWorldSceneAR extends Component {
       });
 
     } else {
+      alert('In Else')
       this.props.sceneNavigator.viroAppProps.setGoBack(false);
       this.props.sceneNavigator.viroAppProps.setSelectedText('');
       this.props.sceneNavigator.viroAppProps.setSceneHistory([this.props.sceneNavigator.viroAppProps.selectTourPanos[0].id]);

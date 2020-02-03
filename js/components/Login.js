@@ -491,13 +491,15 @@ class Login extends Component {
             alert(JSON.stringify(this.props.selectSceneHistory));
             this.state.confirm ? 
             (
-              this.setState({confirm: false}, () => this.props.navigate("EDIT_AR_PAGE"))
+              // alert('TESTET')
+              // this.setState({confirm: false}, () => this.props.navigate("EDIT_AR_PAGE"))
+              this.setState({confirm: false}, () => alert(this.state.confirm))
             ) 
             : 
             (
               this.props.setPanoId(this.props.selectSceneHistory[this.props.selectSceneHistory.length - 2]));
               this.props.setSceneHistory(this.props.selectSceneHistory.slice(0, this.props.selectSceneHistory.length - 1));
-              this.setState({confirm: true});
+              this.setState({confirm: true}, () => alert(this.state.confirm));
           }
         }}>
             <Text style={styles.textStyle3}>
