@@ -226,7 +226,7 @@ const UseCamera = props => {
         ) : (
           <View>
             {renderARButton ? (
-              <Button onPress={() => props.navigate("CREATE_AR_PAGE")}>
+              <Button onPress={() => props.forscene ? (props.navigate("EDIT_AR_PAGE")) : (props.navigate("CREATE_AR_PAGE"))}>
                 <Text>Go To AR Scene</Text>
               </Button>
             ) : (

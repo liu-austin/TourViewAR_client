@@ -130,7 +130,8 @@ class Login extends Component {
       editmode: false,
       objects: [],
       textinput: "",
-      entertext: false
+      entertext: false,
+      confirm: false
     };
     this._getExperienceSelector = this._getExperienceSelector.bind(this);
     this._getARNavigator = this._getARNavigator.bind(this);
@@ -376,19 +377,30 @@ class Login extends Component {
           }}
           initialScene={{ scene: InitialARScene }}
         />
-        <View style={styles.selectedTextContainer}>
-          <TouchableHighlight style={styles.previousButton} onPress={() => {
-            this.props.setGoBack(true);
-            if (this.props.selectSceneHistory.length === 1) {
-              this.props.navigate("REACT_NATIVE_HOME");
-            } else {
-              this.props.setPanoId(this.props.selectSceneHistory[this.props.selectSceneHistory.length - 2]);
+        <View style={styles.previousContainer}>
+        <TouchableHighlight style={styles.previousButton} onPress={() => {
+          this.props.setGoBack(true);
+          if (this.props.selectSceneHistory.length === 0) {
+            this.props.navigate("REACT_NATIVE_HOME");
+          } else {
+            this.state.confirm ? 
+            (
+              this.props.navigate("EDIT_AR_PAGE")
+            ) 
+            : 
+            (
+              this.props.setPanoId(this.props.selectSceneHistory[this.props.selectSceneHistory.length - 2]));
               this.props.setSceneHistory(this.props.selectSceneHistory.slice(0, this.props.selectSceneHistory.length - 1));
-              this.props.navigate("EDIT_AR_PAGE");
-            }
-          }}>
-            <Text style={styles.textStyle}>
-              PREVIOUS
+              this.setState({confirm: true});
+          }
+        }}>
+            <Text style={styles.textStyle3}>
+             {this.state.confirm ? `CONFIRM`: `PREVIOUS`}
+            </Text>
+          </TouchableHighlight>
+          <TouchableHighlight style={styles.topButton}>
+            <Text style={styles.textStyle2}>
+              {this.props.selectSelectedText}
             </Text>
           </TouchableHighlight>
         </View>
@@ -470,19 +482,26 @@ class Login extends Component {
           }}
           initialScene={{ scene: InitialARScene }}
         />
-        <View style={styles.selectedTextContainer}>
+        <View style={styles.previousContainer}>
         <TouchableHighlight style={styles.previousButton} onPress={() => {
           this.props.setGoBack(true);
-          if (this.props.selectSceneHistory.length === 1) {
+          if (this.props.selectSceneHistory.length === 0) {
             this.props.navigate("REACT_NATIVE_HOME");
           } else {
-            this.props.setPanoId(this.props.selectSceneHistory[this.props.selectSceneHistory.length - 2]);
-            this.props.setSceneHistory(this.props.selectSceneHistory.slice(0, this.props.selectSceneHistory.length - 1));
-            this.props.navigate("EDIT_AR_PAGE");
+            alert(JSON.stringify(this.props.selectSceneHistory));
+            this.state.confirm ? 
+            (
+              this.setState({confirm: false}, () => this.props.navigate("EDIT_AR_PAGE"))
+            ) 
+            : 
+            (
+              this.props.setPanoId(this.props.selectSceneHistory[this.props.selectSceneHistory.length - 2]));
+              this.props.setSceneHistory(this.props.selectSceneHistory.slice(0, this.props.selectSceneHistory.length - 1));
+              this.setState({confirm: true});
           }
         }}>
-            <Text style={styles.textStyle}>
-              PREVIOUS
+            <Text style={styles.textStyle3}>
+             {this.state.confirm ? `CONFIRM`: `PREVIOUS`}
             </Text>
           </TouchableHighlight>
           <TouchableHighlight style={styles.topButton}>
@@ -755,6 +774,11 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontSize: 30
   },
+  textStyle3: {
+    color: "#ffffff",
+    textAlign: "center",
+    fontSize: 20
+  },
   textStyle2: {
     color: "#ffffff",
     textAlign: "center",
@@ -772,17 +796,27 @@ const styles = StyleSheet.create({
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    marginLeft: 0,
+    marginLeft: -30,
     height: 80,
-    width: 80,
+    width: 120,
     paddingTop: 20,
     paddingBottom: 20,
     marginTop: 10,
     marginBottom: 10,
     backgroundColor: "rgba(123,123,231,0.4)",
-    borderRadius: 40,
+    borderRadius: 10,
     borderWidth: 1,
     borderColor: "rgba(123,087,231,0.4)"
+  },
+
+  previousContainer: {
+    width: "100%",
+    position: "absolute",
+    top: 25,
+    left: 310,
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center"
   },
   selectedTextContainer: {
     width: "100%",
@@ -799,7 +833,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginLeft: 0,
     height: 80,
-    width: 80,
+    width: 150,
     paddingTop: 20,
     paddingBottom: 20,
     marginTop: 10,
