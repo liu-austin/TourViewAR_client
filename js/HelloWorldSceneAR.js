@@ -2,6 +2,7 @@ import React, { Component } from "react";
 
 import {
   ViroSpinner,
+  ViroSkyBox,
   Viro360Image,
   ViroUtils,
   ViroARScene,
