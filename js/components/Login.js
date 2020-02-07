@@ -124,6 +124,7 @@ var defaultNavigatorType = UNSET;
 class Login extends Component {
   constructor() {
     super();
+
     this.state = {
       navigatorType: defaultNavigatorType,
       sharedProps: sharedProps,
@@ -131,8 +132,10 @@ class Login extends Component {
       objects: [],
       textinput: "",
       entertext: false,
-      confirm: false
+      confirm: false,
+      edit1: false
     };
+
     this._getExperienceSelector = this._getExperienceSelector.bind(this);
     this._getARNavigator = this._getARNavigator.bind(this);
     this._getReactNativeHome = this._getReactNativeHome.bind(this);
@@ -361,6 +364,7 @@ class Login extends Component {
         <ViroARSceneNavigator
           {...this.state.sharedProps}
           viroAppProps={{
+            navigate: this.props.navigate,
             goBack: false,
             setGoBack: this.props.setGoBack,
             setSelectedText: this.props.setSelectedText,
@@ -378,7 +382,7 @@ class Login extends Component {
           initialScene={{ scene: InitialARScene }}
         />
         <View style={styles.previousContainer}>
-        <TouchableHighlight style={styles.previousButton} onPress={() => {
+        {/* <TouchableHighlight style={styles.previousButton} onPress={() => {
           this.props.setGoBack(true);
           if (this.props.selectSceneHistory.length === 0) {
             this.props.navigate("REACT_NATIVE_HOME");
@@ -397,7 +401,7 @@ class Login extends Component {
             <Text style={styles.textStyle3}>
              {this.state.confirm ? `CONFIRM`: `PREVIOUS`}
             </Text>
-          </TouchableHighlight>
+          </TouchableHighlight> */}
           <TouchableHighlight style={styles.topButton}>
             <Text style={styles.textStyle2}>
               {this.props.selectSelectedText}
@@ -460,6 +464,7 @@ class Login extends Component {
         <ViroARSceneNavigator
           {...this.state.sharedProps}
           viroAppProps={{
+            navigate: this.props.navigate,
             goBack: this.props.goBack,
             setGoBack: this.props.setGoBack,
             setSelectedText: this.props.setSelectedText,
@@ -483,7 +488,7 @@ class Login extends Component {
           initialScene={{ scene: InitialARScene }}
         />
         <View style={styles.previousContainer}>
-        <TouchableHighlight style={styles.previousButton} onPress={() => {
+        {/* <TouchableHighlight style={styles.previousButton} onPress={() => {
           this.props.setGoBack(true);
           if (this.props.selectSceneHistory.length === 0) {
             this.props.navigate("REACT_NATIVE_HOME");
@@ -492,20 +497,34 @@ class Login extends Component {
             this.state.confirm ? 
             (
               // alert('TESTET')
-              // this.setState({confirm: false}, () => this.props.navigate("EDIT_AR_PAGE"))
-              this.setState({confirm: false}, () => alert(this.state.confirm))
+              this.setState({confirm: false, edit1: !this.state.edit1}, () => {
+                alert(this.state.edit1);
+                this.state.selectNavigator === "EDIT_AR_PAGE" ? 
+                (
+                  this.props.navigate("EDIT_AR_PAGE_1")
+                ) 
+                : 
+                (
+                  this.props.navigate("EDIT_AR_PAGE_1")
+                )
+              })
+              // this.setState({confirm: false}, () => alert(this.props.selectPanoId))
             ) 
             : 
             (
-              this.props.setPanoId(this.props.selectSceneHistory[this.props.selectSceneHistory.length - 2]));
-              this.props.setSceneHistory(this.props.selectSceneHistory.slice(0, this.props.selectSceneHistory.length - 1));
-              this.setState({confirm: true}, () => alert(this.state.confirm));
+              this.setState({confirm: true, edit1: !this.state.edit1}, () => {
+                this.props.setPanoId(this.props.selectSceneHistory[this.props.selectSceneHistory.length - 2]);
+                this.props.setSceneHistory(this.props.selectSceneHistory.slice(0, this.props.selectSceneHistory.length - 1));
+                alert(this.state.edit1);
+              }
+              )
+            )
           }
         }}>
             <Text style={styles.textStyle3}>
              {this.state.confirm ? `CONFIRM`: `PREVIOUS`}
             </Text>
-          </TouchableHighlight>
+          </TouchableHighlight> */}
           <TouchableHighlight style={styles.topButton}>
             <Text style={styles.textStyle2}>
               {this.props.selectSelectedText}
@@ -834,7 +853,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     marginLeft: 0,
-    height: 80,
+    height: 150,
     width: 150,
     paddingTop: 20,
     paddingBottom: 20,

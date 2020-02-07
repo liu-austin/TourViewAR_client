@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { StyleSheet, View } from "react-native";
 import ImagePicker from "react-native-image-picker";
 import { connect } from "react-redux";
