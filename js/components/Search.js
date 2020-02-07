@@ -15,14 +15,13 @@ import {
   Button,
   Title
 } from "native-base";
-import Axios from "axios";
+
 const Search = props => {
   const [search, setSearch] = useState("");
   const [searchResults, setSearchResults] = useState([[]]);
   const searchRequest = useCallback(() => {
     axios
-      .get(
-        "http://tourviewarserver.herokuapp.com/api/search",
+      .get("http://tourviewarserver.herokuapp.com/api/search",
         {
           params: {
             search: search
@@ -46,6 +45,7 @@ const Search = props => {
         alert(err);
       });
   });
+
   return (
     <Container style={{ width: "100%", height: "100%" }}>
       <Header searchBar rounded>
@@ -105,6 +105,7 @@ const Search = props => {
     </Container>
   );
 };
+
 const localStyles = StyleSheet.create({
   container: {
     flex: 1,
@@ -117,9 +118,11 @@ const localStyles = StyleSheet.create({
     borderRadius: 10
   }
 });
+
 const mapDispatchToProps = dispatch => {
   return {
     navigate: render => dispatch(navigate(render))
   };
 };
+
 export default connect(null, mapDispatchToProps)(Search);

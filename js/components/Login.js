@@ -334,15 +334,56 @@ class Login extends Component {
     return <CreateOptions />;
   }
   _getViewARPage() {
-    let initialScene = (
-      <ARScene
-        editable={true}
-        isnew={false}
-        publicUrl={this.props.selectTourPanos[0].img_url}
-        scenes={this.props.selectTourPanos}
-      />
+
+    return (
+      <View
+        style={{
+          flex: 1
+        }}>
+        <ViroARSceneNavigator
+          {...this.state.sharedProps}
+          viroAppProps={{
+            navigate: this.props.navigate,
+            goBack: this.props.goBack,
+            setGoBack: this.props.setGoBack,
+            setSelectedText: this.props.setSelectedText,
+            selectSelectedText: this.props.selectSelectedText,
+            selectObjectId: this.props.selectObjectId,
+            selectPanoId: this.props.selectPanoId,
+            setPanoId: this.props.setPanoId,
+            setObjectId: this.props.setObjectId,
+            selectIsNew: false,
+            selectIsEditable: false,
+            selectTourPanos: this.props.selectTourPanos,
+            setObjectXCoordinate: this.props.setObjectXCoordinate,
+            setObjectYCoordinate: this.props.setObjectYCoordinate,
+            setObjectZCoordinate: this.props.setObjectZCoordinate,
+            selectObjectZCoordinate: this.props.selectObjectZCoordinate,
+            selectObjectXCoordinate: this.props.selectObjectXCoordinate,
+            selectObjectYCoordinate: this.props.selectObjectYCoordinate,
+            setSceneHistory: this.props.setSceneHistory,
+            selectSceneHistory: this.props.selectSceneHistory
+          }}
+          initialScene={{ scene: InitialARScene }}
+        />
+        <View style={styles.previousContainer}>
+          <TouchableHighlight style={styles.topButton}>
+            <Text style={styles.textStyle2}>
+              {this.props.selectSelectedText}
+            </Text>
+          </TouchableHighlight>
+        </View>
+        <View style={styles.editFooter}>
+          <TouchableHighlight
+            style={styles.cancelButton}
+            underlayColor={`#68a0ff`}
+            onPress={() => this.props.navigate("REACT_NATIVE_HOME")}
+          >
+            <Text style={styles.textStyle}>HOME</Text>
+          </TouchableHighlight>
+        </View>
+      </View>
     );
-    return <ViroARSceneNavigator initialScene={{ scene: initialScene }} />;
   }
 
   _createTextObject() {
@@ -382,26 +423,6 @@ class Login extends Component {
           initialScene={{ scene: InitialARScene }}
         />
         <View style={styles.previousContainer}>
-        {/* <TouchableHighlight style={styles.previousButton} onPress={() => {
-          this.props.setGoBack(true);
-          if (this.props.selectSceneHistory.length === 0) {
-            this.props.navigate("REACT_NATIVE_HOME");
-          } else {
-            this.state.confirm ? 
-            (
-              this.props.navigate("EDIT_AR_PAGE")
-            ) 
-            : 
-            (
-              this.props.setPanoId(this.props.selectSceneHistory[this.props.selectSceneHistory.length - 2]));
-              this.props.setSceneHistory(this.props.selectSceneHistory.slice(0, this.props.selectSceneHistory.length - 1));
-              this.setState({confirm: true});
-          }
-        }}>
-            <Text style={styles.textStyle3}>
-             {this.state.confirm ? `CONFIRM`: `PREVIOUS`}
-            </Text>
-          </TouchableHighlight> */}
           <TouchableHighlight style={styles.topButton}>
             <Text style={styles.textStyle2}>
               {this.props.selectSelectedText}
@@ -488,43 +509,6 @@ class Login extends Component {
           initialScene={{ scene: InitialARScene }}
         />
         <View style={styles.previousContainer}>
-        {/* <TouchableHighlight style={styles.previousButton} onPress={() => {
-          this.props.setGoBack(true);
-          if (this.props.selectSceneHistory.length === 0) {
-            this.props.navigate("REACT_NATIVE_HOME");
-          } else {
-            alert(JSON.stringify(this.props.selectSceneHistory));
-            this.state.confirm ? 
-            (
-              // alert('TESTET')
-              this.setState({confirm: false, edit1: !this.state.edit1}, () => {
-                alert(this.state.edit1);
-                this.state.selectNavigator === "EDIT_AR_PAGE" ? 
-                (
-                  this.props.navigate("EDIT_AR_PAGE_1")
-                ) 
-                : 
-                (
-                  this.props.navigate("EDIT_AR_PAGE_1")
-                )
-              })
-              // this.setState({confirm: false}, () => alert(this.props.selectPanoId))
-            ) 
-            : 
-            (
-              this.setState({confirm: true, edit1: !this.state.edit1}, () => {
-                this.props.setPanoId(this.props.selectSceneHistory[this.props.selectSceneHistory.length - 2]);
-                this.props.setSceneHistory(this.props.selectSceneHistory.slice(0, this.props.selectSceneHistory.length - 1));
-                alert(this.state.edit1);
-              }
-              )
-            )
-          }
-        }}>
-            <Text style={styles.textStyle3}>
-             {this.state.confirm ? `CONFIRM`: `PREVIOUS`}
-            </Text>
-          </TouchableHighlight> */}
           <TouchableHighlight style={styles.topButton}>
             <Text style={styles.textStyle2}>
               {this.props.selectSelectedText}

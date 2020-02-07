@@ -39,6 +39,7 @@ export default class HelloWorldSceneAR extends Component {
     this._onInitialized = this._onInitialized.bind(this);
     this._onDragCreate = this._onDragCreate.bind(this);
     this._goBack = this._goBack.bind(this);
+    this._resetAndGoHome = this._resetAndGoHome.bind(this);
   }
 
   componentDidMount() {
@@ -56,12 +57,12 @@ export default class HelloWorldSceneAR extends Component {
           })
           .catch(err => {
             alert("There was an error loading this tour. Please try again.");
-            this.props.sceneNavigator.viroAppProps.navigate("REACT_NATIVE_HOME");
+            this._resetAndGoHome();
           });
       });
     } else if (this.props.sceneNavigator.viroAppProps.selectIsNew) {
       // alert('In New')
-      this.props.sceneNavigator.viroAppProps.setGoBack(false);
+      // this.props.sceneNavigator.viroAppProps.setGoBack(false);
       this.props.sceneNavigator.viroAppProps.setSelectedText('');
       this.props.sceneNavigator.viroAppProps.setSceneHistory([this.props.sceneNavigator.viroAppProps.selectTourPanos[0].id]);
       this.setState({uri: this.props.sceneNavigator.viroAppProps.selectTourPanos[0].img_url});
@@ -69,20 +70,18 @@ export default class HelloWorldSceneAR extends Component {
       // alert(JSON.stringify(this.props.sceneNavigator.viroAppProps.selectSceneHistory))
     } else {
       // alert('In Else')
-      this.props.sceneNavigator.viroAppProps.setGoBack(false);
+      // this.props.sceneNavigator.viroAppProps.setGoBack(false);
       this.props.sceneNavigator.viroAppProps.setSelectedText('');
       this.props.sceneNavigator.viroAppProps.setSceneHistory([this.props.sceneNavigator.viroAppProps.selectTourPanos[0].id]);
       this.setState({uri: this.props.sceneNavigator.viroAppProps.selectTourPanos[0].img_url});
       this.props.sceneNavigator.viroAppProps.setPanoId(this.props.sceneNavigator.viroAppProps.selectTourPanos[0].id);
         axios.get(`http://tourviewarserver.herokuapp.com/api/objects/${this.props.sceneNavigator.viroAppProps.selectTourPanos[0].id}`)
           .then(results => {
-            this.setState({
-              objects: results.data.rows
-            });
+            this.setState({objects: results.data.rows});
           })
           .catch(err => {
             alert("There was an error loading this tour. Please try again.");
-            this.props.sceneNavigator.viroAppProps.navigate("REACT_NATIVE_HOME");
+            this._resetAndGoHome();
           });
     }
   }
@@ -115,8 +114,7 @@ export default class HelloWorldSceneAR extends Component {
             <ViroSpinner 
               type='Light'
               scale={[0.25, 0.25, 0.25]}
-              position={[0, 0, 0]}
-            />
+              position={[0, 0, 0]}/>
           )
         }
         {this.state.objects.length ? (
@@ -156,21 +154,31 @@ export default class HelloWorldSceneAR extends Component {
             } else if (object.object_type === "scene") {
               let onDrag = this._onDragCreate(object.id, this.props.sceneNavigator.viroAppProps.selectObjectId, this.props.sceneNavigator.viroAppProps.setObjectId, this.props.sceneNavigator.viroAppProps.selectObjectXCoordinate, this.props.sceneNavigator.viroAppProps.setObjectXCoordinate, this.props.sceneNavigator.viroAppProps.selectObjectYCoordinate, this.props.sceneNavigator.viroAppProps.setObjectYCoordinate, this.props.sceneNavigator.viroAppProps.selectObjectZCoordinate, this.props.sceneNavigator.viroAppProps.setObjectZCoordinate);
                 let switchScene = () => {
-                  this.setState({uri: JSON.parse(object.object_value)[1]}, () => {
-                    this.props.sceneNavigator.viroAppProps.setSelectedText('');
-                    axios.get(`http://tourviewarserver.herokuapp.com/api/objects/${JSON.parse(object.object_value)[0]}`)
-                    .then(results => {
-                      // alert(JSON.stringify(results.data.rows))
-                      this.props.sceneNavigator.viroAppProps.setSceneHistory(this.props.sceneNavigator.viroAppProps.selectSceneHistory.concat([JSON.parse(object.object_value)[0]]));
-                      alert(JSON.stringify(this.props.sceneNavigator.viroAppProps.selectSceneHistory))
-                      this.setState({objects: results.data.rows});
-                      this.props.sceneNavigator.viroAppProps.setPanoId(JSON.parse(object.object_value)[0]);
-                    })
-                    .catch(err => {
-                      alert("There was an error loading this tour. Please try again.");
-                      this.props.sceneNavigator.viroAppProps.navigate("REACT_NATIVE_HOME");
+                  axios.put(`http://tourviewarserver.herokuapp.com/api/object`, {
+                    x: Number(this.props.sceneNavigator.viroAppProps.selectObjectXCoordinate.toFixed(2)),
+                    y: Number(this.props.sceneNavigator.viroAppProps.selectObjectYCoordinate.toFixed(2)),
+                    z: Number(this.props.sceneNavigator.viroAppProps.selectObjectZCoordinate.toFixed(2)),
+                    scalex: 1,
+                    scaley: 1,
+                    scalez: 1,
+                    id_object: object.id
+                  }).then(() => {
+                    this.setState({uri: JSON.parse(object.object_value)[1]}, () => {
+                      this.props.sceneNavigator.viroAppProps.setSelectedText('');
+                      axios.get(`http://tourviewarserver.herokuapp.com/api/objects/${JSON.parse(object.object_value)[0]}`)
+                      .then(results => {
+                        // alert(JSON.stringify(results.data.rows))
+                        this.props.sceneNavigator.viroAppProps.setSceneHistory(this.props.sceneNavigator.viroAppProps.selectSceneHistory.concat([JSON.parse(object.object_value)[0]]));
+                        // alert(JSON.stringify(this.props.sceneNavigator.viroAppProps.selectSceneHistory))
+                        this.setState({objects: results.data.rows});
+                        this.props.sceneNavigator.viroAppProps.setPanoId(JSON.parse(object.object_value)[0]);
+                      })
+                      .catch(err => {
+                        alert("There was an error loading this tour. Please try again.");
+                        this._resetAndGoHome();
+                      });
                     });
-                  });
+                  }).catch(err => alert('There was an error loading this tour. Please try again.'));
                 };
               return (
                 <ViroNode
@@ -204,6 +212,7 @@ export default class HelloWorldSceneAR extends Component {
       </ViroARScene>
     );
   }
+
   _onInitialized(state, reason) {
     if (state == ViroConstants.TRACKING_NORMAL) {
       this.setState({
@@ -216,7 +225,7 @@ export default class HelloWorldSceneAR extends Component {
 
   _goBack() {
     if (this.props.sceneNavigator.viroAppProps.selectSceneHistory.length === 1) {
-      this.props.sceneNavigator.viroAppProps.navigate("REACT_NATIVE_HOME");
+      this._resetAndGoHome();
     } else {
       this.setState({sceneloaded: false, uri: this.props.sceneNavigator.viroAppProps.selectTourPanos[this.props.sceneNavigator.viroAppProps.selectSceneHistory.length - 2].img_url}, () => {
         axios.get(`http://tourviewarserver.herokuapp.com/api/objects/${this.props.sceneNavigator.viroAppProps.selectSceneHistory[this.props.sceneNavigator.viroAppProps.selectSceneHistory.length-2]}`)
@@ -228,6 +237,12 @@ export default class HelloWorldSceneAR extends Component {
         }).catch(err => alert('There was an error loading objects:', err))
       })
     }
+  }
+
+  _resetAndGoHome() {
+    this.props.sceneNavigator.viroAppProps.setSceneHistory([]);
+    this.props.sceneNavigator.viroAppProps.setPanoId('');
+    this.props.sceneNavigator.viroAppProps.navigate('REACT_NATIVE_HOME');
   }
 
   _onDragCreate(id, objectid, setobjectid, xcoordinate, setxcoordinate, ycoordinate, setycoordinate, zcoordinate, setzcoordinate ) {
@@ -290,6 +305,7 @@ ViroMaterials.createMaterials({
     diffuseColor: '#0000FF',
   },
 });
+
 ViroAnimations.registerAnimations({
   rotate: {
     properties: {
@@ -298,4 +314,5 @@ ViroAnimations.registerAnimations({
     duration: 250
   }
 });
+
 module.exports = HelloWorldSceneAR;

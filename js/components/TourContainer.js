@@ -1,6 +1,7 @@
-import React, { Component } from "react";
+import React, { useState, Component } from "react";
 import { setTourId, setTourPicUrl } from "../redux/tour/tour.action";
 import { selectTourPicUrl, selectTourId } from "../redux/tour/tour.selectors";
+import { setTourPanos } from "../redux/pano/pano.action";
 import { navigate } from "../redux/render/render.action";
 import { connect } from "react-redux";
 import {
@@ -8,33 +9,10 @@ import {
   View,
   StyleSheet,
   Image,
-  TouchableHighlight,
   Button
 } from "react-native";
 
-import {
-  ViroARSceneNavigator,
-  Viro360Image,
-  ViroAmbientLight,
-  ViroARScene,
-  ViroNode,
-  ViroSpotLight,
-  ViroUtils,
-} from "react-viro";
-
-var InfoElement = require("../custom_controls/InfoElement");
-let polarToCartesian = ViroUtils.polarToCartesian;
-var slutWindowCard = require("../res/infocard_slut.png");
-var InitialARScene = require("../HelloWorldSceneAR.js");
-
 const TourContainer = (props) => {
-  // constructor(props) {
-  //   super(props);
-  //   this.state = {
-  //     navigator: "PROFILE"
-  //   };
-  //   this.setRedux = this.setRedux.bind(this);
-  // }
 
   const setRedux = () => {
     //redux action to set stateset
@@ -45,6 +23,7 @@ const TourContainer = (props) => {
     setTimeout(() => {props.navigate("ARtc");},1000)
     // alert(this.props.tour.pic_url);
   }
+  const [confirm, setConfirm] = useState(false);
     // if (this.state.navigator === "PROFILE") {
       return (
         <View style={localStyles.tourContainer}>
@@ -58,8 +37,22 @@ const TourContainer = (props) => {
           <Text>{`${props.tour.tour_name}`}</Text>
           <Button
             style={localStyles.button}
-            onPress={() => {setRedux()}}
-            title="VIEW EXPERIENCE"
+            onPress={() => {                        
+              confirm ? 
+              (
+                props.navigate('VIEW_AR_PAGE')
+              ) 
+              : 
+              (
+                axios.get(`http://tourviewarserver.herokuapp.com/api/scenes/${props.tour.id}`)
+                .then(results => {
+                  props.setTourId(props.tour.id);
+                  props.setTourPanos(results.data.rows);
+                  setConfirm(true);
+                })
+              )
+            }}
+            title={confirm ? `CONFIRM` : `VIEW EXPERIENCE`}
           />
         </View>
       );
@@ -96,6 +89,7 @@ const mapDispatchToProps = dispatch => {
     navigate: render => dispatch(navigate(render)),
     setTourId: id => dispatch(setTourId(id)),
     setTourPicUrl: url => dispatch(setTourPicUrl(url)),
+    setTourPanos: tours => dispatch(setTourPanos(tours))
   };
 };
 
