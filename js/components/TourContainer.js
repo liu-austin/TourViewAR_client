@@ -12,17 +12,10 @@ import {
   Button
 } from "react-native";
 
+import axios from 'axios';
+
 const TourContainer = (props) => {
 
-  const setRedux = () => {
-    //redux action to set stateset
-    props.setTourId(props.tour.id);
-    props.setTourPicUrl(props.tour.pic_url);
-    //redux navigate to AR
-    // alert(props.selectTourId);
-    setTimeout(() => {props.navigate("ARtc");},1000)
-    // alert(this.props.tour.pic_url);
-  }
   const [confirm, setConfirm] = useState(false);
     // if (this.state.navigator === "PROFILE") {
       return (
@@ -44,6 +37,8 @@ const TourContainer = (props) => {
               ) 
               : 
               (
+                // alert(JSON.stringify(props.tour))
+                // alert(props.tour.id)
                 axios.get(`http://tourviewarserver.herokuapp.com/api/scenes/${props.tour.id}`)
                 .then(results => {
                   props.setTourId(props.tour.id);

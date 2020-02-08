@@ -344,8 +344,6 @@ class Login extends Component {
           {...this.state.sharedProps}
           viroAppProps={{
             navigate: this.props.navigate,
-            goBack: this.props.goBack,
-            setGoBack: this.props.setGoBack,
             setSelectedText: this.props.setSelectedText,
             selectSelectedText: this.props.selectSelectedText,
             selectObjectId: this.props.selectObjectId,

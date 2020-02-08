@@ -71,6 +71,7 @@ export default class HelloWorldSceneAR extends Component {
     } else {
       // alert('In Else')
       // this.props.sceneNavigator.viroAppProps.setGoBack(false);
+      // alert(JSON.stringify(this.props.sceneNavigator.viroAppProps.selectTourPanos));
       this.props.sceneNavigator.viroAppProps.setSelectedText('');
       this.props.sceneNavigator.viroAppProps.setSceneHistory([this.props.sceneNavigator.viroAppProps.selectTourPanos[0].id]);
       this.setState({uri: this.props.sceneNavigator.viroAppProps.selectTourPanos[0].img_url});
@@ -247,18 +248,32 @@ export default class HelloWorldSceneAR extends Component {
 
   _onDragCreate(id, objectid, setobjectid, xcoordinate, setxcoordinate, ycoordinate, setycoordinate, zcoordinate, setzcoordinate ) {
     return function(draggedToPosition, source) {
-      if (objectid !== id && objectid) {
-        axios
-        .put(`http://tourviewarserver.herokuapp.com/api/object`, {
-          x: Number(xcoordinate.toFixed(2)),
-          y: Number(ycoordinate.toFixed(2)),
-          z: Number(zcoordinate.toFixed(2)),
-          scalex: 1,
-          scaley: 1,
-          scalez: 1,
-          id_object: objectid
-        })
-        .then(results => {
+      if (this.props.selectIsEditable) {
+        if (objectid !== id && objectid) {
+          axios
+          .put(`http://tourviewarserver.herokuapp.com/api/object`, {
+            x: Number(xcoordinate.toFixed(2)),
+            y: Number(ycoordinate.toFixed(2)),
+            z: Number(zcoordinate.toFixed(2)),
+            scalex: 1,
+            scaley: 1,
+            scalez: 1,
+            id_object: objectid
+          })
+          .then(results => {
+            setobjectid(id);
+            setxcoordinate(
+              draggedToPosition[0]
+            );
+            setycoordinate(
+              draggedToPosition[1]
+            );
+            setzcoordinate(
+              draggedToPosition[2]
+            );
+          })
+          .catch(err => console.log(err));
+        } else {
           setobjectid(id);
           setxcoordinate(
             draggedToPosition[0]
@@ -269,20 +284,8 @@ export default class HelloWorldSceneAR extends Component {
           setzcoordinate(
             draggedToPosition[2]
           );
-        })
-        .catch(err => console.log(err));
-      } else {
-        setobjectid(id);
-        setxcoordinate(
-          draggedToPosition[0]
-        );
-        setycoordinate(
-          draggedToPosition[1]
-        );
-        setzcoordinate(
-          draggedToPosition[2]
-        );
-      }
+        }
+      } 
     };
   }
 }
