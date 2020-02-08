@@ -375,7 +375,11 @@ class Login extends Component {
           <TouchableHighlight
             style={styles.cancelButton}
             underlayColor={`#68a0ff`}
-            onPress={() => this.props.navigate("REACT_NATIVE_HOME")}
+            onPress={() => {
+              this.props.setSceneHistory([]);
+              this.props.setPanoId('');
+              this.props.navigate("REACT_NATIVE_HOME");
+            }}
           >
             <Text style={styles.textStyle}>HOME</Text>
           </TouchableHighlight>
@@ -464,7 +468,11 @@ class Login extends Component {
           <TouchableHighlight
             style={styles.cancelButton}
             underlayColor={`#68a0ff`}
-            onPress={() => this.props.navigate("REACT_NATIVE_HOME")}
+            onPress={() => {
+              this.props.setSceneHistory([]);
+              this.props.setPanoId('');
+              this.props.navigate("REACT_NATIVE_HOME");
+            }}
           >
             <Text style={styles.textStyle}>HOME</Text>
           </TouchableHighlight>
@@ -564,7 +572,11 @@ class Login extends Component {
           <TouchableHighlight
             style={styles.cancelButton}
             underlayColor={`#68a0ff`}
-            onPress={() => this.props.navigate("REACT_NATIVE_HOME")}
+            onPress={() => {
+              this.props.setSceneHistory([]);
+              this.props.setPanoId('');
+              this.props.navigate("REACT_NATIVE_HOME");
+          }}
           >
             <Text style={styles.textStyle}>HOME</Text>
           </TouchableHighlight>
