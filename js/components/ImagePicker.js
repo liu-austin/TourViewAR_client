@@ -82,7 +82,7 @@ const ImageUpload = props => {
           props.setIsNew(false);
           const source = { uri: response.uri };
           // alert(JSON.stringify(source));
-          axios.get(`http://tourviewarserver.herokuapp.com/api/getpresignedurlforobject/arobjectimages`)
+          axios.get(`http://tourviewarserver.herokuapp.com/api/getpresignedurlforobject/panoimages`)
             .then(results => {
               const xhr = new XMLHttpRequest();
               xhr.open("PUT", results.data.presignedUrl);
