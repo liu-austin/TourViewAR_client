@@ -2,6 +2,7 @@ package com.tourviewarclient;
 
 import android.app.Application;
 
+import com.imagepicker.ImagePickerPackage; // <-- add this import
 import com.facebook.react.ReactApplication;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
@@ -22,7 +23,8 @@ public class MainApplication extends Application implements ReactApplication {
     @Override
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
-          new MainReactPackage()
+          new MainReactPackage(),
+          new ImagePickerPackage()
       );
     }
 
