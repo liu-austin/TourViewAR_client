@@ -1,5 +1,6 @@
 import React, { useCallback } from "react";
 import axios from "axios";
+import { Dimensions } from 'react-native';
 import {
   Container,
   Header,
@@ -13,7 +14,8 @@ import {
   Text,
   Left,
   Body,
-  Right
+  Right,
+  Footer
 } from "native-base";
 import { connect } from "react-redux";
 import {
@@ -53,36 +55,35 @@ const Signup = props => {
 
   return (
     <Container style={{ width: "100%", height: "100%" }}>
-      <Header>
-        <Left>
-          <Button
-            hasText
-            transparent
+          <Header style={{backgroundColor: '#2a7886'}}>
+            <Left>
+            <Button
+            style={{backgroundColor: '#fe5f55'}}
             onPress={() => {
-              props.navigate("LOGIN_PAGE");
+              this.props.navigate("LOGIN_PAGE");
             }}
           >
-            <Text>Back</Text>
+            <Text style={{color: 'white'}}>Back</Text>
           </Button>
-        </Left>
-        <Body>
-          <Title>Sign Up</Title>
-        </Body>
-        <Right />
-      </Header>
-      <Content>
+            </Left>
+            <Body>
+              <Title style={{color: 'white'}}>Sign Up</Title>
+            </Body>
+            <Right />
+          </Header>
+          <Content style={{backgroundColor: '#49beb7'}}>
         <Form>
           <Item floatingLabel>
-            <Label>Username</Label>
-            <Input
+            <Label style={{color: 'white'}}>Username</Label>
+            <Input style={{color: 'white'}}
               onChangeText={text => {
                 props.setUserName(text);
               }}
             />
           </Item>
           <Item floatingLabel>
-            <Label>Password</Label>
-            <Input
+            <Label style={{color: 'white'}}>Password</Label>
+            <Input style={{color: 'white'}}
               secureTextEntry={true}
               onChangeText={text => {
                 props.setUserPassword(text);
@@ -90,12 +91,12 @@ const Signup = props => {
             />
           </Item>
           <Item floatingLabel>
-            <Label>Confirm Password</Label>
-            <Input secureTextEntry={true} />
+            <Label style={{color: 'white'}}>Confirm Password</Label>
+            <Input style={{color: 'white'}} secureTextEntry={true} />
           </Item>
           <Item floatingLabel>
-            <Label>E-mail</Label>
-            <Input
+            <Label style={{color: 'white'}}>E-mail</Label>
+            <Input style={{color: 'white'}}
               onChangeText={text => {
                 props.setUserEmail(text);
               }}
@@ -106,7 +107,7 @@ const Signup = props => {
         <Button
           block
           light
-          style={{ marginTop: 100 }}
+          style={{ marginTop: height * 0.2, color: 'white', backgroundColor: '#fe5f55' }}
           onPress={() => {
             axiosRequest();
           }}

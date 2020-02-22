@@ -1,5 +1,5 @@
 import React, { Component, useState, useCallback } from "react";
-import { ScrollView, View, StyleSheet, Image, TextInput } from "react-native";
+import { ScrollView, View, StyleSheet, Image, TextInput, Dimensions } from "react-native";
 import axios from "axios";
 import TourContainer from "./TourContainer";
 import { connect } from "react-redux";
@@ -13,8 +13,13 @@ import {
   Body,
   Right,
   Button,
-  Title
+  Title,
+  Footer,
+  FooterTab
 } from "native-base";
+
+var width = Dimensions.get('window').width; //full width
+var height = Dimensions.get('window').height; //full height
 
 const Search = props => {
   const [search, setSearch] = useState("");
@@ -48,23 +53,23 @@ const Search = props => {
 
   return (
     <Container style={{ width: "100%", height: "100%" }}>
-      <Header searchBar rounded>
+      <Header style={{backgroundColor: '#2a7886'}}>
         <Left>
-          <Button
-            hasText
-            transparent
-            onPress={() => {
-              props.navigate("REACT_NATIVE_HOME");
-            }}
-          >
-            <Text>Back</Text>
-          </Button>
+        <Button
+        style={{backgroundColor: '#fe5f55'}}
+        onPress={() => {
+          props.navigate("REACT_NATIVE_HOME");
+        }}
+      >
+        <Text style={{color: 'white'}}>Back</Text>
+      </Button>
         </Left>
         <Body>
-          <Title>Search Tour</Title>
+          <Title style={{color: 'white'}}>Search Tours</Title>
         </Body>
+        <Right />
       </Header>
-      <Content>
+      <Content style={{backgroundColor: '#49beb7'}}>
         <View
           style={{
             flex: 1,
@@ -76,13 +81,14 @@ const Search = props => {
           {/* <Text>SEARCH</Text> */}
           <TextInput
             style={{
-              height: 45,
-              width: 300,
+              height: height * 0.05,
+              width: width * 0.75,
               borderColor: "gray",
               borderWidth: 1,
-              borderRadius: 4
+              borderRadius: 4,
+              backgroundColor: "white"
             }}
-            placeholder="Touch here to search"
+            placeholder="Search Tour Name"
             onChangeText={text => {
               setSearch(text);
             }}
@@ -109,13 +115,8 @@ const Search = props => {
 const localStyles = StyleSheet.create({
   container: {
     flex: 1,
-    marginTop: 15
-  },
-  profileImg: {
-    marginTop: 30,
-    width: 60,
-    height: 60,
-    borderRadius: 10
+    marginLeft: width * 0.03,
+    marginTop: height * 0.03
   }
 });
 

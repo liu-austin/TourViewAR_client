@@ -631,7 +631,7 @@ class Login extends Component {
       )
       // .then(() => console.log(this.props.selectUserName))
       .then(results => {
-        alert(`Welcome ${JSON.stringify(results.data.rows[0].username)} !!`);
+        alert(`Welcome Back ${JSON.stringify(results.data.rows[0].username)} to TourViewAR.`);
         if (
           results.data.rows[0].username === this.props.selectUserName &&
           results.data.rows[0].pw === this.props.selectUserPassword
