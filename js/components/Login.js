@@ -250,7 +250,7 @@ class Login extends Component {
           >
             <Form
               style={{
-                width: 250
+                width: 0.67 * width
               }}
             >
               <Item floatingLabel style={{marginBottom: width * 0.025}}>
@@ -669,13 +669,13 @@ const styles = StyleSheet.create({
   logoContainer: {
     alignItems: "center",
     justifyContent: "center",
-    marginTop: 20
+    marginTop: 0.025 * height
   },
   title: {
     color: "black",
     borderWidth: 1,
     borderColor: "#000",
-    margin: 10
+    margin: 0.0125 * height
   },
   viroContainer: {
     // flex: 1,
@@ -694,8 +694,8 @@ const styles = StyleSheet.create({
     backgroundColor: "#68a0cf"
   },
   titleText: {
-    paddingTop: 30,
-    paddingBottom: 20,
+    paddingTop: 0.0375 * height,
+    paddingBottom: 0.025 * height,
     color: "black",
     textAlign: "center",
     fontSize: 25
@@ -706,26 +706,26 @@ const styles = StyleSheet.create({
     fontSize: 15
   },
   buttons: {
-    height: 60,
-    width: 120,
-    paddingTop: 20,
-    paddingBottom: 20,
-    marginTop: 10,
-    marginBottom: 10,
+    height: 0.074 * height,
+    width: 0.32 * width,
+    paddingTop: 0.025 * height,
+    paddingBottom: 0.025 * height,
+    marginTop: 0.0125 * height,
+    marginBottom: 0.0125 * height,
     backgroundColor: "#68a0cf",
-    borderRadius: 10,
+    borderRadius: 0.0125 * height,
     borderWidth: 1,
     borderColor: "#fff"
   },
   exitButton: {
-    height: 50,
-    width: 100,
-    paddingTop: 10,
-    paddingBottom: 10,
-    marginTop: 10,
-    marginBottom: 10,
+    height: 0.0612 * height,
+    width: 0.267 * width,
+    paddingTop: 0.0125 * height,
+    paddingBottom: 0.0125 * height,
+    marginTop: 0.0125 * height,
+    marginBottom: 0.0125 * height,
     backgroundColor: "#68a0cf",
-    borderRadius: 10,
+    borderRadius: 0.0125 * height,
     borderWidth: 1,
     borderColor: "#fff"
   },
@@ -733,8 +733,8 @@ const styles = StyleSheet.create({
   editFooter: {
     width: "100%",
     position: "absolute",
-    top: 700,
-    left: 310,
+    top: 0.8 * height,
+    left: 0.83 * width,
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center"
@@ -744,14 +744,14 @@ const styles = StyleSheet.create({
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    height: 80,
-    width: 150,
-    paddingTop: 20,
-    paddingBottom: 20,
-    marginTop: 10,
-    marginBottom: 10,
+    height: 0.099 * height,
+    width: 0.4 * width,
+    paddingTop: 0.025 * height,
+    paddingBottom: 0.025 * height,
+    marginTop: 0.0125 * height,
+    marginBottom: 0.0125 * height,
     backgroundColor: "rgba(23,243,11,.4)",
-    borderRadius: 10,
+    borderRadius: 0.0125 * height,
     borderWidth: 1,
     borderColor: "rgba(23,243,11,.4)"
   },
@@ -760,15 +760,15 @@ const styles = StyleSheet.create({
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    marginLeft: 15,
-    height: 80,
-    width: 150,
-    paddingTop: 20,
-    paddingBottom: 20,
-    marginTop: 10,
-    marginBottom: 10,
+    marginLeft: 0.04 * width,
+    height: 0.0985 * height,
+    width: 0.4 * width,
+    paddingTop: 0.025 * height,
+    paddingBottom: 0.025 * height,
+    marginTop: 0.0125 * height,
+    marginBottom: 0.0125 * height,
     backgroundColor: "rgba(231,13,21,.4)",
-    borderRadius: 10,
+    borderRadius: 0.0125 * height,
     borderWidth: 1,
     borderColor: "rgba(231,13,21,.4)"
   },
@@ -777,15 +777,15 @@ const styles = StyleSheet.create({
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    marginLeft: 15,
-    height: 80,
-    width: 80,
-    paddingTop: 20,
-    paddingBottom: 20,
-    marginTop: 10,
-    marginBottom: 10,
+    marginLeft: 0.04 * width,
+    height: 0.099 * height,
+    width: 0.213 * width,
+    paddingTop: 0.0246 * height,
+    paddingBottom: 0.0246 * height,
+    marginTop: 0.0123 * height,
+    marginBottom: 0.0123 * height,
     backgroundColor: "rgba(123,123,231,.4)",
-    borderRadius: 40,
+    borderRadius: 0.0492 * height,
     borderWidth: 1,
     borderColor: "rgba(123,087,231,.4)"
   },
@@ -793,8 +793,8 @@ const styles = StyleSheet.create({
   addButtons: {
     width: "100%",
     position: "absolute",
-    top: 225,
-    left: 310,
+    top: 0.26 * height,
+    left: 0.83 * width,
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center"
@@ -817,8 +817,8 @@ const styles = StyleSheet.create({
   },
   addTextField: {
     position: "absolute",
-    top: 425,
-    left: 310,
+    top: 0.486 * height,
+    left: 0.83 * width,
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center"
@@ -827,15 +827,15 @@ const styles = StyleSheet.create({
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    marginLeft: -30,
-    height: 80,
-    width: 120,
-    paddingTop: 20,
-    paddingBottom: 20,
-    marginTop: 10,
-    marginBottom: 10,
+    marginLeft: -0.08 * width,
+    height: 0.0985 * height,
+    width: 0.32 * width,
+    paddingTop: 0.025 * height,
+    paddingBottom: 0.025 * height,
+    marginTop: 0.0125 * height,
+    marginBottom: 0.0125 * height,
     backgroundColor: "rgba(123,123,231,0.4)",
-    borderRadius: 10,
+    borderRadius: 0.0125 * height,
     borderWidth: 1,
     borderColor: "rgba(123,087,231,0.4)"
   },
@@ -843,8 +843,8 @@ const styles = StyleSheet.create({
   previousContainer: {
     width: "100%",
     position: "absolute",
-    top: 25,
-    left: 310,
+    top: 0.03 * height,
+    left: 0.83 * width,
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center"
@@ -852,8 +852,8 @@ const styles = StyleSheet.create({
   selectedTextContainer: {
     width: "100%",
     position: "absolute",
-    top: 25,
-    left: 310,
+    top: 0.03 * height,
+    left: 0.83 * width,
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center"
@@ -863,14 +863,14 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     marginLeft: 0,
-    height: 150,
-    width: 150,
-    paddingTop: 20,
-    paddingBottom: 20,
-    marginTop: 10,
-    marginBottom: 10,
+    height: 0.185 * height,
+    width: 0.4 * width,
+    paddingTop: 0.025 * height,
+    paddingBottom: 0.025 * height,
+    marginTop: 0.0125 * height,
+    marginBottom: 0.0125 * height,
     backgroundColor: "rgba(123,123,231,0)",
-    borderRadius: 40,
+    borderRadius: 0.05 * height,
     borderWidth: 1,
     borderColor: "rgba(123,087,231,0)"
   }
