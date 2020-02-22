@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 
-import { Image, StyleSheet, Alert } from "react-native";
+import { Image, StyleSheet, Dimensions } from "react-native";
 
 import { connect } from "react-redux";
 
@@ -10,6 +10,9 @@ import {
   selectUserName,
   selectUserProfilePic
 } from "../redux/user/user.selectors";
+
+var width = Dimensions.get('window').width; //full width
+var height = Dimensions.get('window').height; //full height
 
 import { navigate } from "../redux/render/render.action";
 
@@ -26,49 +29,52 @@ import {
   Right,
   Title,
   View,
-  Thumbnail,
   CardItem,
-  Badge,
-  Icon
 } from "native-base";
-import { selectTourName } from "../redux/tour/tour.selectors";
 
 const HomePage = props => {
   return (
     <Container style={{ width: "100%", height: "100%" }}>
-      <Header>
+      <Header style={{backgroundColor: '#2a7886'}}>
         <Left />
         <Body>
-          <Title>TourViewAR</Title>
+          <Title style={{color: 'white'}}>TourViewAR</Title>
         </Body>
         <Right />
       </Header>
-      <Content>
-        <View style={{ alignItems: "center", marginBottom: 30 }}>
+      <Content style={{backgroundColor: '#49beb7'}}>
+        <View style={{ borderTopColor: '#49beb7', borderTopWidth: 1, alignItems: "center", marginTop: width * 0.15, borderRadius: width * 0.3, backgroundColor: 'white', height: width * 0.6, width: width * 0.6, marginLeft: width * 0.2 }}>
+          <View style={{marginTop: height * 0.1}}>
+            <Text style={{fontFamily: 'Gill Sans', fontSize: 35, color: '#fe5f55'}}>TOURVIEWAR</Text>
+          </View>  
+          <View tyle={{marginTop: height * 0.1}}>
+            <Text style={{color: '#a64942'}}>Create Your Own Virtual Space</Text>
+          </View>
+        </View>
+        <View style={{ alignItems: "center", marginTop: 0.035 * height, marginBottom: 0.015 * height }}>
           <Image
-            style={{ width: 250, height: 250, justifyContent: "center" }}
-            source={require("../res/logo.png")}
+            style={{ width: 0.15 * width, height: 0.15 * width, justifyContent: "center" }}
+            source={require("../res/camera.png")}
           ></Image>
         </View>
-        <CardItem>
+        <CardItem style={{backgroundColor: '#49beb7'}}>
           <Body style={{ alignItems: "center" }}>
             <View style={{ alignItems: "center" }}>
-              <Thumbnail large source={require("../res/aaron.jpg")}></Thumbnail>
-              <Text>{props.selectUserName}</Text>
+              <Text style={{color: 'white'}}>{`Welcome ${props.selectUserName}`}</Text>
             </View>
           </Body>
         </CardItem>
-        <View style={{ marginTop: 50 }}>
+        <View style={{ marginTop: height * 0.02 }}>
           <Button
             block
             light
-            style={styles.button}
+            style={{...styles.button, backgroundColor: '#fe5f55'}}
             onPress={() => {
               props.navigate("SEARCH_PAGE");
             }}
             full
           >
-            <Text>Search Tour</Text>
+            <Text style={{color: 'white'}}>Search Tour</Text>
           </Button>
           <Button
             block
@@ -93,15 +99,15 @@ const HomePage = props => {
           </Button>
         </View>
       </Content>
-      <Footer style={{ height: 80 }}>
-        <FooterTab>
+      <Footer style={{ height: height * 0.05}}>
+        <FooterTab style={{backgroundColor: '#2a7886' }}>
           <Button
             vertical
             onPress={() => {
               props.navigate("PROFILE");
             }}
           >
-            <Text>Profile</Text>
+            <Text style={{color: 'white'}}>Profile</Text>
           </Button>
           <Button
             vertical
@@ -109,23 +115,23 @@ const HomePage = props => {
               props.navigate("AR");
             }}
           >
-            <Text>My AR</Text>
+            <Text style={{color: 'white'}}>How to Use</Text>
           </Button>
           <Button
             vertical
             onPress={() => {
-              props.navigate("CAMERA_PAGE");
+              alert('In this app, you can view or create 360 degree virtual spaces. To view a tour, you can click the Search Tour button and type in the name of the tour you want to view. Also, you can view your own created tours by clicking the Profile tab in the footer. To create a tour, click the Create A New Tour button. You will be prompted whether you want to upload a panoramic image or you would like to take photos of your current surroundings as the base for your virtual space tour. Once your 360 scene has been uploaded to AWS S3, you can add text, images, or additional 360 scenes to your tour. Click the EDIT PAGE button to add props to your scene.')
             }}
           >
-            <Text>Take a Photo</Text>
+            <Text style={{color: 'white'}}>Take Photos</Text>
           </Button>
           <Button
             vertical
             onPress={() => {
-              props.navigate("IMAGE_UPLOAD");
+              alert('Welcome to TourViewAR! The AR app that allows you to create virtual tours by creating 360 degree images of uploaded panoramic images or a skybox scene made from 6 standard photos. After an initial scene has been created, users can add text, images, or additional scenes to populate their tours. Once a tour has been created, all users can search for it to experience a virtual tour of the location! This is an alpha build currently being developed by Austin Liu - austinliu279@gmail.com.');
             }}
           >
-            <Text>Upload Image</Text>
+            <Text style={{color: 'white'}}>About TourViewAR</Text>
           </Button>
         </FooterTab>
       </Footer>

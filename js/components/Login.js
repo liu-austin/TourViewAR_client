@@ -5,12 +5,13 @@ import axios from "axios";
 import {
   StyleSheet,
   View,
-  TextInput,
   Image,
-  AppRegistry,
-  PixelRatio,
-  TouchableHighlight
+  TouchableHighlight,
+  Dimensions
 } from "react-native";
+
+var width = Dimensions.get('window').width; //full width
+var height = Dimensions.get('window').height; //full height
 
 import {
   Container,
@@ -29,7 +30,7 @@ import {
   TabHeading
 } from "native-base";
 
-import { ViroVRSceneNavigator, ViroARSceneNavigator } from "react-viro";
+import { ViroARSceneNavigator } from "react-viro";
 
 import { connect } from "react-redux";
 
@@ -38,7 +39,7 @@ import { selectNavigator } from "../redux/render/render.selectors";
 import {
   selectUserName,
   selectUserPassword,
-  selectUserProfilePic
+  // selectUserProfilePic
 } from "../redux/user/user.selectors";
 
 import { setPanoId, setSceneHistory, setGoBack } from "../redux/pano/pano.action";
@@ -73,6 +74,8 @@ import HomePage from "./Homepage";
 
 import Signup from "./Signup";
 
+import TakePhoto from './TakePhoto';
+
 import Profile from "./Profile";
 
 import Search from "./Search";
@@ -85,7 +88,7 @@ import Create from "./Create";
 import CreateOptions from "./CreateOptions";
 import CreateOptionsObject from "./CreateOptionsObject";
 import CreateOptionsScene from "./CreateOptionsScene";
-import ARScene from "./ARScene";
+// import ARScene from "./ARScene";
 
 var sharedProps = {
   apiKey: "API_KEY_HERE"
@@ -96,7 +99,6 @@ var InitialARScene = require("../HelloWorldSceneAR.js");
 var tcARscene = require("../TourContainerAR.js");
 
 var UNSET = "UNSET";
-var VR_NAVIGATOR_TYPE = "VR";
 var AR_NAVIGATOR_TYPE = "AR";
 var AR_NAVIGATOR_TYPE_TC = "ARtc";
 var REACT_NATIVE_SIGNUP = "SIGNUP";
@@ -118,6 +120,7 @@ var CREATE_IMAGE_OBJECT = "CREATE_IMAGE_OBJECT";
 var CREATE_OPTIONS_SCENE = "CREATE_OPTIONS_SCENE";
 var CAMERA_PAGE_SCENE = "CAMERA_PAGE_SCENE";
 var IMAGE_PICKER_PAGE_SCENE = "IMAGE_PICKER_PAGE_SCENE";
+var TAKE_PHOTO = "TAKE_PHOTO";
 // This determines which type of experience to launch in, or UNSET, if the user should
 // be presented with a choice of AR or VR. By default, we offer the user a choice.
 var defaultNavigatorType = UNSET;
@@ -155,6 +158,7 @@ class Login extends Component {
     this._createImageObject = this._createImageObject.bind(this);
     this._createTextObject = this._createTextObject.bind(this);
     this._saveChanges = this._saveChanges.bind(this);
+    this._takePhoto = this._takePhoto.bind(this);
     // this._addScenePhoto = this._addScenePhoto.bind(this);
     // this._uploadScenePhoto = this._uploadScenePhoto.bind(this);
   }
@@ -201,11 +205,17 @@ class Login extends Component {
       return this._getCameraPage(false, true);
     } else if (this.props.selectNavigator === IMAGE_PICKER_PAGE_SCENE) {
       return this._getImageUpload(false, true);
-    }
+    } else if (this.props.selectNavigator === TAKE_PHOTO) {
+      return this._takePhoto();
+    } 
   }
 
   _createOptionsScene() {
     return (<CreateOptionsScene />);
+  }
+
+  _takePhoto() {
+    return (<TakePhoto/>);
   }
 
   _loginHandler() {}
@@ -213,19 +223,27 @@ class Login extends Component {
   _getExperienceSelector() {
     return (
       <Container style={{ width: "100%", height: "100%" }}>
-        <Header>
+        <Header style={{backgroundColor: '#2a7886'}}>
           <Left />
           <Body>
-            <Title>TourViewAR</Title>
+            <Title style={{color: 'white'}}>TourViewAR</Title>
           </Body>
           <Right />
         </Header>
-        <Content>
-          <View style={{ alignItems: "center" }}>
-            <Image
-              source={require("../res/logo.png")}
-              style={{ height: 200, width: 200 }}
-            />
+        <Content style={{ backgroundColor: '#49beb7' }}>
+          <View style={{ borderTopColor: '#49beb7', borderTopWidth: 1, alignItems: "center", marginTop: width * 0.15, borderRadius: width * 0.3, backgroundColor: 'white', height: width * 0.6, width: width * 0.6, marginLeft: width * 0.2 }}>
+          <View style={{marginTop: height * 0.1}}>
+            <Text style={{fontFamily: 'Gill Sans', fontSize: 35, color: '#fe5f55'}}>TOURVIEWAR</Text>
+          </View>  
+          <View tyle={{marginTop: height * 0.1}}>
+            <Text style={{color: '#a64942'}}>Create Your Own Virtual Space</Text>
+          </View>
+          </View>
+          <View style={{ alignItems: "center", marginTop: width * 0.075 }}>
+              <Image
+                source={require("../res/camera.png")}
+                style={{ height: width * 0.15, width: width * 0.15 }}
+              />
           </View>
           <View
             style={{ flex: 1, alignItems: "center", justifyContent: "center" }}
@@ -235,13 +253,14 @@ class Login extends Component {
                 width: 250
               }}
             >
-              <Item floatingLabel>
-                <Label>Username</Label>
-                <Input onChangeText={text => this.props.setUserName(text)} />
+              <Item floatingLabel style={{marginBottom: width * 0.025}}>
+                <Label style={{color: 'white'}}>Username</Label>
+                <Input style={{color: 'white'}} 
+                  onChangeText={text => this.props.setUserName(text)} />
               </Item>
               <Item floatingLabel>
-                <Label>Password</Label>
-                <Input
+                <Label style={{color: 'white'}}>Password</Label>
+                <Input style={{color: 'white'}}
                   secureTextEntry={true}
                   onChangeText={text => this.props.setUserPassword(text)}
                 />
@@ -249,6 +268,8 @@ class Login extends Component {
             </Form>
             <View
               style={{
+                marginTop: width * 0.1,
+                marginBottom: width * 0.025,
                 flex: 1,
                 alignItems: "center",
                 justifyContent: "center"
@@ -256,10 +277,11 @@ class Login extends Component {
             >
               <Button
                 block
-                light
                 style={{
-                  margin: 20,
-                  width: 250
+                  color: 'white',
+                  backgroundColor: '#fe5f55',
+                  width: width * 0.6,
+                  alignItems: 'center'
                 }}
                 // onPress={this._loginHandler}
                 onPress={this._getUserLogin}
@@ -268,27 +290,22 @@ class Login extends Component {
               </Button>
             </View>
           </View>
-          <View style={styles.outer}>
-            <Button
-              block
-              onPress={() => {
-                this.props.navigate(REACT_NATIVE_HOME);
-              }}
-              style={{ marginBottom: 20 }}
-            >
-              <Text style={styles.buttonText}>HOMEPAGE</Text>
-            </Button>
-
+          <View style={{...styles.outer, backgroundColor: '#49beb7'}}>
             <Button
               block
               onPress={() => {
                 this.props.navigate(REACT_NATIVE_SIGNUP);
-              }}
+              }} style={{ color: 'white',
+              backgroundColor: '#fe5f55', 
+              width: width * 0.6, 
+              marginLeft: width * 0.2}}
             >
               <Text style={styles.buttonText}>SIGN UP</Text>
             </Button>
           </View>
         </Content>
+        <Footer style={{backgroundColor: '#2a7886'}}>
+        </Footer>
       </Container>
     );
   }
