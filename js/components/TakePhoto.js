@@ -52,16 +52,20 @@ const TakePhoto = props => {
         <Right />
       </Header>
       <Content style={{...styles.container, backgroundColor: '#49beb7'}}>
-            <Text style={{color: 'white', width: width * 0.6, alignItems: 'center'}}>
-                Use your device camera to take a photo and store it in the device camera roll.
-            </Text>
-            <Button style={{marginTop: height * 0.1, backgroundColor: '#fe5f55', width: width * 0.6,
-            alignItems: 'center'}}
-            onPress={() => takePhoto()}>
-                <Text>
-                    Take A Photo
+            <View style={{alignContent: "center", justifyContent: "center", width: width * 0.6, marginLeft: width * 0.2, marginTop: height * 0.3}}>
+                <Text style={{color: 'white', alignItems: 'center'}}>
+                    Use your device camera to take a photo and store it in the device camera roll for later use.
                 </Text>
-            </Button>
+            </View>
+            <View style={{alignContent: "center", justifyContent: "center", marginLeft: width * 0.2}}>
+                <Button style={{marginTop: height * 0.1, backgroundColor: '#fe5f55', width: width * 0.6,
+                alignItems: 'center'}}
+                onPress={() => takePhoto()}>
+                    <Text style={{alignContent: "center"}}>
+                        Take A Photo
+                    </Text>
+                </Button>
+            </View>
       </Content>
       <Footer style={{ height: height * 0.05}}>
       <FooterTab style={{backgroundColor: '#2a7886' }}>
@@ -105,9 +109,7 @@ const TakePhoto = props => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center"
+    backgroundColor: "#fff"
   }
 });
 
