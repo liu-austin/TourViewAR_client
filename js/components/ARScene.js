@@ -5,25 +5,12 @@ import { StyleSheet, View } from "react-native";
 import axios from 'axios';
 
 import {
-  ViroSceneNavigator,
-  ViroScene,
-  Viro360Video,
+  ViroSkyBox,
   Viro360Image,
   ViroUtils,
-  ViroPortal,
-  ViroPortalScene,
   ViroARScene,
-  ViroText,
   ViroConstants,
-  ViroBox,
-  ViroMaterials,
-  Viro3DObject,
-  ViroAmbientLight,
-  ViroSpotLight,
-  ViroARPlaneSelector,
   ViroNode,
-  ViroAnimations,
-  ViroImage
 } from "react-viro";
 
 import {Fab, Button, Container, Footer, FooterTab, Input, Item, Text} from 'native-base';

@@ -48,7 +48,7 @@ const HomePage = props => {
             <Text style={{fontFamily: 'Gill Sans', fontSize: 35, color: '#fe5f55'}}>TOURVIEWAR</Text>
           </View>  
           <View tyle={{marginTop: height * 0.1}}>
-            <Text style={{color: '#a64942'}}>Create Your Own Virtual Space</Text>
+            <Text style={{color: '#a64942', fontSize: 15}}>Create Your Own Virtual Space</Text>
           </View>
         </View>
         <View style={{ alignItems: "center", marginTop: 0.035 * height, marginBottom: 0.015 * height }}>
