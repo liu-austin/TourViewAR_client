@@ -1,6 +1,6 @@
 import React, { useCallback } from "react";
 import axios from "axios";
-import { Dimensions } from 'react-native';
+import { Dimensions, View, Image } from 'react-native';
 import {
   Container,
   Header,
@@ -29,6 +29,9 @@ import {
   setUserPassword,
   setUserEmail
 } from "../redux/user/user.action";
+
+var width = Dimensions.get('window').width; //full width
+var height = Dimensions.get('window').height; //full height
 
 const Signup = props => {
   const axiosRequest = useCallback(() => {
@@ -60,7 +63,7 @@ const Signup = props => {
             <Button
             style={{backgroundColor: '#fe5f55'}}
             onPress={() => {
-              this.props.navigate("LOGIN_PAGE");
+               props.navigate("LOGIN_PAGE");
             }}
           >
             <Text style={{color: 'white'}}>Back</Text>
@@ -103,18 +106,24 @@ const Signup = props => {
             />
           </Item>
         </Form>
-
         <Button
           block
           light
-          style={{ marginTop: height * 0.2, color: 'white', backgroundColor: '#fe5f55' }}
+          style={{ marginLeft: 0.2 * width, width: width * 0.6, marginTop: height * 0.07, backgroundColor: '#fe5f55' }}
           onPress={() => {
             axiosRequest();
           }}
         >
-          <Text>Sign Up</Text>
+          <Text style={{color: 'white'}}>Sign Up</Text>
         </Button>
+        <View style={{ alignItems: "center", marginTop: 0.06 * height, marginBottom: 0.035 * height }}>
+        <Image
+          style={{ width: 0.6 * width, height: 0.6 * width, justifyContent: "center" }}
+          source={require("../res/camera.png")}
+        ></Image>
+      </View>
       </Content>
+      <Footer style={{backgroundColor: '#2a7886'}}/>
     </Container>
   );
 };

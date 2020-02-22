@@ -304,8 +304,7 @@ class Login extends Component {
             </Button>
           </View>
         </Content>
-        <Footer style={{backgroundColor: '#2a7886'}}>
-        </Footer>
+        <Footer style={{backgroundColor: '#2a7886'}}/>
       </Container>
     );
   }
