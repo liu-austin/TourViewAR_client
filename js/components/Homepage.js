@@ -43,7 +43,7 @@ const HomePage = props => {
         <Right />
       </Header>
       <Content style={{backgroundColor: '#49beb7'}}>
-        <View style={{ borderTopColor: '#49beb7', borderTopWidth: 1, alignItems: "center", marginTop: width * 0.15, borderRadius: width * 0.3, backgroundColor: 'white', height: width * 0.6, width: width * 0.6, marginLeft: width * 0.2 }}>
+        <View style={{ borderTopColor: 'orange', borderTopWidth: 1, alignItems: "center", marginTop: width * 0.15, borderRadius: width * 0.3, backgroundColor: 'white', height: width * 0.6, width: width * 0.6, marginLeft: width * 0.2 }}>
           <View style={{marginTop: height * 0.1}}>
             <Text style={{fontFamily: 'Gill Sans', fontSize: 35, color: '#fe5f55'}}>TOURVIEWAR</Text>
           </View>  
@@ -112,7 +112,7 @@ const HomePage = props => {
           <Button
             vertical
             onPress={() => {
-              props.navigate("AR");
+              alert('In this app, you can view or create 360 degree virtual spaces. To view a tour, you can click the Search Tour button and type in the name of the tour you want to view. Also, you can view your own created tours by clicking the Profile tab in the footer. To create a tour, click the Create A New Tour button. You will be prompted whether you want to upload a panoramic image or you would like to take photos of your current surroundings as the base for your virtual space tour. Once your 360 scene has been uploaded to AWS S3, you can add text, images, or additional 360 scenes to your tour. Click the EDIT PAGE button to add props to your scene.');
             }}
           >
             <Text style={{color: 'white'}}>How to Use</Text>
@@ -120,10 +120,10 @@ const HomePage = props => {
           <Button
             vertical
             onPress={() => {
-              alert('In this app, you can view or create 360 degree virtual spaces. To view a tour, you can click the Search Tour button and type in the name of the tour you want to view. Also, you can view your own created tours by clicking the Profile tab in the footer. To create a tour, click the Create A New Tour button. You will be prompted whether you want to upload a panoramic image or you would like to take photos of your current surroundings as the base for your virtual space tour. Once your 360 scene has been uploaded to AWS S3, you can add text, images, or additional 360 scenes to your tour. Click the EDIT PAGE button to add props to your scene.')
+              props.navigate('TAKE_PHOTO');
             }}
           >
-            <Text style={{color: 'white'}}>Take Photos</Text>
+            <Text style={{color: 'white'}}>Take a Photo</Text>
           </Button>
           <Button
             vertical
@@ -131,7 +131,7 @@ const HomePage = props => {
               alert('Welcome to TourViewAR! The AR app that allows you to create virtual tours by creating 360 degree images of uploaded panoramic images or a skybox scene made from 6 standard photos. After an initial scene has been created, users can add text, images, or additional scenes to populate their tours. Once a tour has been created, all users can search for it to experience a virtual tour of the location! This is an alpha build currently being developed by Austin Liu - austinliu279@gmail.com.');
             }}
           >
-            <Text style={{color: 'white'}}>About TourViewAR</Text>
+            <Text style={{color: 'white'}}>About App</Text>
           </Button>
         </FooterTab>
       </Footer>

@@ -9,8 +9,12 @@ import {
   View,
   StyleSheet,
   Image,
-  Button
+  Button,
+  Dimensions
 } from "react-native";
+
+var width = Dimensions.get('window').width; //full width
+var height = Dimensions.get('window').height; //full height
 
 import axios from 'axios';
 
@@ -20,6 +24,9 @@ const TourContainer = (props) => {
     // if (this.state.navigator === "PROFILE") {
       return (
         <View style={localStyles.tourContainer}>
+          <View style={{marginTop: height * 0.01, marginBottom: height * 0.01}}>
+          <Text style={{color: 'white', fontSize: 20}}>{`${props.tour.tour_name}`}</Text>
+          </View>
           <Image
             style={localStyles.icon}
             source={{
@@ -27,28 +34,27 @@ const TourContainer = (props) => {
                 `${props.tour.pic_url}`
             }}
           />
-          <Text>{`${props.tour.tour_name}`}</Text>
           <Button
-            style={localStyles.button}
-            onPress={() => {                        
-              confirm ? 
-              (
-                props.navigate('VIEW_AR_PAGE')
-              ) 
-              : 
-              (
-                // alert(JSON.stringify(props.tour))
-                // alert(props.tour.id)
-                axios.get(`http://tourviewarserver.herokuapp.com/api/scenes/${props.tour.id}`)
-                .then(results => {
-                  props.setTourId(props.tour.id);
-                  props.setTourPanos(results.data.rows);
-                  setConfirm(true);
-                })
-              )
-            }}
-            title={confirm ? `CONFIRM` : `VIEW EXPERIENCE`}
-          />
+          style={localStyles.button}
+          onPress={() => {                        
+            confirm ? 
+            (
+              props.navigate('VIEW_AR_PAGE')
+            ) 
+            : 
+            (
+              // alert(JSON.stringify(props.tour))
+              // alert(props.tour.id)
+              axios.get(`http://tourviewarserver.herokuapp.com/api/scenes/${props.tour.id}`)
+              .then(results => {
+                props.setTourId(props.tour.id);
+                props.setTourPanos(results.data.rows);
+                setConfirm(true);
+              })
+            )
+          }}
+          title={confirm ? `CONFIRM` : `VIEW EXPERIENCE`}
+        />
         </View>
       );
     // } else if (this.state.navigator === "AR") {
@@ -61,21 +67,25 @@ const TourContainer = (props) => {
 var localStyles = StyleSheet.create({
   tourContainer: {
     flex: 1,
-    width: 300,
-    margin: 5,
+    width: width * 0.9,
+    margin: width * 0.02,
     flexDirection: "column",
-    alignItems: "flex-start",
+    alignItems: "center",
+    justifyContent: "center",
     borderStyle: "solid",
     borderColor: "black",
-    borderRadius: 3,
-    backgroundColor: "#d3d3d3"
+    borderRadius: width * 0.05,
+    backgroundColor: "#00a8cc"
   },
   icon: {
-    width: 50,
-    height: 50
+    marginTop: height * 0.01,
+    marginBottom: height * 0.01,
+    width: width * 0.75,
+    height: width * 0.75
   },
   button: {
-    marginTop: 5
+    backgroundColor: '#fe5f55',
+    marginTop: width * 0.02
   }
 });
 

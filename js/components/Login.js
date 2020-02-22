@@ -27,7 +27,7 @@ import {
   Left,
   Body,
   Right,
-  TabHeading
+  Footer
 } from "native-base";
 
 import { ViroARSceneNavigator } from "react-viro";
