@@ -215,7 +215,7 @@ class Profile extends Component {
   getUserTours() {
     axios
       .get(
-        `http://tourviewarserver.herokuapp.com/api/tours/${this.props.selectUserId}`,
+        `http://tourviewarserver-dev.us-west-1.elasticbeanstalk.com/api/tours/${this.props.selectUserId}`,
         { headers: { "Content-Type": "application/json" } }
       )
       .then(results => {

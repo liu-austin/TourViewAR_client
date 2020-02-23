@@ -39,7 +39,7 @@ const ImageUpload = props => {
         props.setIsNew(false);
         const source = { uri: response.uri };
 
-        axios.get(`http://tourviewarserver.herokuapp.com/api/getpresignedurl/panoimages`)
+        axios.get(`http://tourviewarserver-dev.us-west-1.elasticbeanstalk.com/api/getpresignedurl/panoimages`)
         .then(results => {
           const xhr = new XMLHttpRequest();
           xhr.open("PUT", results.data.presignedUrl);
@@ -47,12 +47,12 @@ const ImageUpload = props => {
             if (xhr.readyState === 4) {
               if (xhr.status === 200) {
                 // alert("Image successfully uploaded to S3");
-                axios.post(`http://tourviewarserver.herokuapp.com/api/scenes`, {
+                axios.post(`http://tourviewarserver-dev.us-west-1.elasticbeanstalk.com/api/scenes`, {
                     id: props.selectTourId,
                     img_url: results.data.publicUrl
                   })
                   .then((data) => {
-                    axios.post(`http://tourviewarserver.herokuapp.com/api/object`, {
+                    axios.post(`http://tourviewarserver-dev.us-west-1.elasticbeanstalk.com/api/object`, {
                       object_type: "scene",
                       // object_value: results.data.publicUrl,
                       // id_pano: props.selectPanoId
@@ -61,7 +61,7 @@ const ImageUpload = props => {
                     })
                   })          
                     .then(() => {
-                      axios.get(`http://tourviewarserver.herokuapp.com/api/scenes/${props.selectTourId}`)
+                      axios.get(`http://tourviewarserver-dev.us-west-1.elasticbeanstalk.com/api/scenes/${props.selectTourId}`)
                         .then(scenes => {
                           props.setTourPanos(scenes.data.rows);
                           changeARButtonState(true);
@@ -87,7 +87,7 @@ const ImageUpload = props => {
           props.setIsNew(false);
           const source = { uri: response.uri };
           // alert(JSON.stringify(source));
-          axios.get(`http://tourviewarserver.herokuapp.com/api/getpresignedurlforobject/panoimages`)
+          axios.get(`http://tourviewarserver-dev.us-west-1.elasticbeanstalk.com/api/getpresignedurlforobject/panoimages`)
             .then(results => {
               const xhr = new XMLHttpRequest();
               xhr.open("PUT", results.data.presignedUrl);
@@ -96,7 +96,7 @@ const ImageUpload = props => {
                   if (xhr.status === 200) {
                     // alert("Image successfully uploaded to S3");
                     axios
-                      .post(`http://tourviewarserver.herokuapp.com/api/object`, {
+                      .post(`http://tourviewarserver-dev.us-west-1.elasticbeanstalk.com/api/object`, {
                         object_type: "image",
                         object_value: results.data.publicUrl,
                         id_pano: props.selectPanoId
@@ -104,7 +104,7 @@ const ImageUpload = props => {
                       .then(results => {
                         axios
                           .get(
-                            `http://tourviewarserver.herokuapp.com/api/scenes/${props.selectTourId}`
+                            `http://tourviewarserver-dev.us-west-1.elasticbeanstalk.com/api/scenes/${props.selectTourId}`
                           )
                           .then(results => {
                             props.setTourPanos(results.data.rows);
@@ -133,7 +133,7 @@ const ImageUpload = props => {
           // alert(JSON.stringify(source));
           axios
             .get(
-              `http://tourviewarserver.herokuapp.com/api/getpresignedurl/panoimages`
+              `http://tourviewarserver-dev.us-west-1.elasticbeanstalk.com/api/getpresignedurl/panoimages`
             )
             .then(results => {
               const xhr = new XMLHttpRequest();
@@ -145,7 +145,7 @@ const ImageUpload = props => {
                   if (xhr.status === 200) {
                     // alert("Image successfully uploaded to S3");
                     axios
-                      .post(`http://tourviewarserver.herokuapp.com/api/newtour`, {
+                      .post(`http://tourviewarserver-dev.us-west-1.elasticbeanstalk.com/api/newtour`, {
                         id: results.data.id,
                         img_url: results.data.publicUrl,
                         tour_name: props.selectTourName,
@@ -158,7 +158,7 @@ const ImageUpload = props => {
                       .then(id_tour => {
                         axios
                           .get(
-                            `http://tourviewarserver.herokuapp.com/api/scenes/${id_tour}`
+                            `http://tourviewarserver-dev.us-west-1.elasticbeanstalk.com/api/scenes/${id_tour}`
                           )
                           .then(results => {
                             props.setTourPanos(results.data.rows);

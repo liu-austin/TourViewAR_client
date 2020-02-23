@@ -604,7 +604,7 @@ class Login extends Component {
 
   _saveChanges() {
     axios
-      .put(`http://tourviewarserver.herokuapp.com/api/object`, {
+      .put(`http://tourviewarserver-dev.us-west-1.elasticbeanstalk.com/api/object`, {
         x: Number(this.props.selectObjectXCoordinate.toFixed(2)),
         y: Number(this.props.selectObjectYCoordinate.toFixed(2)),
         z: Number(this.props.selectObjectZCoordinate.toFixed(2)),
@@ -620,7 +620,7 @@ class Login extends Component {
   _getUserLogin() {
     axios
       .get(
-        `http://tourviewarserver.herokuapp.com/api/login`,
+        `http://tourviewarserver-dev.us-west-1.elasticbeanstalk.com/api/login`,
         {
           params: {
             username: this.props.selectUserName,

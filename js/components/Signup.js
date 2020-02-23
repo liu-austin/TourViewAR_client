@@ -37,7 +37,7 @@ const Signup = props => {
   const axiosRequest = useCallback(() => {
     axios
       .post(
-        "http://tourviewarserver.herokuapp.com/api/signup",
+        "http://tourviewarserver-dev.us-west-1.elasticbeanstalk.com/api/signup",
         {
           username: props.selectUserName,
           pw: props.selectUserPassword,

@@ -26,7 +26,7 @@ const Search = props => {
   const [searchResults, setSearchResults] = useState([[]]);
   const searchRequest = useCallback(() => {
     axios
-      .get("http://tourviewarserver.herokuapp.com/api/search",
+      .get("http://tourviewarserver-dev.us-west-1.elasticbeanstalk.com/api/search",
         {
           params: {
             search: search

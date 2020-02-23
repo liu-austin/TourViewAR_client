@@ -45,7 +45,7 @@ const TourContainer = (props) => {
             (
               // alert(JSON.stringify(props.tour))
               // alert(props.tour.id)
-              axios.get(`http://tourviewarserver.herokuapp.com/api/scenes/${props.tour.id}`)
+              axios.get(`http://tourviewarserver-dev.us-west-1.elasticbeanstalk.com/api/scenes/${props.tour.id}`)
               .then(results => {
                 props.setTourId(props.tour.id);
                 props.setTourPanos(results.data.rows);

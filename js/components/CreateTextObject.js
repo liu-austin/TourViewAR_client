@@ -84,7 +84,7 @@ const CreateTextObject = props => {
               block
               onPress={() => {
                   axios
-                  .post(`http://tourviewarserver.herokuapp.com/api/object`, {
+                  .post(`http://tourviewarserver-dev.us-west-1.elasticbeanstalk.com/api/object`, {
                     object_type: "text",
                     object_value: props.selectObjectText,
                     id_pano: props.selectPanoId
