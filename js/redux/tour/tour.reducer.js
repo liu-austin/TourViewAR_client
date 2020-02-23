@@ -5,7 +5,8 @@ const INITIAL_STATE = {
   id_user: '',
   pic_url: 'something random',
   iseditable: false,
-  isnew: false
+  isnew: false,
+  skybox_id: null
 }
 
 const TourReducer = (state=INITIAL_STATE, action) => {
@@ -44,6 +45,11 @@ const TourReducer = (state=INITIAL_STATE, action) => {
       return ({
         ...state,
         isnew: action.payload
+      });
+    case 'SET_SKYBOX_ID':
+      return ({
+        ...state,
+        skybox_id: action.payload
       });
     default:
       return state;

@@ -46,3 +46,10 @@ export const setIsEditable = bool => {
     payload: bool
   }
 };
+
+export const setSkyboxId = id => {
+  return {
+    type: "SET_SKYBOX_ID",
+    payload: id
+  }
+};

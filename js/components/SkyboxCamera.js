@@ -4,8 +4,8 @@ import ImagePicker from "react-native-image-picker";
 import { connect } from "react-redux";
 import { navigate } from "../redux/render/render.action";
 import { selectUserId } from "../redux/user/user.selectors";
-import { setTourId, setIsEditable, setIsNew } from "../redux/tour/tour.action";
-import { selectTourName, selectTourId } from "../redux/tour/tour.selectors";
+import { setTourId, setIsEditable, setIsNew, setSkyboxId } from "../redux/tour/tour.action";
+import { selectTourName, selectTourId, selectSkyboxId } from "../redux/tour/tour.selectors";
 import { setTourPanos, setPanoId } from "../redux/pano/pano.action";
 import { selectPanoId, selectTourPanos } from "../redux/pano/pano.selectors";
 import {
@@ -20,7 +20,7 @@ import {
   Footer,
   FooterTab
 } from "native-base";
-
+const phases = ['Take Skybox Front Photo', 'Take Skybox Left Photo', 'Take Skybox Back Photo', 'Take Skybox Right Photo', 'Take Skybox Top Photo', 'Take Skybox Bottom Photo'];
 var width = Dimensions.get('window').width; //full width
 var height = Dimensions.get('window').height; //full height
 
@@ -29,11 +29,7 @@ import axios from "axios";
 const SkyboxCamera = props => {
   [renderARButton, changeARButtonState] = useState(false);
 
-  const propsvalue = () => {
-    return props.forobject;
-  };
-
-  const takePhoto = bool => {
+  const takePhoto = () => {
     let options = {
       storageOptions: {
         cameraRoll: true,
@@ -41,108 +37,163 @@ const SkyboxCamera = props => {
         path: "images"
       }
     };
+
     ImagePicker.launchCamera(options, response => {
       if (props.forscene) {
-        props.setIsEditable(true);
-        props.setIsNew(false);
-        const source = { uri: response.uri };
-
-        axios.get(`http://tourviewarserver-dev.us-west-1.elasticbeanstalk.com/api/getpresignedurl/panoimages`)
-        .then(results => {
-          const xhr = new XMLHttpRequest();
-          xhr.open("PUT", results.data.presignedUrl);
-          xhr.onreadystatechange = function() {
-            if (xhr.readyState === 4) {
-              if (xhr.status === 200) {
-                // alert("Image successfully uploaded to S3");
-                axios.post(`http://tourviewarserver-dev.us-west-1.elasticbeanstalk.com/api/scenes`, {
-                    id: props.selectTourId,
-                    img_url: results.data.publicUrl
-                  })
-                  .then((data) => {
-                    axios.post(`http://tourviewarserver-dev.us-west-1.elasticbeanstalk.com/api/object`, {
-                      object_type: "scene",
-                      // object_value: results.data.publicUrl,
-                      // id_pano: props.selectPanoId
-                      object_value: JSON.stringify([data.data.panoId, results.data.publicUrl]),
-                      id_pano: props.selectPanoId
+        if (props.num === 1) {
+          props.setIsEditable(true);
+          props.setIsNew(false);
+          axios.get(
+            `http://tourviewarserver-dev.us-west-1.elasticbeanstalk.com/api/getpresignedurlforskybox/panoimages`, {
+              index: props.num
+            }
+          )
+          .then(results => {
+            const xhr = new XMLHttpRequest();
+            xhr.open("PUT", results.data.url);
+            xhr.onreadystatechange = function() {
+              if (xhr.readyState === 4) {
+                if (xhr.status === 200) {
+                  // alert("Image successfully uploaded to S3");
+                  axios
+                    .post(`http://tourviewarserver-dev.us-west-1.elasticbeanstalk.com/api/skyboxscene`, {
+                      img_url: results.data.publicUrl,
+                      id: props.selectTourId
                     })
-                  })          
                     .then(() => {
-                      axios.get(`http://tourviewarserver-dev.us-west-1.elasticbeanstalk.com/api/scenes/${props.selectTourId}`)
-                        .then(scenes => {
-                          props.setTourPanos(scenes.data.rows);
-                          changeARButtonState(true);
-                        })
-                        .catch(err => console.log(err));
+                        changeARButtonState(true);
                     })
                     .catch(err => alert(err));
-              } else {
-                alert("Error while sending the image to S3");
+                } else {
+                  alert("Error while sending the image to S3");
+                }
               }
+            };
+            xhr.setRequestHeader("Content-Type", "image/jpeg");
+            xhr.send({
+              uri: source.uri,
+              type: "image/jpeg",
+              name: "pickertest.jpg"
+            });
+          })
+          .catch(err => alert(JSON.stringify(err)));
+        } else {
+          axios.get(
+            `http://tourviewarserver-dev.us-west-1.elasticbeanstalk.com/api/getpresignedurlforskybox/panoimages`, {
+              index: props.num
             }
-          };
-          xhr.setRequestHeader("Content-Type", "image/jpeg");
-          xhr.send({
-            uri: source.uri,
-            type: "image/jpeg",
-            name: "pickertest.jpg"
-          });
-        })
-        .catch(err => alert(JSON.stringify(err)));
+          )
+          .then(results => {
+            const xhr = new XMLHttpRequest();
+            xhr.open("PUT", results.data.url);
+            xhr.onreadystatechange = function() {
+              if (xhr.readyState === 4) {
+                if (xhr.status === 200) {
+                  // alert("Image successfully uploaded to S3");
+                  axios
+                    .post(`http://tourviewarserver-dev.us-west-1.elasticbeanstalk.com/api/skyboximage`, {
+                      img_url: results.data.publicUrl,
+                      count: results.data.id
+                    })
+                    .then(() => {
+                        changeARButtonState(true);
+                    })
+                    .catch(err => alert(err));
+                } else {
+                  alert("Error while sending the image to S3");
+                }
+              }
+            };
+            xhr.setRequestHeader("Content-Type", "image/jpeg");
+            xhr.send({
+              uri: source.uri,
+              type: "image/jpeg",
+              name: "pickertest.jpg"
+            });
+          })
+          .catch(err => alert(JSON.stringify(err)));
+        }
+
       } else {
+        if (props.num === 1) {
           props.setIsEditable(true);
           props.setIsNew(true);
-          const source = { uri: response.uri };
-          // alert(JSON.stringify(source));
-          axios
-            .get(
-              `http://tourviewarserver-dev.us-west-1.elasticbeanstalk.com/api/getpresignedurlforskybox/panoimages`
-            )
-            .then(results => {
-              const xhr = new XMLHttpRequest();
-              xhr.open("PUT", results.data.presignedUrl);
-              xhr.onreadystatechange = function() {
-                if (xhr.readyState === 4) {
-                  if (xhr.status === 200) {
-                    // alert("Image successfully uploaded to S3");
-                    axios
-                      .post(`http://tourviewarserver-dev.us-west-1.elasticbeanstalk.com/api/newtour`, {
-                        id: results.data.id,
-                        img_url: results.data.publicUrl,
-                        tour_name: props.selectTourName,
-                        id_user: props.selectUserId
-                      })
-                      .then(results => {
-                        props.setTourId(results.data.tourid);
-                        return results.data.tourid;
-                      })
-                      .then(id_tour => {
-                        axios
-                          .get(
-                            `http://tourviewarserver-dev.us-west-1.elasticbeanstalk.com/api/scenes/${id_tour}`
-                          )
-                          .then(results => {
-                            props.setTourPanos(results.data.rows);
-                            changeARButtonState(true);
-                          })
-                          .catch(err => console.log(err));
-                      })
-                      .catch(err => alert(err));
-                  } else {
-                    alert("Error while sending the image to S3");
-                  }
+          axios.get(
+            `http://tourviewarserver-dev.us-west-1.elasticbeanstalk.com/api/getpresignedurlforskybox/panoimages`, {
+              index: props.num
+            }
+          )
+          .then(results => {
+            const xhr = new XMLHttpRequest();
+            xhr.open("PUT", results.data.url);
+            xhr.onreadystatechange = function() {
+              if (xhr.readyState === 4) {
+                if (xhr.status === 200) {
+                  // alert("Image successfully uploaded to S3");
+                  axios
+                    .post(`http://tourviewarserver-dev.us-west-1.elasticbeanstalk.com/api/skyboxtours`, {
+                      img_url: results.data.publicUrl,
+                      tour_name: props.selectTourName,
+                      id_user: props.selectUserId
+                    })
+                    .then(results => {
+                      props.setTourId(results.data.tourid);
+                      return results.data.tourid;
+                    })
+                    .then(id_tour => {
+                        changeARButtonState(true);
+                    })
+                    .catch(err => alert(err));
+                } else {
+                  alert("Error while sending the image to S3");
                 }
-              };
-              xhr.setRequestHeader("Content-Type", "image/jpeg");
-              xhr.send({
-                uri: source.uri,
-                type: "image/jpeg",
-                name: "pickertest.jpg"
-              });
-            })
-            .catch(err => alert(JSON.stringify(err)));
+              }
+            };
+            xhr.setRequestHeader("Content-Type", "image/jpeg");
+            xhr.send({
+              uri: source.uri,
+              type: "image/jpeg",
+              name: "pickertest.jpg"
+            });
+          })
+          .catch(err => alert(JSON.stringify(err)));
+        } else {
+          axios.get(
+            `http://tourviewarserver-dev.us-west-1.elasticbeanstalk.com/api/getpresignedurlforskybox/panoimages`, {
+              index: props.num
+            }
+          )
+          .then(results => {
+            const xhr = new XMLHttpRequest();
+            xhr.open("PUT", results.data.url);
+            xhr.onreadystatechange = function() {
+              if (xhr.readyState === 4) {
+                if (xhr.status === 200) {
+                  // alert("Image successfully uploaded to S3");
+                  axios
+                    .post(`http://tourviewarserver-dev.us-west-1.elasticbeanstalk.com/api/skyboximage`, {
+                      img_url: results.data.publicUrl,
+                      count: results.data.id
+                    })
+                    .then(() => {
+                        changeARButtonState(true);
+                    })
+                    .catch(err => alert(err));
+                } else {
+                  alert("Error while sending the image to S3");
+                }
+              }
+            };
+            xhr.setRequestHeader("Content-Type", "image/jpeg");
+            xhr.send({
+              uri: source.uri,
+              type: "image/jpeg",
+              name: "pickertest.jpg"
+            });
+          })
+          .catch(err => alert(JSON.stringify(err)));
         }
+      }
     });
   };
   return (
@@ -162,22 +213,28 @@ const SkyboxCamera = props => {
       <Right />
     </Header>
       <Content style={{...styles.container, backgroundColor: '#49beb7'}}>
-        {props.forobject ? (
+        {props.forscene ? (
           <View>
             {renderARButton ? (
               <Button 
               style={{backgroundColor: '#fe5f55', 
               width: width * 0.6, 
             }}
-              onPress={() => props.navigate("EDIT_AR_PAGE")}>
-                <Text style={{color: 'white'}}>Go To AR Scene</Text>
+              onPress={() => {
+                if (props.num === 6) {
+                  props.navigate("EDIT_AR_PAGE");
+                } else {
+                  props.navigate(`SKYBOX_GUIDE_${props.num+1}_SCENE`);
+                }
+              }}>
+                <Text style={{color: 'white'}}>{props.num === 6 ? `Go To AR Scene` : phases[props.num + 1]}</Text>
               </Button>
             ) : (
               <Text
-                style={{ color: "#3FA4F0" }}
-                onPress={() => takePhoto(propsvalue())}
+                style={{ color: "white" }}
+                onPress={() => takePhoto()}
               >
-                Take A Photo
+                {phases[props.num]}
               </Text>
             )}
           </View>
@@ -188,15 +245,21 @@ const SkyboxCamera = props => {
               style={{backgroundColor: '#fe5f55', 
               width: width * 0.6, 
               }}
-              onPress={() => props.forscene ? (props.navigate("EDIT_AR_PAGE")) : (props.navigate("CREATE_AR_PAGE"))}>
-                <Text style={{color: 'white'}}>Go To AR Scene</Text>
+              onPress={() => {
+                if (props.num === 6) {
+                  props.navigate("CREATE_AR_PAGE");
+                } else {
+                  props.navigate(`SKYBOX_GUIDE_${props.num+1}`);
+                }
+              }}>
+                <Text style={{color: 'white'}}>{props.num === 6 ? `Go To AR Scene` : phases[props.num + 1]}</Text>
               </Button>
             ) : (
               <Text
-                style={{ color: "#3FA4F0" }}
-                onPress={() => takePhoto(propsvalue())}
+                style={{ color: "white" }}
+                onPress={() => takePhoto()}
               >
-                Take A Photo
+              {phases[props.num]}
               </Text>
             )}
           </View>
@@ -256,7 +319,8 @@ const mapStateToProps = state => {
     selectTourId: selectTourId(state),
     selectUserId: selectUserId(state),
     selectPanoId: selectPanoId(state),
-    selectTourPanos: selectTourPanos(state)
+    selectTourPanos: selectTourPanos(state),
+    selectSkyboxId: selectSkyboxId(state)
   };
 };
 
@@ -267,7 +331,8 @@ const mapDispatchToProps = dispatch => {
     setTourPanos: tours => dispatch(setTourPanos(tours)),
     setIsEditable: bool => dispatch(setIsEditable(bool)),
     setIsNew: bool => dispatch(setIsNew(bool)),
-    setPanoId: id => dispatch(setPanoId(id))
+    setPanoId: id => dispatch(setPanoId(id)),
+    setSkyboxId: id => dispatch(setSkyboxId(id))
   };
 };
 

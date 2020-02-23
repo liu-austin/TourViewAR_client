@@ -1,3 +1,4 @@
+// jshint esversion:6
 import React, { Component } from "react";
 
 import axios from "axios";
@@ -81,7 +82,8 @@ import Profile from "./Profile";
 import Search from "./Search";
 
 import ImageUpload from "./ImagePicker";
-
+import SkyboxCamera from "./SkyboxCamera";
+import SkyboxGuide from "./SkyboxGuide";
 import UseCamera from "./Camera";
 import CreateTextObject from "./CreateTextObject";
 import Create from "./Create";
@@ -121,6 +123,31 @@ var CREATE_OPTIONS_SCENE = "CREATE_OPTIONS_SCENE";
 var CAMERA_PAGE_SCENE = "CAMERA_PAGE_SCENE";
 var IMAGE_PICKER_PAGE_SCENE = "IMAGE_PICKER_PAGE_SCENE";
 var TAKE_PHOTO = "TAKE_PHOTO";
+var SKYBOX_1_SCENE = "SKYBOX_1_SCENE";
+var SKYBOX_2_SCENE = "SKYBOX_2_SCENE";
+var SKYBOX_3_SCENE = "SKYBOX_3_SCENE";
+var SKYBOX_4_SCENE = "SKYBOX_4_SCENE";
+var SKYBOX_5_SCENE = "SKYBOX_5_SCENE";
+var SKYBOX_6_SCENE = "SKYBOX_6_SCENE";
+var SKYBOX_1 = "SKYBOX_1";
+var SKYBOX_2 = "SKYBOX_2";
+var SKYBOX_3 = "SKYBOX_3";
+var SKYBOX_4 = "SKYBOX_4";
+var SKYBOX_5 = "SKYBOX_5";
+var SKYBOX_6 = "SKYBOX_6";
+var SKYBOX_GUIDE_1_SCENE = "SKYBOX_GUIDE_1_SCENE";
+var SKYBOX_GUIDE_2_SCENE = "SKYBOX_GUIDE_2_SCENE";
+var SKYBOX_GUIDE_3_SCENE = "SKYBOX_GUIDE_3_SCENE";
+var SKYBOX_GUIDE_4_SCENE = "SKYBOX_GUIDE_4_SCENE";
+var SKYBOX_GUIDE_5_SCENE = "SKYBOX_GUIDE_5_SCENE";
+var SKYBOX_GUIDE_6_SCENE = "SKYBOX_GUIDE_6_SCENE";
+var SKYBOX_GUIDE_1 = "SKYBOX_GUIDE_1";
+var SKYBOX_GUIDE_2 = "SKYBOX_GUIDE_2";
+var SKYBOX_GUIDE_3 = "SKYBOX_GUIDE_3";
+var SKYBOX_GUIDE_4 = "SKYBOX_GUIDE_4";
+var SKYBOX_GUIDE_5 = "SKYBOX_GUIDE_5";
+var SKYBOX_GUIDE_6 = "SKYBOX_GUIDE_6";
+
 // This determines which type of experience to launch in, or UNSET, if the user should
 // be presented with a choice of AR or VR. By default, we offer the user a choice.
 var defaultNavigatorType = UNSET;
@@ -159,6 +186,10 @@ class Login extends Component {
     this._createTextObject = this._createTextObject.bind(this);
     this._saveChanges = this._saveChanges.bind(this);
     this._takePhoto = this._takePhoto.bind(this);
+    this._skybox = this._skybox.bind(this);
+    this._skybox_guide = this._skybox_guide.bind(this);
+
+
     // this._addScenePhoto = this._addScenePhoto.bind(this);
     // this._uploadScenePhoto = this._uploadScenePhoto.bind(this);
   }
@@ -207,7 +238,63 @@ class Login extends Component {
       return this._getImageUpload(false, true);
     } else if (this.props.selectNavigator === TAKE_PHOTO) {
       return this._takePhoto();
+    } else if (this.props.selectNavigator === SKYBOX_1) {
+      return this._skybox(1, false);
+    } else if (this.props.selectNavigator === SKYBOX_2) {
+      return this._skybox(2, false);
+    } else if (this.props.selectNavigator === SKYBOX_3) {
+      return this._skybox(3, false);
+    } else if (this.props.selectNavigator === SKYBOX_4) {
+      return this._skybox(4, false);
+    } else if (this.props.selectNavigator === SKYBOX_5) {
+      return this._skybox(5, false);
+    } else if (this.props.selectNavigator === SKYBOX_6) {
+      return this._skybox(6, false);
+    } else if (this.props.selectNavigator === SKYBOX_1_SCENE) {
+      return this._skybox(1, true);
+    } else if (this.props.selectNavigator === SKYBOX_2_SCENE) {
+      return this._skybox(2, true);
+    } else if (this.props.selectNavigator === SKYBOX_3_SCENE) {
+      return this._skybox(3, true);
+    } else if (this.props.selectNavigator === SKYBOX_4_SCENE) {
+      return this._skybox(4, true);
+    } else if (this.props.selectNavigator === SKYBOX_5_SCENE) {
+      return this._skybox(5, true);
+    } else if (this.props.selectNavigator === SKYBOX_6_SCENE) {
+      return this._skybox(6, true);
+    } else if (this.props.selectNavigator === SKYBOX_GUIDE_1) {
+      return this._skybox_guide(1, false);
+    } else if (this.props.selectNavigator === SKYBOX_GUIDE_2) {
+      return this._skybox_guide(2, false);
+    } else if (this.props.selectNavigator === SKYBOX_GUIDE_3) {
+      return this._skybox_guide(3, false);
+    } else if (this.props.selectNavigator === SKYBOX_GUIDE_4) {
+      return this._skybox_guide(4, false);
+    } else if (this.props.selectNavigator === SKYBOX_GUIDE_5) {
+      return this._skybox_guide(5, false);
+    } else if (this.props.selectNavigator === SKYBOX_GUIDE_6) {
+      return this._skybox_guide(6, false);
+    } else if (this.props.selectNavigator === SKYBOX_GUIDE_1_SCENE) {
+      return this._skybox_guide(1, true);
+    } else if (this.props.selectNavigator === SKYBOX_GUIDE_2_SCENE) {
+      return this._skybox_guide(2, true);
+    } else if (this.props.selectNavigator === SKYBOX_GUIDE_3_SCENE) {
+      return this._skybox_guide(3, true);
+    } else if (this.props.selectNavigator === SKYBOX_GUIDE_4_SCENE) {
+      return this._skybox_guide(4, true);
+    } else if (this.props.selectNavigator === SKYBOX_GUIDE_5_SCENE) {
+      return this._skybox_guide(5, true);
+    } else if (this.props.selectNavigator === SKYBOX_GUIDE_6_SCENE) {
+      return this._skybox_guide(6, true);
     } 
+  }
+
+  _skybox(num, forscene) {
+    return (<SkyboxCamera num={num} forscene={forscene}/>);
+  }
+
+  _skybox_guide(num, forscene) {
+    return (<SkyboxGuide num={num} forscene={forscene}/>);
   }
 
   _createOptionsScene() {

@@ -36,3 +36,8 @@ export const selectIsNew= createSelector(
   [selectTour],
   tour => tour.isnew
 );
+
+export const selectSkyboxId= createSelector(
+  [selectTour],
+  tour => tour.skybox_id
+);
