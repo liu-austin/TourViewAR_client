@@ -6,7 +6,8 @@ const INITIAL_STATE = {
   pic_url: 'something random',
   iseditable: false,
   isnew: false,
-  skybox_id: null
+  skybox_id: null,
+  sbindex: 0
 }
 
 const TourReducer = (state=INITIAL_STATE, action) => {
@@ -50,6 +51,11 @@ const TourReducer = (state=INITIAL_STATE, action) => {
       return ({
         ...state,
         skybox_id: action.payload
+      });
+    case 'SET_SB_INDEX':
+      return ({
+        ...state,
+        sb_index: action.payload
       });
     default:
       return state;

@@ -41,3 +41,8 @@ export const selectSkyboxId= createSelector(
   [selectTour],
   tour => tour.skybox_id
 );
+
+export const selectSbIndex= createSelector(
+  [selectTour],
+  tour => tour.sbindex
+);

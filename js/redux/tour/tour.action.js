@@ -53,3 +53,10 @@ export const setSkyboxId = id => {
     payload: id
   }
 };
+
+export const setSbIndex = index => {
+  return {
+    type: "SET_SB_INDEX",
+    payload: index
+  }
+};

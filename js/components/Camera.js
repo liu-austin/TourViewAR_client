@@ -4,7 +4,7 @@ import ImagePicker from "react-native-image-picker";
 import { connect } from "react-redux";
 import { navigate } from "../redux/render/render.action";
 import { selectUserId } from "../redux/user/user.selectors";
-import { setTourId, setIsEditable, setIsNew } from "../redux/tour/tour.action";
+import { setTourId, setIsEditable, setIsNew, setSbIndex } from "../redux/tour/tour.action";
 import { selectTourName, selectTourId } from "../redux/tour/tour.selectors";
 import { setTourPanos, setPanoId } from "../redux/pano/pano.action";
 import { selectPanoId, selectTourPanos } from "../redux/pano/pano.selectors";
@@ -33,7 +33,7 @@ const UseCamera = props => {
     return props.forobject;
   };
 
-  const takePhoto = bool => {
+  const takePhoto = () => {
     let options = {
       storageOptions: {
         cameraRoll: true,
@@ -142,6 +142,7 @@ const UseCamera = props => {
         } else {
           props.setIsEditable(true);
           props.setIsNew(true);
+          props.setSbIndex(0);
           const source = { uri: response.uri };
           // alert(JSON.stringify(source));
           axios
@@ -204,8 +205,7 @@ const UseCamera = props => {
           style={{backgroundColor: '#fe5f55'}}
           onPress={() => {
             props.navigate("REACT_NATIVE_HOME");
-          }}
-        >
+          }}>
           <Text style={{color: 'white'}}>Back</Text>
         </Button>
       </Left>
@@ -226,8 +226,7 @@ const UseCamera = props => {
             ) : (
               <Text
                 style={{ color: "#3FA4F0" }}
-                onPress={() => takePhoto(propsvalue())}
-              >
+                onPress={() => takePhoto()}>
                 Take A Photo
               </Text>
             )}
@@ -245,7 +244,7 @@ const UseCamera = props => {
             ) : (
               <Text
                 style={{ color: "#3FA4F0" }}
-                onPress={() => takePhoto(propsvalue())}
+                onPress={() => takePhoto()}
               >
                 Take A Photo
               </Text>
@@ -318,7 +317,8 @@ const mapDispatchToProps = dispatch => {
     setTourPanos: tours => dispatch(setTourPanos(tours)),
     setIsEditable: bool => dispatch(setIsEditable(bool)),
     setIsNew: bool => dispatch(setIsNew(bool)),
-    setPanoId: id => dispatch(setPanoId(id))
+    setPanoId: id => dispatch(setPanoId(id)),
+    setSbIndex: index => dispatch(setSbIndex(index))
   };
 };
 

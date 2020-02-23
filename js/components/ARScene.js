@@ -34,7 +34,10 @@ export default class HelloWorldSceneAR extends Component {
       draggedtox: null,
       draggedtoy: null,
       sceneloaded: false,
-      uri: ''
+      uri: '',
+      sb: [],
+      sbimages: [],
+      usesb: false
     };
     this._onInitialized = this._onInitialized.bind(this);
     this._onDragCreate = this._onDragCreate.bind(this);
@@ -43,14 +46,21 @@ export default class HelloWorldSceneAR extends Component {
   }
 
   componentDidMount() {
+      axios.get(`http://tourviewarserver-dev.us-west-1.elasticbeanstalk.com/api/tour/${this.props.sceneNavigator.viroAppProps.selectTourId}`)
+      .then(results => {
+          this.setState({sb: results.data.rows[0].sb}, () => {
+          if (this.state.sb[this.props.sceneNavigator.viroAppProps.selectSbIndex]) {
+            axios.get(`http://tourviewarserver-dev.us-west-1.elasticbeanstalk.com/api/getskybox`, {
+                count: results.data.rows[0].skybox_photos[this.state.sb.slice(0, this.props.sceneNavigator.viroAppProps.selectSbIndex + 1).filter(elem => elem).length]
+            }).then((skyboxphotos) => this.setState({sbimages: skyboxphotos.data.rows}, () => this.setState({usesb: true}))).catch(err => console.log(err))
+          }
+        })}).catch(err => console.log(err));
     if (!this.props.sceneNavigator.viroAppProps.selectIsNew && this.props.sceneNavigator.viroAppProps.selectIsEditable && !this.props.sceneNavigator.viroAppProps.goBack) {
       // alert('In Edit')
       this.setState({uri: this.props.sceneNavigator.viroAppProps.selectTourPanos[this.props.sceneNavigator.viroAppProps.selectSceneHistory.length - 1].img_url}, () => {
         this.props.sceneNavigator.viroAppProps.setSelectedText('');
         axios.get(`http://tourviewarserver-dev.us-west-1.elasticbeanstalk.com/api/objects/${this.props.sceneNavigator.viroAppProps.selectTourPanos[this.props.sceneNavigator.viroAppProps.selectSceneHistory.length-1].id}`)
           .then(results => {
-            // alert(JSON.stringify(this.props.sceneNavigator.viroAppProps.selectSceneHistory))
-            // alert(JSON.stringify(results.data.rows))
             this.setState({
               objects: results.data.rows
             });
@@ -61,17 +71,14 @@ export default class HelloWorldSceneAR extends Component {
           });
       });
     } else if (this.props.sceneNavigator.viroAppProps.selectIsNew) {
-      // alert('In New')
-      // this.props.sceneNavigator.viroAppProps.setGoBack(false);
+
       this.props.sceneNavigator.viroAppProps.setSelectedText('');
       this.props.sceneNavigator.viroAppProps.setSceneHistory([this.props.sceneNavigator.viroAppProps.selectTourPanos[0].id]);
       this.setState({uri: this.props.sceneNavigator.viroAppProps.selectTourPanos[0].img_url});
       this.props.sceneNavigator.viroAppProps.setPanoId(this.props.sceneNavigator.viroAppProps.selectTourPanos[0].id);
       // alert(JSON.stringify(this.props.sceneNavigator.viroAppProps.selectSceneHistory))
     } else {
-      // alert('In Else')
-      // this.props.sceneNavigator.viroAppProps.setGoBack(false);
-      // alert(JSON.stringify(this.props.sceneNavigator.viroAppProps.selectTourPanos));
+
       this.props.sceneNavigator.viroAppProps.setSelectedText('');
       this.props.sceneNavigator.viroAppProps.setSceneHistory([this.props.sceneNavigator.viroAppProps.selectTourPanos[0].id]);
       this.setState({uri: this.props.sceneNavigator.viroAppProps.selectTourPanos[0].img_url});
@@ -90,11 +97,26 @@ export default class HelloWorldSceneAR extends Component {
   render() {
     return (
       <ViroARScene onTrackingUpdated={this._onInitialized}>
-        <Viro360Image
-          source={{uri: this.state.uri}}
-          onLoadStart={() => this.setState({sceneloaded: false})}
-          onLoadEnd={() => this.setState({sceneloaded: true})}
-        />
+      {
+          this.state.usesb && this.state.sbimages.length ? 
+          (
+            <ViroSkyBox source={{nx:require(this.state.sbimages[0].img_url),
+                     px:require(this.state.sbimages[1].img_url),
+                     ny:require(this.state.sbimages[2].img_url),
+                     py:require(this.state.sbimages[3].img_url),
+                     nz:require(this.state.sbimages[4].img_url),
+                     pz:require(this.state.sbimages[5].img_url)}} />
+          ) 
+          : 
+          (
+            <Viro360Image
+            source={{uri: this.state.uri}}
+            onLoadStart={() => this.setState({sceneloaded: false})}
+            onLoadEnd={() => this.setState({sceneloaded: true})}
+          />
+          )
+      }
+
         <ViroNode
           position={[-0.75, -0.75, 0]}
           dragType="FixedDistance"

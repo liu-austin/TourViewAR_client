@@ -49,7 +49,8 @@ import { setObjectId, setSelectedText } from "../redux/object/object.action";
 import { selectObjectId, selectSelectedText } from "../redux/object/object.selectors";
 
 import { selectTourPanos, selectPanoId, selectSceneHistory, selectGoBack } from "../redux/pano/pano.selectors";
-
+import { selectTourId, selectSbIndex } from "../redux/tour/tour.selectors";
+import { setSbIndex } from "../redux/tour/tour.action";
 import {
   setObjectXCoordinate,
   setObjectYCoordinate,
@@ -456,6 +457,7 @@ class Login extends Component {
             setObjectId: this.props.setObjectId,
             selectIsNew: false,
             selectIsEditable: false,
+            selectTourId: this.props.selectTourId,
             selectTourPanos: this.props.selectTourPanos,
             setObjectXCoordinate: this.props.setObjectXCoordinate,
             setObjectYCoordinate: this.props.setObjectYCoordinate,
@@ -464,7 +466,9 @@ class Login extends Component {
             selectObjectXCoordinate: this.props.selectObjectXCoordinate,
             selectObjectYCoordinate: this.props.selectObjectYCoordinate,
             setSceneHistory: this.props.setSceneHistory,
-            selectSceneHistory: this.props.selectSceneHistory
+            selectSceneHistory: this.props.selectSceneHistory,
+            selectSbIndex: this.props.selectSbIndex,
+            setSbIndex: this.props.setSbIndex
           }}
           initialScene={{ scene: InitialARScene }}
         />
@@ -517,6 +521,7 @@ class Login extends Component {
             setSelectedText: this.props.setSelectedText,
             selectSelectedText: this.props.selectSelectedText,
             selectObjectId: this.props.selectObjectId,
+            selectTourId: this.props.selectTourId,
             selectPanoId: this.props.selectPanoId,
             setPanoId: this.props.setPanoId,
             setObjectId: this.props.setObjectId,
@@ -524,7 +529,9 @@ class Login extends Component {
             selectIsEditable: true,
             selectTourPanos: this.props.selectTourPanos,
             setSceneHistory: this.props.setSceneHistory,
-            selectSceneHistory: this.props.selectSceneHistory
+            selectSceneHistory: this.props.selectSceneHistory,
+            selectSbIndex: this.props.selectSbIndex,
+            setSbIndex: this.props.setSbIndex
           }}
           initialScene={{ scene: InitialARScene }}
         />
@@ -606,6 +613,7 @@ class Login extends Component {
             setObjectId: this.props.setObjectId,
             selectIsNew: false,
             selectIsEditable: true,
+            selectTourId: this.props.selectTourId,
             selectTourPanos: this.props.selectTourPanos,
             setObjectXCoordinate: this.props.setObjectXCoordinate,
             setObjectYCoordinate: this.props.setObjectYCoordinate,
@@ -614,7 +622,9 @@ class Login extends Component {
             selectObjectXCoordinate: this.props.selectObjectXCoordinate,
             selectObjectYCoordinate: this.props.selectObjectYCoordinate,
             setSceneHistory: this.props.setSceneHistory,
-            selectSceneHistory: this.props.selectSceneHistory
+            selectSceneHistory: this.props.selectSceneHistory,
+            selectSbIndex: this.props.selectSbIndex,
+            setSbIndex: this.props.setSbIndex
           }}
           initialScene={{ scene: InitialARScene }}
         />
@@ -977,7 +987,8 @@ const mapDispatchToProps = dispatch => {
     setObjectZCoordinate: z => dispatch(setObjectZCoordinate(z)),
     setSelectedText: text => dispatch(setSelectedText(text)),
     setSceneHistory: scenes => dispatch(setSceneHistory(scenes)),
-    setGoBack: bool => dispatch(setGoBack(bool))
+    setGoBack: bool => dispatch(setGoBack(bool)),
+    setSbIndex: index => dispatch(setSbIndex(index))
   };
 };
 const mapStateToProps = state => {
@@ -986,6 +997,8 @@ const mapStateToProps = state => {
     selectUserName: selectUserName(state),
     selectUserPassword: selectUserPassword(state),
     selectTourPanos: selectTourPanos(state),
+    selectTourId: selectTourId(state),
+    selectSbIndex: selectSbIndex(state),
     selectPanoId: selectPanoId(state),
     selectObjectId: selectObjectId(state),
     selectObjectXCoordinate: selectObjectXCoordinate(state),
