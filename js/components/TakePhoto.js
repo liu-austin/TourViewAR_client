@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, View, Dimensions } from "react-native";
+import { Image, StyleSheet, View, Dimensions } from "react-native";
 import ImagePicker from "react-native-image-picker";
 import { connect } from "react-redux";
 import { navigate } from "../redux/render/render.action";
@@ -52,13 +52,19 @@ const TakePhoto = props => {
         <Right />
       </Header>
       <Content style={{...styles.container, backgroundColor: '#49beb7'}}>
-            <View style={{alignContent: "center", justifyContent: "center", width: width * 0.6, marginLeft: width * 0.2, marginTop: height * 0.3}}>
+            <View style={{ alignItems: "center", marginTop: height * 0.15 }}>
+                <Image
+                  source={require("../res/camera.png")}
+                  style={{ height: width * 0.6, width: width * 0.6 }}
+                />
+            </View>
+            <View style={{alignContent: "center", justifyContent: "center", width: width * 0.6, marginLeft: width * 0.2, marginTop: height * 0.15}}>
                 <Text style={{color: 'white', alignItems: 'center'}}>
                     Use your device camera to take a photo and store it in the device camera roll for later use.
                 </Text>
             </View>
             <View style={{alignContent: "center", justifyContent: "center", marginLeft: width * 0.2}}>
-                <Button style={{marginTop: height * 0.1, backgroundColor: '#fe5f55', width: width * 0.6,
+                <Button style={{marginTop: height * 0.025, backgroundColor: '#fe5f55', width: width * 0.6,
                 alignItems: 'center'}}
                 onPress={() => takePhoto()}>
                     <Text style={{alignContent: "center"}}>

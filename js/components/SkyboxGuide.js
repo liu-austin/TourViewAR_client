@@ -72,7 +72,7 @@ const SkyboxGuide = props => {
         </View>
         <View style={{ alignItems: "center", marginTop: width * 0.075 }}>
           <Image
-            source={require("../res/skybox.png")}
+            source={require("../res/skybox.jpg")}
             style={{ height: width * 0.15, width: width * 0.15 }}
           />
       </View>

@@ -46,7 +46,7 @@ import {
 import { setPanoId, setSceneHistory, setGoBack } from "../redux/pano/pano.action";
 
 import { setObjectId, setSelectedText, setForSb, setObjSceneCap } from "../redux/object/object.action";
-import { selectObjectId, selectSelectedText, selectForSb, setObjSceneCap } from "../redux/object/object.selectors";
+import { selectObjectId, selectSelectedText, selectForSb, selectObjSceneCap } from "../redux/object/object.selectors";
 
 import { selectTourPanos, selectPanoId, selectSceneHistory, selectGoBack } from "../redux/pano/pano.selectors";
 import { selectTourId, selectSbIndex, selectPanoIndex, selectSkyboxId } from "../redux/tour/tour.selectors";
@@ -754,7 +754,7 @@ class Login extends Component {
       )
       // .then(() => console.log(this.props.selectUserName))
       .then(results => {
-        alert(`Welcome Back ${JSON.stringify(results.data.rows[0].username)} to TourViewAR.`);
+        alert(`Welcome Back To TourViewAR, ${results.data.rows[0].username}.`);
         if (
           results.data.rows[0].username === this.props.selectUserName &&
           results.data.rows[0].pw === this.props.selectUserPassword

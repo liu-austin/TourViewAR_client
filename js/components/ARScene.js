@@ -15,10 +15,10 @@ import {
 
 import axios from "axios";
 
-const SceneElement = require("./custom_controls/SceneElement");
-const TextElement = require("./custom_controls/TextElement");
-const InfoElement = require("./custom_controls/InfoElement");
-const BackElement = require("./custom_controls/BackElement");
+const SceneElement = require("../custom_controls/SceneElement");
+const TextElement = require("../custom_controls/TextElement");
+const InfoElement = require("../custom_controls/InfoElement");
+const BackElement = require("../custom_controls/BackElement");
 
 let polarToCartesian = ViroUtils.polarToCartesian;
 
@@ -169,12 +169,12 @@ export default class HelloWorldSceneAR extends Component {
       {
           this.state.usesb && this.state.sbimages.length ? 
           (
-            <ViroSkyBox source={{nx:require(this.state.sbimages[0].img_url),
-                     px:require(this.state.sbimages[1].img_url),
-                     ny:require(this.state.sbimages[2].img_url),
-                     py:require(this.state.sbimages[3].img_url),
-                     nz:require(this.state.sbimages[4].img_url),
-                     pz:require(this.state.sbimages[5].img_url)}} />
+            <ViroSkyBox source={{nx: {uri: this.state.sbimages[0].img_url},
+                     px: {uri: this.state.sbimages[1].img_url},
+                     ny: {uri: this.state.sbimages[2].img_url},
+                     py: {uri: this.state.sbimages[3].img_url},
+                     nz: {uri: this.state.sbimages[4].img_url},
+                     pz: {uri: this.state.sbimages[5].img_url}}} />
           ) 
           : 
           (
@@ -453,31 +453,31 @@ export default class HelloWorldSceneAR extends Component {
 }
 
 /* ----- COMPONENT STYLES ----- */
-ViroMaterials.createMaterials({
-  bg: {
-    diffuseTexture: {uri: "https://lh3.googleusercontent.com/dB3Dvgf3VIglusoGJAfpNUAANhTXW8K9mvIsiIPkhJUAbAKGKJcEMPTf0mkSexzLM5o=w300"},
-  },
-  grid: {
-    diffuseTexture: require("./res/grid_bg.jpg")
-  },
-  frontMaterial: {
-    diffuseColor: '#FFFFFF',
-  },
-  backMaterial: {
-    diffuseColor: '#FF0000',
-  },
-  sideMaterial: {
-    diffuseColor: '#0000FF',
-  },
-});
+// ViroMaterials.createMaterials({
+//   bg: {
+//     diffuseTexture: {uri: "https://lh3.googleusercontent.com/dB3Dvgf3VIglusoGJAfpNUAANhTXW8K9mvIsiIPkhJUAbAKGKJcEMPTf0mkSexzLM5o=w300"},
+//   },
+//   grid: {
+//     diffuseTexture: require("../res")
+//   },
+//   frontMaterial: {
+//     diffuseColor: '#FFFFFF',
+//   },
+//   backMaterial: {
+//     diffuseColor: '#FF0000',
+//   },
+//   sideMaterial: {
+//     diffuseColor: '#0000FF',
+//   },
+// });
 
-ViroAnimations.registerAnimations({
-  rotate: {
-    properties: {
-      rotateY: "+=90"
-    },
-    duration: 250
-  }
-});
+// ViroAnimations.registerAnimations({
+//   rotate: {
+//     properties: {
+//       rotateY: "+=90"
+//     },
+//     duration: 250
+//   }
+// });
 
 module.exports = HelloWorldSceneAR;
