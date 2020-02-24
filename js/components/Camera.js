@@ -4,7 +4,7 @@ import ImagePicker from "react-native-image-picker";
 import { connect } from "react-redux";
 import { navigate } from "../redux/render/render.action";
 import { selectUserId } from "../redux/user/user.selectors";
-import { setTourId, setIsEditable, setIsNew, setSbIndex } from "../redux/tour/tour.action";
+import { setTourId, setIsEditable, setIsNew, setSbIndex, setPanoIndex } from "../redux/tour/tour.action";
 import { selectTourName, selectTourId } from "../redux/tour/tour.selectors";
 import { setTourPanos, setPanoId } from "../redux/pano/pano.action";
 import { selectPanoId, selectTourPanos } from "../redux/pano/pano.selectors";
@@ -143,6 +143,7 @@ const UseCamera = props => {
           props.setIsEditable(true);
           props.setIsNew(true);
           props.setSbIndex(0);
+          props.setPanoIndex(0);
           const source = { uri: response.uri };
           // alert(JSON.stringify(source));
           axios
@@ -318,7 +319,8 @@ const mapDispatchToProps = dispatch => {
     setIsEditable: bool => dispatch(setIsEditable(bool)),
     setIsNew: bool => dispatch(setIsNew(bool)),
     setPanoId: id => dispatch(setPanoId(id)),
-    setSbIndex: index => dispatch(setSbIndex(index))
+    setSbIndex: index => dispatch(setSbIndex(index)),
+    setPanoIndex: index => dispatch(setPanoIndex(index))
   };
 };
 

@@ -45,12 +45,12 @@ import {
 
 import { setPanoId, setSceneHistory, setGoBack } from "../redux/pano/pano.action";
 
-import { setObjectId, setSelectedText } from "../redux/object/object.action";
-import { selectObjectId, selectSelectedText } from "../redux/object/object.selectors";
+import { setObjectId, setSelectedText, setForSb, setObjSceneCap } from "../redux/object/object.action";
+import { selectObjectId, selectSelectedText, selectForSb, setObjSceneCap } from "../redux/object/object.selectors";
 
 import { selectTourPanos, selectPanoId, selectSceneHistory, selectGoBack } from "../redux/pano/pano.selectors";
-import { selectTourId, selectSbIndex } from "../redux/tour/tour.selectors";
-import { setSbIndex } from "../redux/tour/tour.action";
+import { selectTourId, selectSbIndex, selectPanoIndex, selectSkyboxId } from "../redux/tour/tour.selectors";
+import { setSbIndex, setPanoIndex, setSkyboxId } from "../redux/tour/tour.action";
 import {
   setObjectXCoordinate,
   setObjectYCoordinate,
@@ -468,7 +468,13 @@ class Login extends Component {
             setSceneHistory: this.props.setSceneHistory,
             selectSceneHistory: this.props.selectSceneHistory,
             selectSbIndex: this.props.selectSbIndex,
-            setSbIndex: this.props.setSbIndex
+            setSbIndex: this.props.setSbIndex,
+            selectPanoIndex: this.props.selectPanoIndex,
+            setPanoIndex: this.props.setPanoIndex,
+            setSkyboxId: this.props.setSkyboxId,
+            selectSkyboxId: this.props.selectSkyboxId,
+            setForSb: this.props.setForSb,
+            setObjSceneCap: this.props.setObjSceneCap
           }}
           initialScene={{ scene: InitialARScene }}
         />
@@ -531,7 +537,13 @@ class Login extends Component {
             setSceneHistory: this.props.setSceneHistory,
             selectSceneHistory: this.props.selectSceneHistory,
             selectSbIndex: this.props.selectSbIndex,
-            setSbIndex: this.props.setSbIndex
+            setSbIndex: this.props.setSbIndex,
+            selectPanoIndex: this.props.selectPanoIndex,
+            setPanoIndex: this.props.setPanoIndex,
+            setSkyboxId: this.props.setSkyboxId,
+            selectSkyboxId: this.props.selectSkyboxId,
+            setForSb: this.props.setForSb,
+            setObjSceneCap: this.props.setObjSceneCap
           }}
           initialScene={{ scene: InitialARScene }}
         />
@@ -559,7 +571,11 @@ class Login extends Component {
                 <Text style={styles.textStyle2}>ADD IMG</Text>
               </TouchableHighlight>
               <TouchableHighlight style={styles.textButton} onPress={() => {
-                  this.props.navigate("CREATE_OPTIONS_SCENE");
+                if (!this.props.selectObjSceneCap) {
+                    this.props.navigate("CREATE_OPTIONS_SCENE");
+                } else {
+                  alert('A scene cannot be routed to multiple scenes.');
+                }
                 }}>
                 <Text style={styles.textStyle2}>ADD SCENE</Text>
               </TouchableHighlight>
@@ -624,7 +640,13 @@ class Login extends Component {
             setSceneHistory: this.props.setSceneHistory,
             selectSceneHistory: this.props.selectSceneHistory,
             selectSbIndex: this.props.selectSbIndex,
-            setSbIndex: this.props.setSbIndex
+            setSbIndex: this.props.setSbIndex,
+            selectPanoIndex: this.props.selectPanoIndex,
+            setPanoIndex: this.props.setPanoIndex,
+            setSkyboxId: this.props.setSkyboxId,
+            selectSkyboxId: this.props.selectSkyboxId,
+            setForSb: this.props.setForSb,
+            setObjSceneCap: this.props.setObjSceneCap
           }}
           initialScene={{ scene: InitialARScene }}
         />
@@ -658,7 +680,11 @@ class Login extends Component {
                                 }}>ADD IMG</Text>
               </TouchableHighlight>
               <TouchableHighlight style={styles.textButton} onPress={() => {
-                  this.props.navigate("CREATE_OPTIONS_SCENE");
+                if (!this.props.selectObjSceneCap) {
+                    this.props.navigate("CREATE_OPTIONS_SCENE");
+                } else {
+                  alert('A scene cannot be routed to multiple scenes.');
+                }
                 }}>
                 <Text style={styles.textStyle2}>ADD SCENE</Text>
               </TouchableHighlight>
@@ -988,7 +1014,11 @@ const mapDispatchToProps = dispatch => {
     setSelectedText: text => dispatch(setSelectedText(text)),
     setSceneHistory: scenes => dispatch(setSceneHistory(scenes)),
     setGoBack: bool => dispatch(setGoBack(bool)),
-    setSbIndex: index => dispatch(setSbIndex(index))
+    setSbIndex: index => dispatch(setSbIndex(index)),
+    setPanoIndex: index => dispatch(setPanoIndex(index)),
+    setSkyboxId: id => dispatch(setSkyboxId(id)),
+    setForSb: bool => dispatch(setForSb(bool)),
+    setObjSceneCap: bool => dispatch(setObjSceneCap(bool))
   };
 };
 const mapStateToProps = state => {
@@ -999,6 +1029,7 @@ const mapStateToProps = state => {
     selectTourPanos: selectTourPanos(state),
     selectTourId: selectTourId(state),
     selectSbIndex: selectSbIndex(state),
+    selectPanoIndex: selectPanoIndex(state),
     selectPanoId: selectPanoId(state),
     selectObjectId: selectObjectId(state),
     selectObjectXCoordinate: selectObjectXCoordinate(state),
@@ -1006,7 +1037,10 @@ const mapStateToProps = state => {
     selectObjectZCoordinate: selectObjectZCoordinate(state),
     selectSelectedText: selectSelectedText(state),
     selectSceneHistory: selectSceneHistory(state),
-    selectGoBack: selectGoBack(state)
+    selectGoBack: selectGoBack(state),
+    selectSkyboxId: selectSkyboxId(state),
+    selectForSb: selectForSb(state),
+    selectObjSceneCap: selectObjSceneCap(state)
   };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(Login);

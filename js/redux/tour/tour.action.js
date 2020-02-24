@@ -60,3 +60,10 @@ export const setSbIndex = index => {
     payload: index
   }
 };
+
+export const setPanoIndex = index => {
+  return {
+    type: "SET_PANO_INDEX",
+    payload: index
+  }
+};

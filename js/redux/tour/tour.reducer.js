@@ -7,7 +7,8 @@ const INITIAL_STATE = {
   iseditable: false,
   isnew: false,
   skybox_id: null,
-  sbindex: 0
+  sbindex: 0,
+  panoindex: 0
 }
 
 const TourReducer = (state=INITIAL_STATE, action) => {
@@ -55,7 +56,12 @@ const TourReducer = (state=INITIAL_STATE, action) => {
     case 'SET_SB_INDEX':
       return ({
         ...state,
-        sb_index: action.payload
+        sbindex: action.payload
+      });
+    case 'SET_PANO_INDEX':
+      return ({
+        ...state,
+        panoindex: action.payload
       });
     default:
       return state;

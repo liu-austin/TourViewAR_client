@@ -2,6 +2,7 @@ import React, { Component, useState } from "react";
 import { ScrollView, View, StyleSheet, Image, Dimensions } from "react-native";
 import { connect } from "react-redux";
 import { navigate } from "../redux/render/render.action";
+import { selectForSb } from '../redux/object/object.selectors';
 import {
   Container,
   Header,
@@ -112,10 +113,15 @@ const CreateOptionsObject = props => {
     </Container>
   );
 };
+const mapStateToProps = state => {
+  return {
+    selectForSb: selectForSb(state)
+  };
+};
 
   const mapDispatchToProps = dispatch => {
     return {
       navigate: render => dispatch(navigate(render))
     };
   };
-  export default connect(null, mapDispatchToProps)(CreateOptionsObject);
+  export default connect(mapStateToProps, mapDispatchToProps)(CreateOptionsObject);

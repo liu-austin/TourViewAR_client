@@ -46,3 +46,8 @@ export const selectSbIndex= createSelector(
   [selectTour],
   tour => tour.sbindex
 );
+
+export const selectPanoIndex= createSelector(
+  [selectTour],
+  tour => tour.panoindex
+);

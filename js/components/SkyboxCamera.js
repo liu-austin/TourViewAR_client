@@ -4,7 +4,7 @@ import ImagePicker from "react-native-image-picker";
 import { connect } from "react-redux";
 import { navigate } from "../redux/render/render.action";
 import { selectUserId } from "../redux/user/user.selectors";
-import { setTourId, setIsEditable, setIsNew, setSkyboxId, setSbIndex } from "../redux/tour/tour.action";
+import { setTourId, setIsEditable, setIsNew, setSkyboxId, setSbIndex, setPanoIndex } from "../redux/tour/tour.action";
 import { selectTourName, selectTourId, selectSkyboxId } from "../redux/tour/tour.selectors";
 import { setTourPanos, setPanoId } from "../redux/pano/pano.action";
 import { selectPanoId, selectTourPanos } from "../redux/pano/pano.selectors";
@@ -119,6 +119,7 @@ const SkyboxCamera = props => {
           props.setIsEditable(true);
           props.setIsNew(true);
           props.setSbIndex(0);
+          props.setPanoIndex(0);
           axios.get(
             `http://tourviewarserver-dev.us-west-1.elasticbeanstalk.com/api/getpresignedurlforskybox/panoimages`, {
               index: props.num
@@ -334,7 +335,8 @@ const mapDispatchToProps = dispatch => {
     setIsNew: bool => dispatch(setIsNew(bool)),
     setPanoId: id => dispatch(setPanoId(id)),
     setSkyboxId: id => dispatch(setSkyboxId(id)),
-    setSbIndex: index => dispatch(setSbIndex(index))
+    setSbIndex: index => dispatch(setSbIndex(index)),
+    setPanoIndex: index => dispatch(setPanoIndex(index))
   };
 };
 

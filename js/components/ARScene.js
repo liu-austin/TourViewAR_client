@@ -1,3 +1,4 @@
+// jshint esversion:8
 import React, { Component } from "react";
 
 import {
@@ -37,7 +38,8 @@ export default class HelloWorldSceneAR extends Component {
       uri: '',
       sb: [],
       sbimages: [],
-      usesb: false
+      usesb: false,
+      sbindices: []
     };
     this._onInitialized = this._onInitialized.bind(this);
     this._onDragCreate = this._onDragCreate.bind(this);
@@ -46,53 +48,120 @@ export default class HelloWorldSceneAR extends Component {
   }
 
   componentDidMount() {
-      axios.get(`http://tourviewarserver-dev.us-west-1.elasticbeanstalk.com/api/tour/${this.props.sceneNavigator.viroAppProps.selectTourId}`)
-      .then(results => {
-          this.setState({sb: results.data.rows[0].sb}, () => {
-          if (this.state.sb[this.props.sceneNavigator.viroAppProps.selectSbIndex]) {
-            axios.get(`http://tourviewarserver-dev.us-west-1.elasticbeanstalk.com/api/getskybox`, {
-                count: results.data.rows[0].skybox_photos[this.state.sb.slice(0, this.props.sceneNavigator.viroAppProps.selectSbIndex + 1).filter(elem => elem).length]
-            }).then((skyboxphotos) => this.setState({sbimages: skyboxphotos.data.rows}, () => this.setState({usesb: true}))).catch(err => console.log(err))
-          }
-        })}).catch(err => console.log(err));
-    if (!this.props.sceneNavigator.viroAppProps.selectIsNew && this.props.sceneNavigator.viroAppProps.selectIsEditable && !this.props.sceneNavigator.viroAppProps.goBack) {
-      // alert('In Edit')
-      this.setState({uri: this.props.sceneNavigator.viroAppProps.selectTourPanos[this.props.sceneNavigator.viroAppProps.selectSceneHistory.length - 1].img_url}, () => {
-        this.props.sceneNavigator.viroAppProps.setSelectedText('');
-        axios.get(`http://tourviewarserver-dev.us-west-1.elasticbeanstalk.com/api/objects/${this.props.sceneNavigator.viroAppProps.selectTourPanos[this.props.sceneNavigator.viroAppProps.selectSceneHistory.length-1].id}`)
-          .then(results => {
-            this.setState({
-              objects: results.data.rows
-            });
-          })
-          .catch(err => {
-            alert("There was an error loading this tour. Please try again.");
-            this._resetAndGoHome();
-          });
-      });
+    this.props.sceneNavigator.viroAppProps.setSelectedText('');
+
+    if (!this.props.sceneNavigator.viroAppProps.selectIsNew && this.props.sceneNavigator.viroAppProps.selectIsEditable) {
+        axios.get(`http://tourviewarserver-dev.us-west-1.elasticbeanstalk.com/api/tour/${this.props.sceneNavigator.viroAppProps.selectTourId}`)
+        .then(results => {
+            let foundtours = results;
+            // alert(JSON.stringify(results.data.rows[0]));
+            this.setState({sb: foundtours.data.rows[0].sb, sbindices: foundtours.data.rows[0].skybox_photos}, () => {
+            if (results.data.rows[0].sb[this.props.sceneNavigator.viroAppProps.selectSbIndex]) {
+                this.props.sceneNavigator.viroAppProps.setForSb(true);
+            //   this.props.sceneNavigator.viroAppProps.setSceneHistory([results.data.rows[0].skybox_photos[this.state.sb.slice(0, this.props.sceneNavigator.viroAppProps.selectSbIndex + 1).filter(elem => elem).length - 1]]);
+              axios.get(`http://tourviewarserver-dev.us-west-1.elasticbeanstalk.com/api/getskybox`, {
+                  count: results.data.rows[0].skybox_photos[results.data.rows[0].sb.slice(0, this.props.sceneNavigator.viroAppProps.selectSbIndex + 1).filter(elem => elem).length - 1]
+              }).then((skyboxphotos) => this.setState({sbimages: skyboxphotos.data.rows}, () => this.setState({usesb: true}, () => {
+                  let skyboxid = foundtours.data.rows[0].skybox_photos[results.data.rows[0].sb.slice(0, this.props.sceneNavigator.viroAppProps.selectSbIndex + 1).filter(elem => elem).length - 1];
+                  axios.get(`http://tourviewarserver-dev.us-west-1.elasticbeanstalk.com/api/objectsskybox/${skyboxid}`)
+                  .then(sbobjects => {
+                      if (sbobjects.data.rows.filter(elem => elem.object_type = "scene").length) {
+                        this.props.sceneNavigator.viroAppProps.setObjSceneCap(true);
+                      } else {
+                        this.props.sceneNavigator.viroAppProps.setObjSceneCap(false);
+                      }
+                      this.setState({
+                          objects: sbobjects.data.rows
+                      }, () => this.props.sceneNavigator.viroAppProps.setSkyboxId(skyboxid));
+                  });
+            }))).catch(err => console.log(err));
+            } else {
+                this.props.sceneNavigator.viroAppProps.setForSb(false);
+                // this.props.sceneNavigator.viroAppProps.setSceneHistory(this.props.sceneNavigator.viroAppProps.selectSceneHistory.concat([this.props.sceneNavigator.viroAppProps.selectTourPanos[this.props.sceneNavigator.viroAppProps.selectPanoIndex].id]));
+                this.setState({uri: this.props.sceneNavigator.viroAppProps.selectTourPanos[this.props.sceneNavigator.viroAppProps.selectPanoIndex].img_url}, () => {
+                axios.get(`http://tourviewarserver-dev.us-west-1.elasticbeanstalk.com/api/objects/${this.props.sceneNavigator.viroAppProps.selectTourPanos[this.props.sceneNavigator.viroAppProps.selectPanoIndex].id}`)
+                .then(results => {
+                    if (results.data.rows.filter(elem => elem.object_type = "scene").length) {
+                        this.props.sceneNavigator.viroAppProps.setObjSceneCap(true);
+                      } else {
+                        this.props.sceneNavigator.viroAppProps.setObjSceneCap(false);
+                      }
+                    this.setState({
+                    objects: results.data.rows
+                    }, () => this.setState({usesb: false}, () => this.props.sceneNavigator.viroAppProps.setPanoId(this.props.sceneNavigator.viroAppProps.selectTourPanos[this.props.sceneNavigator.viroAppProps.selectPanoIndex].id)));
+                })
+                .catch(err => {
+                    alert("There was an error loading this tour. Please try again.");
+                    this._resetAndGoHome();
+                });
+                });
+            }
+        });
+    }).catch(err => console.log(err));
+
     } else if (this.props.sceneNavigator.viroAppProps.selectIsNew) {
-
-      this.props.sceneNavigator.viroAppProps.setSelectedText('');
-      this.props.sceneNavigator.viroAppProps.setSceneHistory([this.props.sceneNavigator.viroAppProps.selectTourPanos[0].id]);
-      this.setState({uri: this.props.sceneNavigator.viroAppProps.selectTourPanos[0].img_url});
-      this.props.sceneNavigator.viroAppProps.setPanoId(this.props.sceneNavigator.viroAppProps.selectTourPanos[0].id);
-      // alert(JSON.stringify(this.props.sceneNavigator.viroAppProps.selectSceneHistory))
-    } else {
-
-      this.props.sceneNavigator.viroAppProps.setSelectedText('');
-      this.props.sceneNavigator.viroAppProps.setSceneHistory([this.props.sceneNavigator.viroAppProps.selectTourPanos[0].id]);
-      this.setState({uri: this.props.sceneNavigator.viroAppProps.selectTourPanos[0].img_url});
-      this.props.sceneNavigator.viroAppProps.setPanoId(this.props.sceneNavigator.viroAppProps.selectTourPanos[0].id);
-        axios.get(`http://tourviewarserver-dev.us-west-1.elasticbeanstalk.com/api/objects/${this.props.sceneNavigator.viroAppProps.selectTourPanos[0].id}`)
-          .then(results => {
-            this.setState({objects: results.data.rows});
-          })
-          .catch(err => {
-            alert("There was an error loading this tour. Please try again.");
-            this._resetAndGoHome();
+        this.props.sceneNavigator.viroAppProps.setObjSceneCap(false);
+        axios.get(`http://tourviewarserver-dev.us-west-1.elasticbeanstalk.com/api/tour/${this.props.sceneNavigator.viroAppProps.selectTourId}`)
+        .then(results => {
+            alert(JSON.stringify(results.data.rows[0]));
+            this.setState({sb: results.data.rows[0].sb, sbindices: results.data.rows[0].skybox_photos}, () => {
+            if (results.data.rows[0].sb[this.props.sceneNavigator.viroAppProps.selectSbIndex]) {
+                this.props.sceneNavigator.viroAppProps.setForSb(true);
+              this.props.sceneNavigator.viroAppProps.setSceneHistory([results.data.rows[0].skybox_photos[results.data.rows[0].sb.slice(0, this.props.sceneNavigator.viroAppProps.selectSbIndex + 1).filter(elem => elem).length - 1]]);
+              axios.get(`http://tourviewarserver-dev.us-west-1.elasticbeanstalk.com/api/getskybox`, {
+                  count: results.data.rows[0].skybox_photos[results.data.rows[0].sb.slice(0, this.props.sceneNavigator.viroAppProps.selectSbIndex + 1).filter(elem => elem).length - 1]
+              }).then((skyboxphotos) => this.setState({sbimages: skyboxphotos.data.rows}, () => this.setState({usesb: true}, () => this.props.sceneNavigator.viroAppProps.setSkyboxId(results.data.rows[0].skybox_photos[results.data.rows[0].sb.slice(0, this.props.sceneNavigator.viroAppProps.selectSbIndex + 1).filter(elem => elem).length - 1])))).catch(err => console.log(err));
+            } else {
+                this.props.sceneNavigator.viroAppProps.setForSb(false);
+              this.setState({uri: this.props.sceneNavigator.viroAppProps.selectTourPanos[0].img_url}, () => this.setState({usesb: false}, () => {
+                this.props.sceneNavigator.viroAppProps.setSceneHistory([this.props.sceneNavigator.viroAppProps.selectTourPanos[0].id]);
+                this.props.sceneNavigator.viroAppProps.setPanoId(this.props.sceneNavigator.viroAppProps.selectTourPanos[0].id);
+              }));
+            }
           });
-    }
+        }).catch(err => console.log(err));
+
+    } else {
+        this.props.sceneNavigator.viroAppProps.setObjSceneCap(false);
+        axios.get(`http://tourviewarserver-dev.us-west-1.elasticbeanstalk.com/api/tour/${this.props.sceneNavigator.viroAppProps.selectTourId}`)
+        .then(results => {
+            let foundtours = results;
+            // alert(JSON.stringify(results.data.rows[0]));
+            this.setState({sb: foundtours.data.rows[0].sb, sbindices: foundtours.data.rows[0].skybox_photos}, () => {
+            if (foundtours.data.rows[0].sb[this.props.sceneNavigator.viroAppProps.selectSbIndex]) {
+                this.props.sceneNavigator.viroAppProps.setForSb(true);
+            //   this.props.sceneNavigator.viroAppProps.setSceneHistory([results.data.rows[0].skybox_photos[this.state.sb.slice(0, this.props.sceneNavigator.viroAppProps.selectSbIndex + 1).filter(elem => elem).length - 1]]);
+                axios.get(`http://tourviewarserver-dev.us-west-1.elasticbeanstalk.com/api/getskybox`, {
+                    count: foundtours.data.rows[0].skybox_photos[foundtours.data.rows[0].sb.slice(0, this.props.sceneNavigator.viroAppProps.selectSbIndex + 1).filter(elem => elem).length - 1]
+                }).then((skyboxphotos) => this.setState({sbimages: skyboxphotos.data.rows}, () => this.setState({usesb: true}, () => {
+                    let skyboxid = foundtours.data.rows[0].skybox_photos[foundtours.data.rows[0].sb.slice(0, this.props.sceneNavigator.viroAppProps.selectSbIndex + 1).filter(elem => elem).length - 1];
+                    axios.get(`http://tourviewarserver-dev.us-west-1.elasticbeanstalk.com/api/objectsskybox/${skyboxid}`)
+                    .then(sbobjects => {
+                        this.setState({
+                            objects: sbobjects.data.rows
+                        }, () => this.props.sceneNavigator.viroAppProps.setSkyboxId(skyboxid));
+                    });
+            }))).catch(err => console.log(err));
+            } else {
+                this.props.sceneNavigator.viroAppProps.setForSb(true);
+                // this.props.sceneNavigator.viroAppProps.setSceneHistory(this.props.sceneNavigator.viroAppProps.selectSceneHistory.concat([this.props.sceneNavigator.viroAppProps.selectTourPanos[this.props.sceneNavigator.viroAppProps.selectPanoIndex].id]));
+                this.setState({uri: this.props.sceneNavigator.viroAppProps.selectTourPanos[this.props.sceneNavigator.viroAppProps.selectPanoIndex].img_url}, () => {
+                axios.get(`http://tourviewarserver-dev.us-west-1.elasticbeanstalk.com/api/objects/${this.props.sceneNavigator.viroAppProps.selectTourPanos[this.props.sceneNavigator.viroAppProps.selectPanoIndex].id}`)
+                .then(results => {
+                    this.setState({
+                    objects: results.data.rows
+                    }, () => this.setState({usesb: false}, () => this.props.sceneNavigator.viroAppProps.setPanoId(this.props.sceneNavigator.viroAppProps.selectTourPanos[this.props.sceneNavigator.viroAppProps.selectPanoIndex].id)));
+                })
+                .catch(err => {
+                    alert("There was an error loading this tour. Please try again.");
+                    this._resetAndGoHome();
+                });
+                });
+            }
+        });
+    }).catch(err => console.log(err));
   }
+}
 
   render() {
     return (
@@ -186,21 +255,62 @@ export default class HelloWorldSceneAR extends Component {
                     scalez: 1,
                     id_object: object.id
                   }).then(() => {
-                    this.setState({uri: JSON.parse(object.object_value)[1]}, () => {
-                      this.props.sceneNavigator.viroAppProps.setSelectedText('');
-                      axios.get(`http://tourviewarserver-dev.us-west-1.elasticbeanstalk.com/api/objects/${JSON.parse(object.object_value)[0]}`)
-                      .then(results => {
-                        // alert(JSON.stringify(results.data.rows))
-                        this.props.sceneNavigator.viroAppProps.setSceneHistory(this.props.sceneNavigator.viroAppProps.selectSceneHistory.concat([JSON.parse(object.object_value)[0]]));
-                        // alert(JSON.stringify(this.props.sceneNavigator.viroAppProps.selectSceneHistory))
-                        this.setState({objects: results.data.rows});
-                        this.props.sceneNavigator.viroAppProps.setPanoId(JSON.parse(object.object_value)[0]);
-                      })
-                      .catch(err => {
-                        alert("There was an error loading this tour. Please try again.");
-                        this._resetAndGoHome();
-                      });
-                    });
+                      let nextindex = this.props.sceneNavigator.viroAppProps.selectSbIndex + 1;
+                      if (object.id_pano) {
+
+                        this.setState({uri: JSON.parse(object.object_value)[1]}, () => {
+                            this.props.sceneNavigator.viroAppProps.setForSb(false);
+                            this.props.sceneNavigator.viroAppProps.setSbIndex(nextindex);
+                            this.props.sceneNavigator.viroAppProps.setSelectedText('');
+                            axios.get(`http://tourviewarserver-dev.us-west-1.elasticbeanstalk.com/api/objects/${JSON.parse(object.object_value)[0]}`)
+                            .then(results => {
+                                if (results.data.rows.filter(elem => elem.object_type = "scene").length) {
+                                    this.props.sceneNavigator.viroAppProps.setObjSceneCap(true);
+                                  } else {
+                                    this.props.sceneNavigator.viroAppProps.setObjSceneCap(false);
+                                  }
+                              // alert(JSON.stringify(results.data.rows))
+                              this.props.sceneNavigator.viroAppProps.setSceneHistory(this.props.sceneNavigator.viroAppProps.selectSceneHistory.concat([JSON.parse(object.object_value)[0]]));
+                              // alert(JSON.stringify(this.props.sceneNavigator.viroAppProps.selectSceneHistory))
+                              this.setState({objects: results.data.rows, usesb: false}, () => this.props.sceneNavigator.viroAppProps.setPanoId(JSON.parse(object.object_value)[0]));
+
+                            })
+                            .catch(err => {
+                              alert("There was an error loading this tour. Please try again.");
+                              this._resetAndGoHome();
+                            });
+                          });
+
+                      } else {
+
+                        axios.get(`http://tourviewarserver-dev.us-west-1.elasticbeanstalk.com/api/getskybox`, {
+                            count: JSON.parse(object.object_value)[0]
+                        }).then(images => {
+                            this.setState({sbimages: images.data.rows}, () => {
+                                this.props.sceneNavigator.viroAppProps.setForSb(true);
+                                this.props.sceneNavigator.viroAppProps.setSbIndex(nextindex);
+                                this.props.sceneNavigator.viroAppProps.setSelectedText('');
+                                axios.get(`http://tourviewarserver-dev.us-west-1.elasticbeanstalk.com/api/objectsskybox/${JSON.parse(object.object_value)[0]}`)
+                                .then(results => {
+                                    if (results.data.rows.filter(elem => elem.object_type = "scene").length) {
+                                        this.props.sceneNavigator.viroAppProps.setObjSceneCap(true);
+                                      } else {
+                                        this.props.sceneNavigator.viroAppProps.setObjSceneCap(false);
+                                      }
+                                  // alert(JSON.stringify(results.data.rows))
+                                  this.props.sceneNavigator.viroAppProps.setSceneHistory(this.props.sceneNavigator.viroAppProps.selectSceneHistory.concat([JSON.parse(object.object_value)[0]]));
+                                  // alert(JSON.stringify(this.props.sceneNavigator.viroAppProps.selectSceneHistory))
+                                  this.setState({objects: results.data.rows, usesb: true}, () => this.props.sceneNavigator.viroAppProps.setSkyboxId(JSON.parse(object.object_value)[0]));
+
+                                })
+                                .catch(err => {
+                                  alert("There was an error loading this tour. Please try again.");
+                                  this._resetAndGoHome();
+                                });
+                            });
+                        }).catch(err => console.log(err));
+                      }
+
                   }).catch(err => alert('There was an error loading this tour. Please try again.'));
                 };
               return (
@@ -250,21 +360,51 @@ export default class HelloWorldSceneAR extends Component {
     if (this.props.sceneNavigator.viroAppProps.selectSceneHistory.length === 1) {
       this._resetAndGoHome();
     } else {
-      this.setState({sceneloaded: false, uri: this.props.sceneNavigator.viroAppProps.selectTourPanos[this.props.sceneNavigator.viroAppProps.selectSceneHistory.length - 2].img_url}, () => {
-        axios.get(`http://tourviewarserver-dev.us-west-1.elasticbeanstalk.com/api/objects/${this.props.sceneNavigator.viroAppProps.selectSceneHistory[this.props.sceneNavigator.viroAppProps.selectSceneHistory.length-2]}`)
-        .then(results => {
-          this.setState({objects: results.data.rows, sceneloaded: true}, () => {
-            this.props.sceneNavigator.viroAppProps.setPanoId(this.props.sceneNavigator.viroAppProps.selectSceneHistory[this.props.sceneNavigator.viroAppProps.selectSceneHistory.length - 2]);
-            this.props.sceneNavigator.viroAppProps.setSceneHistory(this.props.sceneNavigator.viroAppProps.selectSceneHistory.slice(0, this.props.sceneNavigator.viroAppProps.selectSceneHistory.length - 1));
-          })
-        }).catch(err => alert('There was an error loading objects:', err))
-      })
+        this.props.sceneNavigator.viroAppProps.setObjSceneCap(true);
+        if (this.state.sb[this.props.sceneNavigator.viroAppProps.selectSbIndex - 1]) {
+            this.props.sceneNavigator.viroAppProps.setForSb(true);
+
+            let prev = this.state.sb.slice(0, this.props.sceneNavigator.viroAppProps.selectSbIndex).filter(elem => elem).length - 1;
+
+            axios.get(`http://tourviewarserver-dev.us-west-1.elasticbeanstalk.com/api/getskybox`, {
+                count: this.state.sbindices[prev]
+            }).then(images => this.setState({sbimages: images.data.rows, sceneloaded: false}, () => {
+                let newindex = this.state.sbindices[prev];
+                axios.get(`http://tourviewarserver-dev.us-west-1.elasticbeanstalk.com/api/objectsskybox/${newindex}`)
+                .then(results => {
+                  this.setState({objects: results.data.rows, sceneloaded: true, usesb: true}, () => {
+                    this.props.sceneNavigator.viroAppProps.setSbIndex(this.props.sceneNavigator.viroAppProps.selectSbIndex - 1);
+                    this.props.sceneNavigator.viroAppProps.setSkyboxId(newindex);
+                    this.props.sceneNavigator.viroAppProps.setSceneHistory(this.props.sceneNavigator.viroAppProps.selectSceneHistory.slice(0, this.props.sceneNavigator.viroAppProps.selectSceneHistory.length - 1));
+                  })
+                }).catch(err => alert('There was an error loading objects:', err))
+            }));
+
+        } else {
+            this.props.sceneNavigator.viroAppProps.setForSb(false);
+
+            let prev = this.state.sb.slice(0, this.props.sceneNavigator.viroAppProps.selectSbIndex).filter(elem => !elem).length - 1;
+            this.setState({ sceneloaded: false, uri: this.props.sceneNavigator.viroAppProps.selectTourPanos[prev].img_url}, () => {
+                axios.get(`http://tourviewarserver-dev.us-west-1.elasticbeanstalk.com/api/objects/${this.props.sceneNavigator.viroAppProps.selectTourPanos[prev].id}`)
+                .then(results => {
+                  this.setState({objects: results.data.rows, sceneloaded: true, usesb: false}, () => {
+                    this.props.sceneNavigator.viroAppProps.setSbIndex(this.props.sceneNavigator.viroAppProps.selectSbIndex - 1);
+                    this.props.sceneNavigator.viroAppProps.setPanoId(this.props.sceneNavigator.viroAppProps.selectTourPanos[prev].id);
+                    this.props.sceneNavigator.viroAppProps.setSceneHistory(this.props.sceneNavigator.viroAppProps.selectSceneHistory.slice(0, this.props.sceneNavigator.viroAppProps.selectSceneHistory.length - 1));
+                  })
+                }).catch(err => alert('There was an error loading objects:', err))
+              });
+
+        }
     }
   }
 
   _resetAndGoHome() {
+    this.props.sceneNavigator.viroAppProps.setObjSceneCap(false);
     this.props.sceneNavigator.viroAppProps.setSceneHistory([]);
     this.props.sceneNavigator.viroAppProps.setPanoId('');
+    this.props.sceneNavigator.viroAppProps.setSkyboxId(null);
+    this.props.sceneNavigator.viroAppProps.selectSbIndex(0);
     this.props.sceneNavigator.viroAppProps.navigate('REACT_NATIVE_HOME');
   }
 

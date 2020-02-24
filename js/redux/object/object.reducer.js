@@ -8,7 +8,9 @@ const INITIAL_STATE = {
   id_pano: '',
   object_text: '',
   objects: [],
-  selected_text: ''
+  selected_text: '',
+  forsb: false,
+  objscenecap: false
 }
 
 const ObjectReducer = (state=INITIAL_STATE, action) => {
@@ -57,12 +59,22 @@ const ObjectReducer = (state=INITIAL_STATE, action) => {
       return ({
         ...state,
         scale: action.payload
-      })
+      });
     case 'SET_ID_PANO':
       return ({
         ...state,
         id_pano: action.payload
-      })
+      });
+    case 'SET_FOR_SB':
+      return ({
+        ...state,
+        forsb: action.payload
+      });
+    case 'SET_OBJ_SCENE_CAP':
+      return ({
+        ...state,
+        objscenecap: action.payload
+      });
     default:
       return state;
   }

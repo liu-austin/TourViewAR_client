@@ -68,3 +68,17 @@ export const setSelectedText = (text) => {
   });
 };
 
+export const setForSb = (bool) => {
+  return ({
+    type: 'SET_FOR_SB',
+    payload: bool
+  });
+};
+
+export const setObjSceneCap = (bool) => {
+  return ({
+    type: 'SET_OBJ_SCENE_CAP',
+    payload: bool
+  });
+};
+

@@ -51,3 +51,13 @@ export const selectSelectedText = createSelector(
   [selectObject],
   object => object.selected_text
 );
+
+export const selectForSb = createSelector(
+  [selectObject],
+  object => object.forsb
+);
+
+export const selectObjSceneCap = createSelector(
+  [selectObject],
+  object => object.objscenecap
+);

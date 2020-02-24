@@ -43,14 +43,11 @@ export default class HelloWorldSceneAR extends Component {
   }
 
   componentDidMount() {
-    if (!this.props.sceneNavigator.viroAppProps.selectIsNew && this.props.sceneNavigator.viroAppProps.selectIsEditable && !this.props.sceneNavigator.viroAppProps.goBack) {
-      // alert('In Edit')
+    if (!this.props.sceneNavigator.viroAppProps.selectIsNew && this.props.sceneNavigator.viroAppProps.selectIsEditable) {
       this.setState({uri: this.props.sceneNavigator.viroAppProps.selectTourPanos[this.props.sceneNavigator.viroAppProps.selectSceneHistory.length - 1].img_url}, () => {
         this.props.sceneNavigator.viroAppProps.setSelectedText('');
         axios.get(`http://tourviewarserver-dev.us-west-1.elasticbeanstalk.com/api/objects/${this.props.sceneNavigator.viroAppProps.selectTourPanos[this.props.sceneNavigator.viroAppProps.selectSceneHistory.length-1].id}`)
           .then(results => {
-            // alert(JSON.stringify(this.props.sceneNavigator.viroAppProps.selectSceneHistory))
-            // alert(JSON.stringify(results.data.rows))
             this.setState({
               objects: results.data.rows
             });
@@ -61,17 +58,11 @@ export default class HelloWorldSceneAR extends Component {
           });
       });
     } else if (this.props.sceneNavigator.viroAppProps.selectIsNew) {
-      // alert('In New')
-      // this.props.sceneNavigator.viroAppProps.setGoBack(false);
       this.props.sceneNavigator.viroAppProps.setSelectedText('');
       this.props.sceneNavigator.viroAppProps.setSceneHistory([this.props.sceneNavigator.viroAppProps.selectTourPanos[0].id]);
       this.setState({uri: this.props.sceneNavigator.viroAppProps.selectTourPanos[0].img_url});
       this.props.sceneNavigator.viroAppProps.setPanoId(this.props.sceneNavigator.viroAppProps.selectTourPanos[0].id);
-      // alert(JSON.stringify(this.props.sceneNavigator.viroAppProps.selectSceneHistory))
     } else {
-      // alert('In Else')
-      // this.props.sceneNavigator.viroAppProps.setGoBack(false);
-      // alert(JSON.stringify(this.props.sceneNavigator.viroAppProps.selectTourPanos));
       this.props.sceneNavigator.viroAppProps.setSelectedText('');
       this.props.sceneNavigator.viroAppProps.setSceneHistory([this.props.sceneNavigator.viroAppProps.selectTourPanos[0].id]);
       this.setState({uri: this.props.sceneNavigator.viroAppProps.selectTourPanos[0].img_url});

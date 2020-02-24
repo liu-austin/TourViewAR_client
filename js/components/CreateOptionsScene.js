@@ -2,6 +2,7 @@ import React, { Component, useState } from "react";
 import { ScrollView, View, StyleSheet, Image } from "react-native";
 import { connect } from "react-redux";
 import { navigate } from "../redux/render/render.action";
+import { selectForSb } from '../redux/object/object.selectors';
 import {
   Container,
   Header,
@@ -36,7 +37,7 @@ const CreateOptionsScene = props => {
       <View style={{ marginTop: height * 0.1 }}>
       <View style={{width: width * 0.6, marginBottom: height * 0.1}}>
         <Text style={{color: 'white'}}>
-        Choose Photo Method For New Image Object
+        Choose Photo Method For New Scene Object
         </Text>
       </View>
       <Button
@@ -110,9 +111,15 @@ const CreateOptionsScene = props => {
   );
 };
 
+const mapStateToProps = state => {
+  return {
+    selectForSb: selectForSb(state)
+  };
+};
+
   const mapDispatchToProps = dispatch => {
     return {
       navigate: render => dispatch(navigate(render))
     };
   };
-  export default connect(null, mapDispatchToProps)(CreateOptionsScene);
+  export default connect(mapStateToProps, mapDispatchToProps)(CreateOptionsScene);

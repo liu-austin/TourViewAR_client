@@ -4,7 +4,7 @@ import { ScrollView, View, StyleSheet, Image, Dimensions } from "react-native";
 import { connect } from "react-redux";
 import { navigate } from "../redux/render/render.action";
 import { setObjectText, setObjectId, setObjects } from '../redux/object/object.action';
-import { selectObjectText, selectObjects } from '../redux/object/object.selectors';
+import { selectObjectText, selectObjects, selectForSb } from '../redux/object/object.selectors';
 import { selectPanoId } from '../redux/pano/pano.selectors';
 
 var width = Dimensions.get('window').width; //full width
@@ -83,6 +83,19 @@ const CreateTextObject = props => {
               }}
               block
               onPress={() => {
+                if (props.selectForSb) {
+                  axios
+                  .post(`http://tourviewarserver-dev.us-west-1.elasticbeanstalk.com/api/objectskybox`, {
+                    object_type: "text",
+                    object_value: props.selectObjectText,
+                    id_skybox: props.selectSkyboxId
+                  })
+                  .then(results => {
+                    props.setObjectId(results.data.id);
+                      setLoaded(true);
+                  })
+                  .catch(err => alert("There was an error creating this object"));
+                } else {
                   axios
                   .post(`http://tourviewarserver-dev.us-west-1.elasticbeanstalk.com/api/object`, {
                     object_type: "text",
@@ -91,19 +104,11 @@ const CreateTextObject = props => {
                   })
                   .then(results => {
                     props.setObjectId(results.data.id);
-                  //   let textobject = {
-                  //     id: results.data.id,
-                  //     type: "text",
-                  //     x: 0,
-                  //     y: 0,
-                  //     value: props.selectObjectText,
-                  //     scale: { x: 1, y: 1, z: 1 },
-                  //     id_pano: props.selectPanoId
-                  //   };
-                  //     props.setObjects(props.selectObjects.concat([textobject])); 
                       setLoaded(true);
                   })
                   .catch(err => alert("There was an error creating this object"));
+                }
+
               }}full>
               <Text>SUBMIT</Text>
             </Button>
@@ -156,7 +161,8 @@ const mapStateToProps = state => {
     return {
       selectObjectText: selectObjectText(state),
       selectPanoId: selectPanoId(state),
-      selectObjects: selectObjects(state)
+      selectObjects: selectObjects(state),
+      selectForSb: selectForSb(state)
     };
   };
 
