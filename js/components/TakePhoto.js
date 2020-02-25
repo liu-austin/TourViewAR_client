@@ -58,7 +58,7 @@ const TakePhoto = props => {
                   style={{ height: width * 0.6, width: width * 0.6 }}
                 />
             </View>
-            <View style={{alignContent: "center", justifyContent: "center", width: width * 0.6, marginLeft: width * 0.2, marginTop: height * 0.15}}>
+            <View style={{alignContent: "center", justifyContent: "center", width: width * 0.6, marginLeft: width * 0.2, marginTop: height * 0.05}}>
                 <Text style={{color: 'white', alignItems: 'center'}}>
                     Use your device camera to take a photo and store it in the device camera roll for later use.
                 </Text>
