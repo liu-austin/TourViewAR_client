@@ -46,18 +46,22 @@ const CreateTextObject = props => {
     </Header>
       <Content style={{backgroundColor: '#49beb7'}}>
       <View style={{ marginTop: 0.1 * height, flex: 1, alignItems: "center", justifyContent: "center" }}>
-          <Item floatingLabel>
-            <Label>ENTER AR TEXT</Label>
-            <Input
-              style={{color: 'white'}}
-              onChangeText={text => {
-                props.setObjectText(text);
-              }}
-            />
-          </Item>
+            <View style={{ alignItems: "center", marginBottom: 0.1 * height}}>
+              <Item floatingLabel>
+                <Label style={{color: 'white'}}>ENTER AR TEXT</Label>
+                <Input
+                  style={{color: 'white'}}
+                  onChangeText={text => {
+                    props.setObjectText(text);
+                  }}
+                />
+              </Item>
+            </View>
+
           {
             loaded ? 
             (
+              <View style={{ alignItems: "center", marginBottom: 0.25 * height}}>
               <Button
               style={{
                 color: 'white',
@@ -71,9 +75,11 @@ const CreateTextObject = props => {
               }}full>
               <Text>GO TO AR SCENE</Text>
             </Button>
+            </View>
             ) 
             : 
             (
+              <View style={{ alignItems: "center", marginBottom: 0.25 * height}}>
               <Button
               style={{
                 color: 'white',
@@ -112,6 +118,7 @@ const CreateTextObject = props => {
               }}full>
               <Text>SUBMIT</Text>
             </Button>
+            </View>
             )
           }
 
