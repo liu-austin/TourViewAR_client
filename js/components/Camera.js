@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { StyleSheet, View, Dimensions } from "react-native";
+import { StyleSheet, View, Dimensions, Image } from "react-native";
 import ImagePicker from "react-native-image-picker";
 import { connect } from "react-redux";
 import { navigate } from "../redux/render/render.action";
