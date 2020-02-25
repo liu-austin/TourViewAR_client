@@ -35,7 +35,7 @@ const CreateOptionsScene = props => {
     </Header>
       <Content style={{backgroundColor: '#49beb7'}}>
       <View style={{ marginTop: height * 0.1 }}>
-      <View style={{width: width * 0.6, marginBottom: height * 0.1}}>
+      <View style={{width: width * 0.6, marginBottom: height * 0.1, marginLeft: width * 0.2,}}>
         <Text style={{color: 'white'}}>
         Choose Photo Method For New Scene Object
         </Text>
@@ -46,6 +46,7 @@ const CreateOptionsScene = props => {
             color: 'white',
             backgroundColor: '#fe5f55',
             width: width * 0.6,
+            marginLeft: width * 0.2,
             alignItems: 'center'
           }}
           onPress={() => {
@@ -61,6 +62,7 @@ const CreateOptionsScene = props => {
             color: 'white',
             backgroundColor: '#fe5f55',
             width: width * 0.6,
+            marginLeft: width * 0.2,
             alignItems: 'center'
           }}
             onPress={() => {

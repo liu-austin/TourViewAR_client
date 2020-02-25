@@ -8,6 +8,7 @@ import { setTourId, setIsEditable, setIsNew, setSbIndex, setPanoIndex } from "..
 import { selectTourName, selectTourId } from "../redux/tour/tour.selectors";
 import { setTourPanos, setPanoId } from "../redux/pano/pano.action";
 import { selectPanoId, selectTourPanos } from "../redux/pano/pano.selectors";
+import { selectForSb } from "../redux/object/object.selectors";
 import {
   Container,
   Header,
@@ -88,53 +89,90 @@ const UseCamera = props => {
         .catch(err => alert(JSON.stringify(err)));
       } else {
         if (props.forobject) {
-          props.setIsEditable(true);
-          props.setIsNew(false);
-          const source = { uri: response.uri };
-          // alert(JSON.stringify(source));
-          axios
-            .get(
-              `http://tourviewarserver-dev.us-west-1.elasticbeanstalk.com/api/getpresignedurlforobject/panoimages`
-            )
-            .then(results => {
-              const xhr = new XMLHttpRequest();
-              xhr.open("PUT", results.data.presignedUrl);
-              xhr.onreadystatechange = function() {
-                if (xhr.readyState === 4) {
-                  // alert(xhr.status);
-                  if (xhr.status === 200) {
-                    // alert("Image successfully uploaded to S3");
-                    axios
-                      .post(`http://tourviewarserver-dev.us-west-1.elasticbeanstalk.com/api/object`, {
-                        object_type: "image",
-                        object_value: results.data.publicUrl,
-                        id_pano: props.selectPanoId
-                      })
-                      .then(() => {
-                        axios
-                          .get(
-                            `http://tourviewarserver-dev.us-west-1.elasticbeanstalk.com/api/scenes/${props.selectTourId}`
-                          )
-                          .then(scenes => {
-                            props.setTourPanos(scenes.data.rows);
-                            changeARButtonState(true);
-                          })
-                          .catch(err => console.log(err));
-                      })
-                      .catch(err => alert(err));
-                  } else {
-                    alert("Error while sending the image to S3");
+          if (props.selectForSb) {
+
+            props.setIsEditable(true);
+            props.setIsNew(false);
+            const source = { uri: response.uri };
+            // alert(JSON.stringify(source));
+            axios.get(`http://tourviewarserver-dev.us-west-1.elasticbeanstalk.com/api/getpresignedurlforobject/panoimages`)
+              .then(results => {
+                const xhr = new XMLHttpRequest();
+                xhr.open("PUT", results.data.presignedUrl);
+                xhr.onreadystatechange = function() {
+                  if (xhr.readyState === 4) {
+                    if (xhr.status === 200) {
+                      // alert("Image successfully uploaded to S3");
+                      axios
+                        .post(`http://tourviewarserver-dev.us-west-1.elasticbeanstalk.com/api/objectskybox`, {
+                          object_type: "image",
+                          object_value: results.data.publicUrl,
+                          id_skybox: props.selectSkyboxId
+                        })
+                        .then(() => {
+                          changeARButtonState(true);
+                        })
+                        .catch(err => alert(err));
+                    } else {
+                      alert("Error while sending the image to S3");
+                    }
                   }
-                }
-              };
-              xhr.setRequestHeader("Content-Type", "image/jpeg");
-              xhr.send({
-                uri: source.uri,
-                type: "image/jpeg",
-                name: "cameratest.jpg"
-              });
-            })
-            .catch(err => alert(JSON.stringify(err)));
+                };
+                xhr.setRequestHeader("Content-Type", "image/jpeg");
+                xhr.send({
+                  uri: source.uri,
+                  type: "image/jpeg",
+                  name: "cameratest.jpg"
+                });
+              })
+              .catch(err => alert(JSON.stringify(err)));
+
+          } else {
+
+            props.setIsEditable(true);
+            props.setIsNew(false);
+            const source = { uri: response.uri };
+            // alert(JSON.stringify(source));
+            axios.get(`http://tourviewarserver-dev.us-west-1.elasticbeanstalk.com/api/getpresignedurlforobject/panoimages`)
+              .then(results => {
+                const xhr = new XMLHttpRequest();
+                xhr.open("PUT", results.data.presignedUrl);
+                xhr.onreadystatechange = function() {
+                  if (xhr.readyState === 4) {
+                    if (xhr.status === 200) {
+                      // alert("Image successfully uploaded to S3");
+                      axios
+                        .post(`http://tourviewarserver-dev.us-west-1.elasticbeanstalk.com/api/object`, {
+                          object_type: "image",
+                          object_value: results.data.publicUrl,
+                          id_pano: props.selectPanoId
+                        })
+                        .then(results => {
+                          axios
+                            .get(
+                              `http://tourviewarserver-dev.us-west-1.elasticbeanstalk.com/api/scenes/${props.selectTourId}`
+                            )
+                            .then(results => {
+                              props.setTourPanos(results.data.rows);
+                              changeARButtonState(true);
+                            })
+                            .catch(err => console.log(err));
+                        })
+                        .catch(err => alert(err));
+                    } else {
+                      alert("Error while sending the image to S3");
+                    }
+                  }
+                };
+                xhr.setRequestHeader("Content-Type", "image/jpeg");
+                xhr.send({
+                  uri: source.uri,
+                  type: "image/jpeg",
+                  name: "cameratest.jpg"
+                });
+              })
+              .catch(err => alert(JSON.stringify(err)));
+          }
         } else {
           props.setIsEditable(true);
           props.setIsNew(true);
@@ -288,8 +326,6 @@ const UseCamera = props => {
             </View>
           </View>
 
-
-
             ) : (
             <View>
               <View style={{ alignItems: "center", marginTop: height * 0.15 }}>
@@ -370,7 +406,8 @@ const mapStateToProps = state => {
     selectTourId: selectTourId(state),
     selectUserId: selectUserId(state),
     selectPanoId: selectPanoId(state),
-    selectTourPanos: selectTourPanos(state)
+    selectTourPanos: selectTourPanos(state),
+    selectForSb: selectForSb(state)
   };
 };
 

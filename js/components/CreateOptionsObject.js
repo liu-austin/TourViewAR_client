@@ -38,7 +38,7 @@ const CreateOptionsObject = props => {
     </Header>
       <Content style={{backgroundColor: '#49beb7'}}>
         <View style={{ marginTop: height * 0.1 }}>
-          <View style={{width: width * 0.6, marginBottom: height * 0.1}}>
+          <View style={{width: width * 0.6, marginBottom: height * 0.1, marginLeft: width * 0.2,}}>
             <Text style={{color: 'white'}}>
             Choose Photo Method For New Image Object
             </Text>
@@ -48,6 +48,7 @@ const CreateOptionsObject = props => {
             color: 'white',
             backgroundColor: '#fe5f55',
             width: width * 0.6,
+            marginLeft: width * 0.2,
             alignItems: 'center'
           }}
             vertical
@@ -63,6 +64,7 @@ const CreateOptionsObject = props => {
             color: 'white',
             backgroundColor: '#fe5f55',
             width: width * 0.6,
+            marginLeft: width * 0.2,
             alignItems: 'center'
           }}
             vertical

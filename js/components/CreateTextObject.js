@@ -46,11 +46,11 @@ const CreateTextObject = props => {
     </Header>
       <Content style={{backgroundColor: '#49beb7'}}>
       <View style={{ marginTop: 0.1 * height, flex: 1, alignItems: "center", justifyContent: "center" }}>
-            <View style={{ alignItems: "center", marginBottom: 0.1 * height}}>
+            <View style={{ alignItems: "center", marginBottom: 0.1 * height, marginLeft: width * 0.2}}>
               <Item floatingLabel>
                 <Label style={{color: 'white'}}>ENTER AR TEXT</Label>
                 <Input
-                  style={{color: 'white'}}
+                  style={{color: 'white', width: width * 0.6}}
                   onChangeText={text => {
                     props.setObjectText(text);
                   }}
