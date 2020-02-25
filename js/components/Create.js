@@ -44,12 +44,12 @@ const Create = props => {
       </Header>
       <Content style={{backgroundColor: '#49beb7'}}>
         <View style={{ width: 0.6 * width, marginLeft: 0.2 * width, marginTop: height * 0.1 }}>
-            <Text>
+            <Text style={{color: 'white'}}>
               Welcome to your new tour. Begin by entering the name of your tour which will be searchable by users once it is created.
             </Text>
-            <Item floatingLabel>
+            <Item floatingLabel style={{marginTop: 0.05 * height}}>
             <Label style={{color: 'white'}}>ENTER TOUR NAME</Label>
-            <Input
+            <Input style={{color: "white"}}
               onChangeText={text => {
                 props.setTourName(text);
               }}

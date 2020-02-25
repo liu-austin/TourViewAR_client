@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { StyleSheet, View, Dimensions } from "react-native";
+import { StyleSheet, View, Dimensions, Image } from "react-native";
 import ImagePicker from "react-native-image-picker";
 import { connect } from "react-redux";
 import { navigate } from "../redux/render/render.action";
@@ -219,52 +219,112 @@ const SkyboxCamera = props => {
           <View style={{ alignItems: "center",
           justifyContent: "center"}}>
             {renderARButton ? (
-              <Button 
-              style={{backgroundColor: '#fe5f55', 
-              width: width * 0.6, 
-            }}
-              onPress={() => {
-                if (props.num === 6) {
-                  props.navigate("EDIT_AR_PAGE");
-                } else {
-                  props.navigate(`SKYBOX_GUIDE_${props.num+1}_SCENE`);
-                }
-              }}>
-                <Text style={{color: 'white'}}>{props.num === 6 ? `Go To AR Scene` : phases[props.num + 1]}</Text>
-              </Button>
+              <View>
+                <View style={{ alignItems: "center", marginTop: height * 0.15 }}>
+                  <Image
+                    source={require("../res/world.png")}
+                    style={{ height: width * 0.6, width: width * 0.6 }}
+                  />
+                </View>
+                <View style={{alignItems: "center", width: width * 0.6, marginTop: height * 0.05}}>
+                  <Text style={{color: 'white', alignItems: 'center'}}>
+                      Follow Button Instructions Below.
+                  </Text>
+                </View>
+                <View View style={{alignItems: "center"}}>
+                  <Button 
+                  style={{marginTop: height * 0.025, backgroundColor: '#fe5f55', width: width * 0.6,
+                  alignItems: 'center'}}
+                  onPress={() => {
+                    if (props.num === 6) {
+                      props.navigate("EDIT_AR_PAGE");
+                    } else {
+                      props.navigate(`SKYBOX_GUIDE_${props.num+1}_SCENE`);
+                    }
+                  }}>
+                    <Text style={{color: 'white'}}>{props.num === 6 ? `Go To AR Scene` : phases[props.num + 1]}</Text>
+                  </Button>
+                </View>
+              </View>
             ) : (
-              <Text
-                style={{ color: "white" }}
-                onPress={() => takePhoto()}
-              >
-                {phases[props.num]}
-              </Text>
+              <View>
+                <View style={{ alignItems: "center", marginTop: height * 0.15 }}>
+                  <Image
+                    source={require("../res/camera.png")}
+                    style={{ height: width * 0.6, width: width * 0.6 }}
+                  />
+              </View>
+              <View style={{alignItems: "center", width: width * 0.6, marginTop: height * 0.05}}>
+                  <Text style={{color: 'white', alignItems: 'center'}}>
+                      Use your device camera to take a photo for the skybox scene. The images will be publically uploaded to AWS S3.
+                  </Text>
+              </View>
+              <View style={{alignItems: "center"}}>
+                  <Button style={{marginTop: height * 0.025, backgroundColor: '#fe5f55', width: width * 0.6,
+                  alignItems: 'center'}}
+                  onPress={() => takePhoto()}>
+                      <Text style={{alignContent: "center"}}>
+                      {phases[props.num]}
+                      </Text>
+                  </Button>
+              </View>
+            </View>
             )}
           </View>
         ) : (
           <View style={{ alignItems: "center",
           justifyContent: "center"}}>
             {renderARButton ? (
-              <Button 
-              style={{backgroundColor: '#fe5f55', 
-              width: width * 0.6, 
-              }}
-              onPress={() => {
-                if (props.num === 6) {
-                  props.navigate("CREATE_AR_PAGE");
-                } else {
-                  props.navigate(`SKYBOX_GUIDE_${props.num+1}`);
-                }
-              }}>
-                <Text style={{color: 'white'}}>{props.num === 6 ? `Go To AR Scene` : phases[props.num + 1]}</Text>
-              </Button>
+              <View>
+                <View style={{ alignItems: "center", marginTop: height * 0.15 }}>
+                  <Image
+                    source={require("../res/world.png")}
+                    style={{ height: width * 0.6, width: width * 0.6 }}
+                  />
+                </View>
+                <View style={{alignItems: "center", width: width * 0.6, marginTop: height * 0.05}}>
+                  <Text style={{color: 'white', alignItems: 'center'}}>
+                      Follow Button Instructions Below.
+                  </Text>
+                </View>
+                <View View style={{alignItems: "center"}}>
+                  <Button 
+                  style={{marginTop: height * 0.025, backgroundColor: '#fe5f55', width: width * 0.6,
+                  alignItems: 'center'}}
+                  onPress={() => {
+                    if (props.num === 6) {
+                      props.navigate("CREATE_AR_PAGE");
+                    } else {
+                      props.navigate(`SKYBOX_GUIDE_${props.num+1}`);
+                    }
+                  }}>
+                    <Text style={{color: 'white'}}>{props.num === 6 ? `Go To AR Scene` : phases[props.num + 1]}</Text>
+                  </Button>
+                </View>
+              </View>
             ) : (
-              <Text
-                style={{ color: "white" }}
-                onPress={() => takePhoto()}
-              >
-              {phases[props.num]}
-              </Text>
+              <View>
+                <View style={{ alignItems: "center", marginTop: height * 0.15 }}>
+                  <Image
+                    source={require("../res/camera.png")}
+                    style={{ height: width * 0.6, width: width * 0.6 }}
+                  />
+              </View>
+              <View style={{alignItems: "center", width: width * 0.6, marginTop: height * 0.05}}>
+                  <Text style={{color: 'white', alignItems: 'center'}}>
+                      Use your device camera to take a photo for the skybox scene. The images will be publically uploaded to AWS S3.
+                  </Text>
+              </View>
+              <View style={{alignItems: "center"}}>
+                  <Button style={{marginTop: height * 0.025, backgroundColor: '#fe5f55', width: width * 0.6,
+                  alignItems: 'center'}}
+                  onPress={() => takePhoto()}>
+                      <Text style={{alignContent: "center"}}>
+                      {phases[props.num]}
+                      </Text>
+                  </Button>
+              </View>
+            </View>
             )}
           </View>
         )}

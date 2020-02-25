@@ -28,10 +28,8 @@ import axios from "axios";
 
 const ImageUpload = props => {
   [renderARButton, changeARButtonState] = useState(false);
-  const propsvalue = () => {
-    return props.forobject;
-  };
-  const chooseFile = bool => {
+
+  const chooseFile = () => {
     const options = {};
     ImagePicker.launchImageLibrary(options, response => {
       if (props.forscene) {
@@ -82,7 +80,7 @@ const ImageUpload = props => {
           });
         }).catch(err => alert(JSON.stringify(err)));
       } else {
-        if (bool) {
+        if (props.forobject) {
           props.setIsEditable(true);
           props.setIsNew(false);
           const source = { uri: response.uri };
@@ -206,13 +204,28 @@ const ImageUpload = props => {
           <View style={{ alignItems: "center",
           justifyContent: "center"}}>
             {renderARButton ? (
-              <Button 
-              style={{backgroundColor: '#fe5f55', 
-              width: width * 0.6, 
-              }}
-              onPress={() => props.navigate("EDIT_AR_PAGE")}>
-                <Text style={{color: 'white'}}>Go To AR Scene</Text>
-              </Button>
+              <View>
+              <View style={{ alignItems: "center", marginTop: height * 0.15 }}>
+                <Image
+                  source={require("../res/world.png")}
+                  style={{ height: width * 0.6, width: width * 0.6 }}
+                />
+            </View>
+            <View style={{alignItems: "center", width: width * 0.6, marginTop: height * 0.05}}>
+                <Text style={{color: 'white', alignItems: 'center'}}>
+                    Image Has Been Uploaded To S3.
+                </Text>
+            </View>
+            <View style={{alignItems: "center"}}>
+                <Button style={{marginTop: height * 0.025, backgroundColor: '#fe5f55', width: width * 0.6,
+                alignItems: 'center'}}
+                onPress={() => props.navigate("EDIT_AR_PAGE")}>
+                    <Text style={{alignContent: "center", color: 'white'}}>
+                        Go To AR Scene
+                    </Text>
+                </Button>
+            </View>
+          </View>
             ) : (
               <View>
               <View style={{ alignItems: "center", marginTop: height * 0.15 }}>
@@ -221,15 +234,15 @@ const ImageUpload = props => {
                   style={{ height: width * 0.6, width: width * 0.6 }}
                 />
             </View>
-            <View style={{alignContent: "center", justifyContent: "center", width: width * 0.6, marginLeft: width * 0.2, marginTop: height * 0.05}}>
+            <View style={{alignItems: "center", width: width * 0.6, marginTop: height * 0.05}}>
                 <Text style={{color: 'white', alignItems: 'center'}}>
                     Use your device camera to upload a photo from the camera roll for the scene. The image will be publically uploaded to AWS S3.
                 </Text>
             </View>
-            <View style={{alignContent: "center", justifyContent: "center", marginLeft: width * 0.2}}>
+            <View style={{alignItems: "center"}}>
                 <Button style={{marginTop: height * 0.025, backgroundColor: '#fe5f55', width: width * 0.6,
                 alignItems: 'center'}}
-                onPress={() => takePhoto()}>
+                onPress={() => chooseFile()}>
                     <Text style={{alignContent: "center"}}>
                         Upload A Photo
                     </Text>
@@ -242,13 +255,28 @@ const ImageUpload = props => {
           <View style={{ alignItems: "center",
           justifyContent: "center"}}>
             {renderARButton ? (
-              <Button 
-              style={{backgroundColor: '#fe5f55', 
-              width: width * 0.6, 
-              }}
-              onPress={() => props.navigate("CREATE_AR_PAGE")}>
-                <Text style={{color: 'white'}}>Go To AR Scene</Text>
-              </Button>
+              <View>
+              <View style={{ alignItems: "center", marginTop: height * 0.15 }}>
+                <Image
+                  source={require("../res/world.png")}
+                  style={{ height: width * 0.6, width: width * 0.6 }}
+                />
+            </View>
+            <View style={{alignItems: "center", width: width * 0.6, marginTop: height * 0.05}}>
+                <Text style={{color: 'white', alignItems: 'center'}}>
+                    Image has been uploaded to S3.
+                </Text>
+            </View>
+            <View style={{alignItems: "center"}}>
+                <Button style={{marginTop: height * 0.025, backgroundColor: '#fe5f55', width: width * 0.6,
+                alignItems: 'center'}}
+                onPress={() => props.forscene ? (props.navigate("EDIT_AR_PAGE")) : (props.navigate("CREATE_AR_PAGE"))}>
+                    <Text style={{alignContent: "center", color: 'white'}}>
+                        Go To AR Scene
+                    </Text>
+                </Button>
+            </View>
+          </View>
             ) : (
               <View>
               <View style={{ alignItems: "center", marginTop: height * 0.15 }}>
@@ -257,15 +285,15 @@ const ImageUpload = props => {
                   style={{ height: width * 0.6, width: width * 0.6 }}
                 />
             </View>
-            <View style={{alignContent: "center", justifyContent: "center", width: width * 0.6, marginLeft: width * 0.2, marginTop: height * 0.05}}>
+            <View style={{alignContent: "center", width: width * 0.6, marginTop: height * 0.05}}>
                 <Text style={{color: 'white', alignItems: 'center'}}>
                     Use your device camera to upload an image from the camera roll for the scene. The image will be publically uploaded to AWS S3.
                 </Text>
             </View>
-            <View style={{alignContent: "center", justifyContent: "center", marginLeft: width * 0.2}}>
+            <View style={{alignContent: "center"}}>
                 <Button style={{marginTop: height * 0.025, backgroundColor: '#fe5f55', width: width * 0.6,
                 alignItems: 'center'}}
-                onPress={() => takePhoto()}>
+                onPress={() => chooseFile()}>
                     <Text style={{alignContent: "center"}}>
                         Upload A Photo
                     </Text>
