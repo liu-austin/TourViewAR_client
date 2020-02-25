@@ -203,7 +203,8 @@ const ImageUpload = props => {
     </Header>
       <Content style={{...styles.container, backgroundColor: '#49beb7'}}>
         {props.forobject ? (
-          <View>
+          <View style={{ alignItems: "center",
+          justifyContent: "center"}}>
             {renderARButton ? (
               <Button 
               style={{backgroundColor: '#fe5f55', 
@@ -213,16 +214,33 @@ const ImageUpload = props => {
                 <Text style={{color: 'white'}}>Go To AR Scene</Text>
               </Button>
             ) : (
-              <Text
-                style={{ color: "#3FA4F0" }}
-                onPress={() => chooseFile(propsvalue())}
-              >
-                Upload A Photo
-              </Text>
+              <View>
+              <View style={{ alignItems: "center", marginTop: height * 0.15 }}>
+                <Image
+                  source={require("../res/camera.png")}
+                  style={{ height: width * 0.6, width: width * 0.6 }}
+                />
+            </View>
+            <View style={{alignContent: "center", justifyContent: "center", width: width * 0.6, marginLeft: width * 0.2, marginTop: height * 0.05}}>
+                <Text style={{color: 'white', alignItems: 'center'}}>
+                    Use your device camera to upload a photo from the camera roll for the scene. The image will be publically uploaded to AWS S3.
+                </Text>
+            </View>
+            <View style={{alignContent: "center", justifyContent: "center", marginLeft: width * 0.2}}>
+                <Button style={{marginTop: height * 0.025, backgroundColor: '#fe5f55', width: width * 0.6,
+                alignItems: 'center'}}
+                onPress={() => takePhoto()}>
+                    <Text style={{alignContent: "center"}}>
+                        Upload A Photo
+                    </Text>
+                </Button>
+            </View>
+          </View>
             )}
           </View>
         ) : (
-          <View>
+          <View style={{ alignItems: "center",
+          justifyContent: "center"}}>
             {renderARButton ? (
               <Button 
               style={{backgroundColor: '#fe5f55', 
@@ -232,12 +250,28 @@ const ImageUpload = props => {
                 <Text style={{color: 'white'}}>Go To AR Scene</Text>
               </Button>
             ) : (
-              <Text
-                style={{ color: "#3FA4F0" }}
-                onPress={() => chooseFile(propsvalue())}
-              >
-                Upload A Photo
-              </Text>
+              <View>
+              <View style={{ alignItems: "center", marginTop: height * 0.15 }}>
+                <Image
+                  source={require("../res/camera.png")}
+                  style={{ height: width * 0.6, width: width * 0.6 }}
+                />
+            </View>
+            <View style={{alignContent: "center", justifyContent: "center", width: width * 0.6, marginLeft: width * 0.2, marginTop: height * 0.05}}>
+                <Text style={{color: 'white', alignItems: 'center'}}>
+                    Use your device camera to upload an image from the camera roll for the scene. The image will be publically uploaded to AWS S3.
+                </Text>
+            </View>
+            <View style={{alignContent: "center", justifyContent: "center", marginLeft: width * 0.2}}>
+                <Button style={{marginTop: height * 0.025, backgroundColor: '#fe5f55', width: width * 0.6,
+                alignItems: 'center'}}
+                onPress={() => takePhoto()}>
+                    <Text style={{alignContent: "center"}}>
+                        Upload A Photo
+                    </Text>
+                </Button>
+            </View>
+          </View>
             )}
           </View>
         )}
@@ -285,9 +319,7 @@ const ImageUpload = props => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    color: "#fff",
-    alignItems: "center",
-    justifyContent: "center"
+    color: "#fff"
   }
 });
 

@@ -216,7 +216,8 @@ const SkyboxCamera = props => {
     </Header>
       <Content style={{...styles.container, backgroundColor: '#49beb7'}}>
         {props.forscene ? (
-          <View>
+          <View style={{ alignItems: "center",
+          justifyContent: "center"}}>
             {renderARButton ? (
               <Button 
               style={{backgroundColor: '#fe5f55', 
@@ -241,7 +242,8 @@ const SkyboxCamera = props => {
             )}
           </View>
         ) : (
-          <View>
+          <View style={{ alignItems: "center",
+          justifyContent: "center"}}>
             {renderARButton ? (
               <Button 
               style={{backgroundColor: '#fe5f55', 
@@ -309,9 +311,7 @@ const SkyboxCamera = props => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center"
+    backgroundColor: "#fff"
   }
 });
 

@@ -215,7 +215,8 @@ const UseCamera = props => {
     </Header>
       <Content style={{...styles.container, backgroundColor: '#49beb7'}}>
         {props.forobject ? (
-          <View>
+          <View style={{ alignItems: "center",
+          justifyContent: "center"}}>
             {renderARButton ? (
               <Button 
               style={{backgroundColor: '#fe5f55', 
@@ -225,15 +226,33 @@ const UseCamera = props => {
                 <Text style={{color: 'white'}}>Go To AR Scene</Text>
               </Button>
             ) : (
-              <Text
-                style={{ color: "#3FA4F0" }}
-                onPress={() => takePhoto()}>
-                Take A Photo
-              </Text>
+              <View>
+                <View style={{ alignItems: "center", marginTop: height * 0.15 }}>
+                  <Image
+                    source={require("../res/camera.png")}
+                    style={{ height: width * 0.6, width: width * 0.6 }}
+                  />
+              </View>
+              <View style={{alignContent: "center", justifyContent: "center", width: width * 0.6, marginLeft: width * 0.2, marginTop: height * 0.05}}>
+                  <Text style={{color: 'white', alignItems: 'center'}}>
+                      Use your device camera to take a photo for the object. The image will be publically uploaded to AWS S3.
+                  </Text>
+              </View>
+              <View style={{alignContent: "center", justifyContent: "center", marginLeft: width * 0.2}}>
+                  <Button style={{marginTop: height * 0.025, backgroundColor: '#fe5f55', width: width * 0.6,
+                  alignItems: 'center'}}
+                  onPress={() => takePhoto()}>
+                      <Text style={{alignContent: "center"}}>
+                          Take A Photo
+                      </Text>
+                  </Button>
+              </View>
+            </View>
             )}
           </View>
         ) : (
-          <View>
+          <View style={{ alignItems: "center",
+          justifyContent: "center"}}>
             {renderARButton ? (
               <Button 
               style={{backgroundColor: '#fe5f55', 
@@ -243,12 +262,29 @@ const UseCamera = props => {
                 <Text style={{color: 'white'}}>Go To AR Scene</Text>
               </Button>
             ) : (
-              <Text
-                style={{ color: "#3FA4F0" }}
-                onPress={() => takePhoto()}
-              >
-                Take A Photo
-              </Text>
+            <View>
+              <View style={{ alignItems: "center", marginTop: height * 0.15 }}>
+                <Image
+                  source={require("../res/camera.png")}
+                  style={{ height: width * 0.6, width: width * 0.6 }}
+                />
+            </View>
+            <View style={{alignContent: "center", justifyContent: "center", width: width * 0.6, marginLeft: width * 0.2, marginTop: height * 0.05}}>
+                <Text style={{color: 'white', alignItems: 'center'}}>
+                    Use your device camera to take a photo for the scene. The image will be publically uploaded to AWS S3.
+                </Text>
+            </View>
+            <View style={{alignContent: "center", justifyContent: "center", marginLeft: width * 0.2}}>
+                <Button style={{marginTop: height * 0.025, backgroundColor: '#fe5f55', width: width * 0.6,
+                alignItems: 'center'}}
+                onPress={() => takePhoto()}>
+                    <Text style={{alignContent: "center"}}>
+                        Take A Photo
+                    </Text>
+                </Button>
+            </View>
+          </View>
+
             )}
           </View>
         )}
@@ -295,9 +331,7 @@ const UseCamera = props => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center"
+    backgroundColor: "#fff"
   }
 });
 
