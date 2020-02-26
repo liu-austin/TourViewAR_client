@@ -445,59 +445,64 @@ class Login extends Component {
         style={{
           flex: 1
         }}>
+        <View style={{position: 'absolute', width: width, height: height * 0.7, left: -width * 0.5}}>
         <ViroARSceneNavigator
-          {...this.state.sharedProps}
-          viroAppProps={{
-            navigate: this.props.navigate,
-            setSelectedText: this.props.setSelectedText,
-            selectSelectedText: this.props.selectSelectedText,
-            selectObjectId: this.props.selectObjectId,
-            selectPanoId: this.props.selectPanoId,
-            setPanoId: this.props.setPanoId,
-            setObjectId: this.props.setObjectId,
-            selectIsNew: false,
-            selectIsEditable: false,
-            selectTourId: this.props.selectTourId,
-            selectTourPanos: this.props.selectTourPanos,
-            setObjectXCoordinate: this.props.setObjectXCoordinate,
-            setObjectYCoordinate: this.props.setObjectYCoordinate,
-            setObjectZCoordinate: this.props.setObjectZCoordinate,
-            selectObjectZCoordinate: this.props.selectObjectZCoordinate,
-            selectObjectXCoordinate: this.props.selectObjectXCoordinate,
-            selectObjectYCoordinate: this.props.selectObjectYCoordinate,
-            setSceneHistory: this.props.setSceneHistory,
-            selectSceneHistory: this.props.selectSceneHistory,
-            selectSbIndex: this.props.selectSbIndex,
-            setSbIndex: this.props.setSbIndex,
-            selectPanoIndex: this.props.selectPanoIndex,
-            setPanoIndex: this.props.setPanoIndex,
-            setSkyboxId: this.props.setSkyboxId,
-            selectSkyboxId: this.props.selectSkyboxId,
-            setForSb: this.props.setForSb,
-            setObjSceneCap: this.props.setObjSceneCap
-          }}
-          initialScene={{ scene: InitialARScene }}
-        />
-        <View style={styles.previousContainer}>
-          <TouchableHighlight style={styles.topButton}>
-            <Text style={styles.textStyle2}>
-              {this.props.selectSelectedText}
-            </Text>
-          </TouchableHighlight>
-        </View>
-        <View style={styles.editFooter}>
-          <TouchableHighlight
-            style={styles.cancelButton}
-            underlayColor={`#68a0ff`}
-            onPress={() => {
-              this.props.setSceneHistory([]);
-              this.props.setPanoId('');
-              this.props.navigate("REACT_NATIVE_HOME");
-            }}
-          >
-            <Text style={styles.textStyle}>HOME</Text>
-          </TouchableHighlight>
-        </View>
+        {...this.state.sharedProps}
+        viroAppProps={{
+          navigate: this.props.navigate,
+          setSelectedText: this.props.setSelectedText,
+          selectSelectedText: this.props.selectSelectedText,
+          selectObjectId: this.props.selectObjectId,
+          selectPanoId: this.props.selectPanoId,
+          setPanoId: this.props.setPanoId,
+          setObjectId: this.props.setObjectId,
+          selectIsNew: false,
+          selectIsEditable: false,
+          selectTourId: this.props.selectTourId,
+          selectTourPanos: this.props.selectTourPanos,
+          setObjectXCoordinate: this.props.setObjectXCoordinate,
+          setObjectYCoordinate: this.props.setObjectYCoordinate,
+          setObjectZCoordinate: this.props.setObjectZCoordinate,
+          selectObjectZCoordinate: this.props.selectObjectZCoordinate,
+          selectObjectXCoordinate: this.props.selectObjectXCoordinate,
+          selectObjectYCoordinate: this.props.selectObjectYCoordinate,
+          setSceneHistory: this.props.setSceneHistory,
+          selectSceneHistory: this.props.selectSceneHistory,
+          selectSbIndex: this.props.selectSbIndex,
+          setSbIndex: this.props.setSbIndex,
+          selectPanoIndex: this.props.selectPanoIndex,
+          setPanoIndex: this.props.setPanoIndex,
+          setSkyboxId: this.props.setSkyboxId,
+          selectSkyboxId: this.props.selectSkyboxId,
+          setForSb: this.props.setForSb,
+          setObjSceneCap: this.props.setObjSceneCap
+        }}
+        initialScene={{ scene: InitialARScene }}
+      />
+
+      </View>
+      <View style={styles.previousContainer}>
+      <View style={{marginTop: 0.05 * height, alignItems: "center"}}>
+        <Button style={{backgroundColor: 'rgba(0,0,0,0)'}}>
+          <Text style={styles.textStyle2}>
+            {this.props.selectSelectedText}
+          </Text>
+        </Button>
+      </View>
+      <View style={{marginTop: 0.15 * height, alignItems: "center"}}>
+      <Button
+        style={{width: 0.3 * width, backgroundColor: '#fe5f55'}}
+        onPress={() => {
+          this.props.setSceneHistory([]);
+          this.props.setPanoId('');
+          this.props.navigate("REACT_NATIVE_HOME");
+        }}
+      >
+        <Text style={{color: 'white'}}>HOME</Text>
+      </Button>
+    </View>
+    </View>
+
       </View>
     );
   }
@@ -518,35 +523,36 @@ class Login extends Component {
           flex: 1
         }}
       >
-        <ViroARSceneNavigator
-          {...this.state.sharedProps}
-          viroAppProps={{
-            navigate: this.props.navigate,
-            goBack: false,
-            setGoBack: this.props.setGoBack,
-            setSelectedText: this.props.setSelectedText,
-            selectSelectedText: this.props.selectSelectedText,
-            selectObjectId: this.props.selectObjectId,
-            selectTourId: this.props.selectTourId,
-            selectPanoId: this.props.selectPanoId,
-            setPanoId: this.props.setPanoId,
-            setObjectId: this.props.setObjectId,
-            selectIsNew: true,
-            selectIsEditable: true,
-            selectTourPanos: this.props.selectTourPanos,
-            setSceneHistory: this.props.setSceneHistory,
-            selectSceneHistory: this.props.selectSceneHistory,
-            selectSbIndex: this.props.selectSbIndex,
-            setSbIndex: this.props.setSbIndex,
-            selectPanoIndex: this.props.selectPanoIndex,
-            setPanoIndex: this.props.setPanoIndex,
-            setSkyboxId: this.props.setSkyboxId,
-            selectSkyboxId: this.props.selectSkyboxId,
-            setForSb: this.props.setForSb,
-            setObjSceneCap: this.props.setObjSceneCap
-          }}
-          initialScene={{ scene: InitialARScene }}
-        />
+      <View style={{position: 'absolute', width: width, height: height, left: -width * 0.5}}>
+      <ViroARSceneNavigator
+      {...this.state.sharedProps}
+      viroAppProps={{
+        navigate: this.props.navigate,
+        goBack: false,
+        setGoBack: this.props.setGoBack,
+        setSelectedText: this.props.setSelectedText,
+        selectSelectedText: this.props.selectSelectedText,
+        selectObjectId: this.props.selectObjectId,
+        selectTourId: this.props.selectTourId,
+        selectPanoId: this.props.selectPanoId,
+        setPanoId: this.props.setPanoId,
+        setObjectId: this.props.setObjectId,
+        selectIsNew: true,
+        selectIsEditable: true,
+        selectTourPanos: this.props.selectTourPanos,
+        setSceneHistory: this.props.setSceneHistory,
+        selectSceneHistory: this.props.selectSceneHistory,
+        selectSbIndex: this.props.selectSbIndex,
+        setSbIndex: this.props.setSbIndex,
+        selectPanoIndex: this.props.selectPanoIndex,
+        setPanoIndex: this.props.setPanoIndex,
+        setSkyboxId: this.props.setSkyboxId,
+        selectSkyboxId: this.props.selectSkyboxId,
+        setForSb: this.props.setForSb,
+        setObjSceneCap: this.props.setObjSceneCap
+      }}
+      initialScene={{ scene: InitialARScene }}
+    /> </View>
         <View style={styles.previousContainer}>
           <TouchableHighlight style={styles.topButton}>
             <Text style={styles.textStyle2}>
@@ -615,41 +621,42 @@ class Login extends Component {
         style={{
           flex: 1
         }}>
+        <View style={{position: 'absolute', width: width, height: height, left: -width * 0.5}}>
         <ViroARSceneNavigator
-          {...this.state.sharedProps}
-          viroAppProps={{
-            navigate: this.props.navigate,
-            goBack: this.props.goBack,
-            setGoBack: this.props.setGoBack,
-            setSelectedText: this.props.setSelectedText,
-            selectSelectedText: this.props.selectSelectedText,
-            selectObjectId: this.props.selectObjectId,
-            selectPanoId: this.props.selectPanoId,
-            setPanoId: this.props.setPanoId,
-            setObjectId: this.props.setObjectId,
-            selectIsNew: false,
-            selectIsEditable: true,
-            selectTourId: this.props.selectTourId,
-            selectTourPanos: this.props.selectTourPanos,
-            setObjectXCoordinate: this.props.setObjectXCoordinate,
-            setObjectYCoordinate: this.props.setObjectYCoordinate,
-            setObjectZCoordinate: this.props.setObjectZCoordinate,
-            selectObjectZCoordinate: this.props.selectObjectZCoordinate,
-            selectObjectXCoordinate: this.props.selectObjectXCoordinate,
-            selectObjectYCoordinate: this.props.selectObjectYCoordinate,
-            setSceneHistory: this.props.setSceneHistory,
-            selectSceneHistory: this.props.selectSceneHistory,
-            selectSbIndex: this.props.selectSbIndex,
-            setSbIndex: this.props.setSbIndex,
-            selectPanoIndex: this.props.selectPanoIndex,
-            setPanoIndex: this.props.setPanoIndex,
-            setSkyboxId: this.props.setSkyboxId,
-            selectSkyboxId: this.props.selectSkyboxId,
-            setForSb: this.props.setForSb,
-            setObjSceneCap: this.props.setObjSceneCap
-          }}
-          initialScene={{ scene: InitialARScene }}
-        />
+        {...this.state.sharedProps}
+        viroAppProps={{
+          navigate: this.props.navigate,
+          goBack: this.props.goBack,
+          setGoBack: this.props.setGoBack,
+          setSelectedText: this.props.setSelectedText,
+          selectSelectedText: this.props.selectSelectedText,
+          selectObjectId: this.props.selectObjectId,
+          selectPanoId: this.props.selectPanoId,
+          setPanoId: this.props.setPanoId,
+          setObjectId: this.props.setObjectId,
+          selectIsNew: false,
+          selectIsEditable: true,
+          selectTourId: this.props.selectTourId,
+          selectTourPanos: this.props.selectTourPanos,
+          setObjectXCoordinate: this.props.setObjectXCoordinate,
+          setObjectYCoordinate: this.props.setObjectYCoordinate,
+          setObjectZCoordinate: this.props.setObjectZCoordinate,
+          selectObjectZCoordinate: this.props.selectObjectZCoordinate,
+          selectObjectXCoordinate: this.props.selectObjectXCoordinate,
+          selectObjectYCoordinate: this.props.selectObjectYCoordinate,
+          setSceneHistory: this.props.setSceneHistory,
+          selectSceneHistory: this.props.selectSceneHistory,
+          selectSbIndex: this.props.selectSbIndex,
+          setSbIndex: this.props.setSbIndex,
+          selectPanoIndex: this.props.selectPanoIndex,
+          setPanoIndex: this.props.setPanoIndex,
+          setSkyboxId: this.props.setSkyboxId,
+          selectSkyboxId: this.props.selectSkyboxId,
+          setForSb: this.props.setForSb,
+          setObjSceneCap: this.props.setObjSceneCap
+        }}
+        initialScene={{ scene: InitialARScene }}
+      /></View>
         <View style={styles.previousContainer}>
           <TouchableHighlight style={styles.topButton}>
             <Text style={styles.textStyle2}>
@@ -965,10 +972,12 @@ const styles = StyleSheet.create({
   },
 
   previousContainer: {
-    width: "100%",
+    width: width,
+    height: 0.7* height,
+    backgroundColor: '#2a7886',
     position: "absolute",
-    top: 0.03 * height,
-    left: 0.83 * width,
+    top: 0.7 * height,
+    left: -0.5 * width,
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center"
