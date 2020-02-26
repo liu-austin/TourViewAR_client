@@ -7,7 +7,6 @@ import {
   StyleSheet,
   View,
   Image,
-  TouchableHighlight,
   Dimensions
 } from "react-native";
 
@@ -479,28 +478,32 @@ class Login extends Component {
         }}
         initialScene={{ scene: InitialARScene }}
       />
-
       </View>
       <View style={styles.previousContainer}>
-      <View style={{marginTop: 0.05 * height, alignItems: "center"}}>
-        <Button style={{backgroundColor: 'rgba(0,0,0,0)'}}>
+        <View>
+        <View style={{alignItems: 'center', alignContent: 'center', width: 0, flexGrow: 1, flex: 1}}>
+          <Text style={{color: 'white', fontSize: 22}}>
+            VIEW TOUR MODE
+          </Text>
+          <View>
           <Text style={styles.textStyle2}>
             {this.props.selectSelectedText}
           </Text>
-        </Button>
+          </View>
+        </View>
+        <View style={{marginTop: 0.125 * height, marginLeft: 0.35 * width}}>
+          <Button
+            style={{width: 0.3 * width, backgroundColor: '#fe5f55', alignContent: 'center'}}
+            onPress={() => {
+              this.props.setSceneHistory([]);
+              this.props.setPanoId('');
+              this.props.navigate("REACT_NATIVE_HOME");
+            }}
+          >
+            <Text style={{color: 'white', textAlign: 'center'}}>HOME</Text>
+          </Button>
+        </View>
       </View>
-      <View style={{marginTop: 0.15 * height, alignItems: "center"}}>
-      <Button
-        style={{width: 0.3 * width, backgroundColor: '#fe5f55'}}
-        onPress={() => {
-          this.props.setSceneHistory([]);
-          this.props.setPanoId('');
-          this.props.navigate("REACT_NATIVE_HOME");
-        }}
-      >
-        <Text style={{color: 'white'}}>HOME</Text>
-      </Button>
-    </View>
     </View>
 
       </View>
@@ -518,12 +521,8 @@ class Login extends Component {
   _getCreateARPage() {
     let initialARScene = require("./ARScene.js");
     return (
-      <View
-        style={{
-          flex: 1
-        }}
-      >
-      <View style={{position: 'absolute', width: width, height: height, left: -width * 0.5}}>
+      <View style={{flex: 1}}>
+      <View style={{position: 'absolute', width: width, height: height * 0.7, left: -width * 0.5}}>
       <ViroARSceneNavigator
       {...this.state.sharedProps}
       viroAppProps={{
@@ -551,65 +550,64 @@ class Login extends Component {
         setForSb: this.props.setForSb,
         setObjSceneCap: this.props.setObjSceneCap
       }}
-      initialScene={{ scene: InitialARScene }}
-    /> </View>
-        <View style={styles.previousContainer}>
-          <TouchableHighlight style={styles.topButton}>
-            <Text style={styles.textStyle2}>
-              {this.props.selectSelectedText}
-            </Text>
-          </TouchableHighlight>
-        </View>
-        <View style={styles.addButtons}>
-          {this.state.editmode ? (
-            <View>
-              <TouchableHighlight
-                style={styles.textButton}
-                onPress={() => {
-                  this.props.navigate("CREATE_TEXT_OBJECT");
-                }}>
-                <Text style={styles.textStyle2}>ADD TEXT</Text>
-              </TouchableHighlight>
-              <TouchableHighlight style={styles.textButton} 
-                onPress={() => {
-                  this.props.navigate("CREATE_IMAGE_OBJECT");
-                }}>
-                <Text style={styles.textStyle2}>ADD IMG</Text>
-              </TouchableHighlight>
-              <TouchableHighlight style={styles.textButton} onPress={() => {
-                if (!this.props.selectObjSceneCap) {
-                    this.props.navigate("CREATE_OPTIONS_SCENE");
-                } else {
-                  alert('A scene cannot be routed to multiple scenes.');
-                }
-                }}>
-                <Text style={styles.textStyle2}>ADD SCENE</Text>
-              </TouchableHighlight>
-            </View>
-          ) : null}
-        </View>
-        <View style={styles.editFooter}>
-          <TouchableHighlight
-            style={styles.editButton}
-            underlayColor={`#68a0ff`}
-            onPress={() => this.setState({ editmode: !this.state.editmode })}
-          >
-            <Text style={styles.textStyle}>
-              {this.state.editmode ? "SAVE" : "EDIT"}
-            </Text>
-          </TouchableHighlight>
-          <TouchableHighlight
-            style={styles.cancelButton}
-            underlayColor={`#68a0ff`}
-            onPress={() => {
-              this.props.setSceneHistory([]);
-              this.props.setPanoId('');
-              this.props.navigate("REACT_NATIVE_HOME");
-            }}
-          >
-            <Text style={styles.textStyle}>HOME</Text>
-          </TouchableHighlight>
-        </View>
+      initialScene={{ scene: InitialARScene }}/> 
+    </View>
+    <View style={styles.previousContainer}>
+    <View style={{alignItems: 'center', alignContent: 'center', width: 0, flexGrow: 1, flex: 1}}>
+      <Text style={styles.textStyle2}>
+        {this.props.selectSelectedText}
+      </Text>
+    </View>
+    <View style={{marginTop: height * 0.1}}>
+    {this.state.editmode ? (
+      <View style={{flex: 1, flexDirection: 'row'}}>
+        <Button
+          style={{backgroundColor: '#fe5f55', width: width * 0.25}}
+          onPress={() => {
+            this.props.navigate("CREATE_TEXT_OBJECT");
+          }}>
+          <Text style={{color: 'white'}}>ADD TEXT</Text>
+        </Button>
+        <Button style={{backgroundColor: '#fe5f55', width: width * 0.25}} 
+          onPress={() => {
+            this.props.navigate("CREATE_IMAGE_OBJECT");
+          }}>
+          <Text style={{color: 'white'}}>ADD IMG</Text>
+        </Button>
+        <Button style={{backgroundColor: '#fe5f55', width: width * 0.25}} onPress={() => {
+          if (!this.props.selectObjSceneCap) {
+              this.props.navigate("CREATE_OPTIONS_SCENE");
+          } else {
+            alert('A scene cannot be routed to multiple scenes.');
+          }
+          }}>
+          <Text style={{color: 'white'}}>ADD SCENE</Text>
+        </Button>
+      </View>
+    ) : null}
+  </View>
+  <View style={{flex: 1, flexDirection: 'row'}}>
+  <Button
+    style={{backgroundColor: '#fe5f55', width: width * 0.3}}
+    onPress={() => this.setState({ editmode: !this.state.editmode })}
+  >
+    <Text style={{color: 'white'}}>
+      {this.state.editmode ? "SAVE" : "EDIT"}
+    </Text>
+  </Button>
+  <Button
+    style={{backgroundColor: '#fe5f55', width: width * 0.3}}
+    onPress={() => {
+      this.props.setSceneHistory([]);
+      this.props.setPanoId('');
+      this.props.navigate("REACT_NATIVE_HOME");
+    }}
+  >
+    <Text style={{color: 'white'}}>HOME</Text>
+  </Button>
+</View>
+
+</View>
       </View>
     );
   }
@@ -617,10 +615,7 @@ class Login extends Component {
   _getEditARPage() {
     let initialARScene = require("./ARScene.js");
     return (
-      <View
-        style={{
-          flex: 1
-        }}>
+      <View style={{flex: 1}}>
         <View style={{position: 'absolute', width: width, height: height, left: -width * 0.5}}>
         <ViroARSceneNavigator
         {...this.state.sharedProps}
@@ -655,53 +650,49 @@ class Login extends Component {
           setForSb: this.props.setForSb,
           setObjSceneCap: this.props.setObjSceneCap
         }}
-        initialScene={{ scene: InitialARScene }}
-      /></View>
+        initialScene={{ scene: InitialARScene }}/>
+        </View>
         <View style={styles.previousContainer}>
-          <TouchableHighlight style={styles.topButton}>
-            <Text style={styles.textStyle2}>
-              {this.props.selectSelectedText}
-            </Text>
-          </TouchableHighlight>
-        </View>
-        <View style={styles.addButtons}>
-          {this.state.editmode ? (
-            <View>
-              <TouchableHighlight
-                style={styles.textButton}
-                onPress={() => {
-                  this.props.navigate("CREATE_TEXT_OBJECT");
-                }}
-              >
-                <Text style={styles.textStyle2}>ADD TEXT</Text>
-              </TouchableHighlight>
-              <TouchableHighlight
-                style={styles.textButton}
-                onPress={() => {
-                  this.props.navigate("CREATE_IMAGE_OBJECT");
-                }}
-              >
-                <Text style={styles.textStyle2}
-                                onPress={() => {
-                                  this.props.navigate("CREATE_IMAGE_OBJECT");
-                                }}>ADD IMG</Text>
-              </TouchableHighlight>
-              <TouchableHighlight style={styles.textButton} onPress={() => {
-                if (!this.props.selectObjSceneCap) {
-                    this.props.navigate("CREATE_OPTIONS_SCENE");
-                } else {
-                  alert('A scene cannot be routed to multiple scenes.');
-                }
-                }}>
-                <Text style={styles.textStyle2}>ADD SCENE</Text>
-              </TouchableHighlight>
-            </View>
-          ) : null}
-        </View>
-        <View style={styles.editFooter}>
-          <TouchableHighlight
-            style={styles.editButton}
-            underlayColor={`#68a0ff`}
+          <View style={{alignItems: 'center', alignContent: 'center', width: 0, flexGrow: 1, flex: 1}}>
+              <Text style={styles.textStyle2}>
+                {this.props.selectSelectedText}
+              </Text>
+          </View>
+            <View style={{marginTop: height * 0.1}}>
+            {this.state.editmode ? (
+              <View style={{flex: 1, flexDirection: 'row'}}>
+                <Button
+                style={{backgroundColor: '#fe5f55', width: width * 0.25}}
+                  onPress={() => {
+                    this.props.navigate("CREATE_TEXT_OBJECT");
+                  }}>
+                  <Text style={{color: 'white'}}>ADD TEXT</Text>
+                </Button>
+                <Button
+                style={{backgroundColor: '#fe5f55', width: width * 0.25}}
+                  onPress={() => {
+                    this.props.navigate("CREATE_IMAGE_OBJECT");
+                  }}>
+                  <Text style={{color: 'white'}}
+                                  onPress={() => {
+                                    this.props.navigate("CREATE_IMAGE_OBJECT");
+                                  }}>ADD IMG</Text>
+                </Button>
+                <Button style={{backgroundColor: '#fe5f55', width: width * 0.25}} onPress={() => {
+                  if (!this.props.selectObjSceneCap) {
+                      this.props.navigate("CREATE_OPTIONS_SCENE");
+                  } else {
+                    alert('A scene cannot be routed to multiple scenes.');
+                  }
+                  }}>
+                  <Text style={{color: 'white'}}>ADD SCENE</Text>
+                </Button>
+              </View>
+            ) : null}
+          </View>
+          <View style={{flex: 1, flexDirection: 'row'}}>
+          <Button
+          style={{backgroundColor: '#fe5f55', width: width * 0.25}}
             onPress={() => {
               if (!this.state.editmode) {
                 this.setState({ editmode: !this.state.editmode });
@@ -710,25 +701,23 @@ class Login extends Component {
                   this._saveChanges();
                 });
               }
-            }}
-          >
-            <Text style={styles.textStyle}>
+            }}>
+            <Text style={{color: 'white'}}>
               {this.state.editmode ? "SAVE" : "EDIT"}
             </Text>
-          </TouchableHighlight>
-          <TouchableHighlight
-            style={styles.cancelButton}
-            underlayColor={`#68a0ff`}
+          </Button>
+          <Button
+          style={{backgroundColor: '#fe5f55', width: width * 0.25}}
             onPress={() => {
               this.props.setSceneHistory([]);
               this.props.setPanoId('');
               this.props.navigate("REACT_NATIVE_HOME");
-          }}
-          >
-            <Text style={styles.textStyle}>HOME</Text>
-          </TouchableHighlight>
+          }}>
+            <Text style={{color: 'white'}}>HOME</Text>
+          </Button>
         </View>
-      </View>
+        </View>
+</View>
     );
   }
 
@@ -977,10 +966,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#2a7886',
     position: "absolute",
     top: 0.7 * height,
-    left: -0.5 * width,
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center"
+    left: -0.5 * width
   },
   selectedTextContainer: {
     width: "100%",
