@@ -7,7 +7,8 @@ import {
   StyleSheet,
   View,
   Image,
-  Dimensions
+  Dimensions,
+  TouchableHighlight
 } from "react-native";
 
 var width = Dimensions.get('window').width; //full width
@@ -480,20 +481,23 @@ class Login extends Component {
       />
       </View>
       <View style={styles.previousContainer}>
-        <View>
-        <View style={{alignItems: 'center', alignContent: 'center', width: 0, flexGrow: 1, flex: 1}}>
-          <Text style={{color: 'white', fontSize: 22}}>
-            VIEW TOUR MODE
-          </Text>
-          <View>
-          <Text style={styles.textStyle2}>
-            {this.props.selectSelectedText}
-          </Text>
+        <View style={{alignItems: 'center', alignContent: 'center'}}>
+          <TouchableHighlight style={{backgroundColor: 'rgba(0,0,0,0)', display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+            <Text style={{color: 'white', fontSize: 20}}>
+              VIEW TOUR MODE
+            </Text>
+          </TouchableHighlight>
+          <View style={{marginTop: height * 0.05}}>
+            <TouchableHighlight style={{backgroundColor: 'rgba(0,0,0,0)', display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+            <Text style={styles.textStyle2}>
+              {this.props.selectSelectedText}
+            </Text>
+            </TouchableHighlight>
           </View>
         </View>
-        <View style={{marginTop: 0.125 * height, marginLeft: 0.35 * width}}>
+        <View style={{marginTop: 0.075 * height, marginLeft: 0.35 * width}}>
           <Button
-            style={{width: 0.3 * width, backgroundColor: '#fe5f55', alignContent: 'center'}}
+            style={{width: 0.3 * width, backgroundColor: '#fe5f55', alignContent: 'center', display: 'flex', justifyContent: 'center', alignItems: 'center'}}
             onPress={() => {
               this.props.setSceneHistory([]);
               this.props.setPanoId('');
@@ -505,8 +509,6 @@ class Login extends Component {
         </View>
       </View>
     </View>
-
-      </View>
     );
   }
 
@@ -553,28 +555,28 @@ class Login extends Component {
       initialScene={{ scene: InitialARScene }}/> 
     </View>
     <View style={styles.previousContainer}>
-    <View style={{alignItems: 'center', alignContent: 'center', width: 0, flexGrow: 1, flex: 1}}>
+    <TouchableHighlight style={{marginTop: height * 0.025, backgroundColor: 'rgba(0,0,0,0)', display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
       <Text style={styles.textStyle2}>
         {this.props.selectSelectedText}
       </Text>
-    </View>
-    <View style={{marginTop: height * 0.1}}>
+    </TouchableHighlight>
+    <View>
     {this.state.editmode ? (
-      <View style={{flex: 1, flexDirection: 'row'}}>
+      <View style={{flex: 1, flexDirection: 'row', position: 'absolute', left: 0.03 * width, top: 0.02 * height, justifyContent: 'center', alignItems: 'center'}}>
         <Button
-          style={{backgroundColor: '#fe5f55', width: width * 0.25}}
+          style={{backgroundColor: '#fe5f55', width: width * 0.28, marginRight: 0.03 * width}}
           onPress={() => {
             this.props.navigate("CREATE_TEXT_OBJECT");
           }}>
           <Text style={{color: 'white'}}>ADD TEXT</Text>
         </Button>
-        <Button style={{backgroundColor: '#fe5f55', width: width * 0.25}} 
+        <Button style={{backgroundColor: '#fe5f55', width: width * 0.28, marginRight: 0.03 * width}} 
           onPress={() => {
             this.props.navigate("CREATE_IMAGE_OBJECT");
           }}>
           <Text style={{color: 'white'}}>ADD IMG</Text>
         </Button>
-        <Button style={{backgroundColor: '#fe5f55', width: width * 0.25}} onPress={() => {
+        <Button style={{backgroundColor: '#fe5f55', width: width * 0.32}} onPress={() => {
           if (!this.props.selectObjSceneCap) {
               this.props.navigate("CREATE_OPTIONS_SCENE");
           } else {
@@ -586,9 +588,9 @@ class Login extends Component {
       </View>
     ) : null}
   </View>
-  <View style={{flex: 1, flexDirection: 'row'}}>
+  <View style={{left: 0.15 * width, flex: 1, flexDirection: 'row', position: 'absolute', top: 0.18 * height, justifyContent: 'center', alignItems: 'center'}}>
   <Button
-    style={{backgroundColor: '#fe5f55', width: width * 0.3}}
+    style={{backgroundColor: '#fe5f55', width: width * 0.3, marginRight: 0.1 * width}}
     onPress={() => this.setState({ editmode: !this.state.editmode })}
   >
     <Text style={{color: 'white'}}>
@@ -653,23 +655,22 @@ class Login extends Component {
         initialScene={{ scene: InitialARScene }}/>
         </View>
         <View style={styles.previousContainer}>
-          <View style={{alignItems: 'center', alignContent: 'center', width: 0, flexGrow: 1, flex: 1}}>
-              <Text style={styles.textStyle2}>
-                {this.props.selectSelectedText}
-              </Text>
-          </View>
-            <View style={{marginTop: height * 0.1}}>
+        <TouchableHighlight style={{marginTop: height * 0.025, backgroundColor: 'rgba(0,0,0,0)', display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+        <Text style={styles.textStyle2}>
+          {this.props.selectSelectedText}
+        </Text>
+      </TouchableHighlight>
+            <View>
             {this.state.editmode ? (
-              <View style={{flex: 1, flexDirection: 'row'}}>
+              <View style={{flex: 1, flexDirection: 'row', position: 'absolute', left: 0.03 * width, top: 0.02 * height, justifyContent: 'center', alignItems: 'center'}}>
                 <Button
-                style={{backgroundColor: '#fe5f55', width: width * 0.25}}
+                style={{backgroundColor: '#fe5f55', width: width * 0.28, marginRight: 0.03 * width}}
                   onPress={() => {
                     this.props.navigate("CREATE_TEXT_OBJECT");
                   }}>
                   <Text style={{color: 'white'}}>ADD TEXT</Text>
                 </Button>
-                <Button
-                style={{backgroundColor: '#fe5f55', width: width * 0.25}}
+                <Button style={{backgroundColor: '#fe5f55', width: width * 0.28, marginRight: 0.03 * width}} 
                   onPress={() => {
                     this.props.navigate("CREATE_IMAGE_OBJECT");
                   }}>
@@ -678,7 +679,7 @@ class Login extends Component {
                                     this.props.navigate("CREATE_IMAGE_OBJECT");
                                   }}>ADD IMG</Text>
                 </Button>
-                <Button style={{backgroundColor: '#fe5f55', width: width * 0.25}} onPress={() => {
+                <Button style={{backgroundColor: '#fe5f55', width: width * 0.32}} onPress={() => {
                   if (!this.props.selectObjSceneCap) {
                       this.props.navigate("CREATE_OPTIONS_SCENE");
                   } else {
@@ -690,9 +691,9 @@ class Login extends Component {
               </View>
             ) : null}
           </View>
-          <View style={{flex: 1, flexDirection: 'row'}}>
+          <View style={{left: 0.15 * width, flex: 1, flexDirection: 'row', position: 'absolute', top: 0.18 * height, justifyContent: 'center', alignItems: 'center'}}>
           <Button
-          style={{backgroundColor: '#fe5f55', width: width * 0.25}}
+          style={{backgroundColor: '#fe5f55', width: width * 0.3, marginRight: 0.1 * width}}
             onPress={() => {
               if (!this.state.editmode) {
                 this.setState({ editmode: !this.state.editmode });
@@ -707,7 +708,7 @@ class Login extends Component {
             </Text>
           </Button>
           <Button
-          style={{backgroundColor: '#fe5f55', width: width * 0.25}}
+          style={{backgroundColor: '#fe5f55', width: width * 0.3}}
             onPress={() => {
               this.props.setSceneHistory([]);
               this.props.setPanoId('');
