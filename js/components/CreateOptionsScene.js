@@ -1,5 +1,5 @@
 import React, { Component, useState } from "react";
-import { ScrollView, View, StyleSheet, Image } from "react-native";
+import { ScrollView, View, StyleSheet, Image, Dimensions } from "react-native";
 import { connect } from "react-redux";
 import { navigate } from "../redux/render/render.action";
 import { selectForSb } from '../redux/object/object.selectors';
@@ -15,6 +15,9 @@ import {
   Footer,
   FooterTab
 } from "native-base";
+
+var width = Dimensions.get('window').width; //full width
+var height = Dimensions.get('window').height; //full height
 
 const CreateOptionsScene = props => {
   return (

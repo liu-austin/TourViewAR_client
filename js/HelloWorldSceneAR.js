@@ -195,7 +195,7 @@ export default class HelloWorldSceneAR extends Component {
           dragType="FixedDistance"
           >
             <TextElement
-              pickText={() => this.props.sceneNavigator.viroAppProps.setSelectedText('Welcome to your new scene! To go back, press the green diamond behind you.')}
+              pickText={() => this.props.sceneNavigator.viroAppProps.setSelectedText('Welcome to your new scene! To go back, press the green diamond besides this yellow diamond.')}
               contentCardScale={[1, 1, 1]}
               position={polarToCartesian([-5, 0, 0])}
             />
