@@ -2,12 +2,11 @@ package com.tourviewarclient;
 
 import android.app.Application;
 
-import com.imagepicker.ImagePickerPackage; // <-- add this import
+import com.imagepicker.ImagePickerPackage;
 import com.facebook.react.ReactApplication;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
-
 import com.viromedia.bridge.ReactViroPackage;
 import com.facebook.soloader.SoLoader;
 
@@ -26,7 +25,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
-          new ReactViroPackage(ReactViroPackage.ViroPlatform.valueOf(BuildConfig.VR_PLATFORM))
+          new ReactViroPackage(ReactViroPackage.ViroPlatform.valueOf(BuildConfig.VR_PLATFORM)),
           new ImagePickerPackage()
       );
     }
