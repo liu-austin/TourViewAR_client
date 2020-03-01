@@ -5,8 +5,8 @@ TourViewAR is a mobile AR app that allows users to experience tours of 360 degre
 <img src="images/app1.png" width="33%"/> <img src="images/app3.png" width="33%"/> <img src="images/app4.png" width="33%"/>
 <br/><br/>
 <img src="https://media.giphy.com/media/VGVWQYttrnLWEpRJ4I/giphy.gif" width="33%"/>
-<img src="https://media.giphy.com/media/lntG19calYQaedDwve/giphy-downsized-large.gif" width="33%"/>
-<img src="https://media.giphy.com/media/J5kPj7GsSFijQgRxTG/giphy-downsized-large.gif" width="33%"/>
+<img src="https://media.giphy.com/media/lntG19calYQaedDwve/giphy.gif" width="33%"/>
+<img src="https://media.giphy.com/media/J5kPj7GsSFijQgRxTG/giphy.gif" width="33%"/>
 <br/><br/>
 
 This repository contains the front end source code, built using ViroReact, Redux, and React Native CLI. There is a separate git project deployed to AWS EBS which serves as the [backend server] (https://github.com/liu-austin/TourViewARServer_alpha).
@@ -15,7 +15,6 @@ This repository contains the front end source code, built using ViroReact, Redux
 Follow the installation guide below to set up and run this source code locally.
 
 ### Prerequisites
-<br/><br/>
 For IOS:
 1. A mac computer and an iOS Device with A9 chip or higher and running iOS 11+ or an [ARCore supported device]
 2. XCode to build project
@@ -42,7 +41,6 @@ For Android setup:
 npm install
 ./setup.sh android
 ```
-<br/><br/>
 ### Running the app
 For IOS:
 1. Connect IPhone to mac computer if not running on simulator (note: AR scenes will not work in simulators).
