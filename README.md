@@ -3,13 +3,7 @@
 TourViewAR is a mobile AR app that allows users to experience tours of 360 degree virtual spaces. This app not only allows users to view AR content, but also create and share it with others. By using their device camera/ photo library to take or upload photos, the photo base is used to construct a 360 degree panoramic scene for a new virtual tour. Inside this scene, users can add AR elements such as text objects, photo objects, or additional 360 degree scenes. These tours can be searched by all users to experience and learn about the virtual tour you have created. Whether you want to share your latest vacation trip, or you're interested in discovering far-off augmented spaces, or you just want to explore hidden gems near your own neighborhood, TourViewAR lets you create, view, and share virtual tours of wherever you can take a photo.  
 <br/><br/>
 <img src="images/app1.png" width="33%"/> <img src="images/app3.png" width="33%"/> <img src="images/app4.png" width="33%"/>
-
-<img src="images/createtours.gif" width="33%"/>
-
-<img src="images/viewtour.gif" width="33%"/>
-
-<img src="images/ny2.gif" width="33%"/>
-
+<img src="images/createtours.gif" width="33%"/><img src="images/viewtour.gif" width="33%"/><img src="images/ny2.gif" width="33%"/>
 <br/><br/>
 
 This repository contains the front end source code, built using ViroReact, Redux, and React Native CLI. There is a separate git project deployed to AWS EBS which serves as the [backend server] (https://github.com/liu-austin/TourViewARServer_alpha).
