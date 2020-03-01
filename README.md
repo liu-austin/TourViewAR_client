@@ -9,11 +9,11 @@ TourViewAR is a mobile AR app that allows users to experience tours of 360 degre
 </p>
 <br/><br/>
 <p align="center">
-<img src="https://media.giphy.com/media/lntG19calYQaedDwve/giphy.gif" width="33%"/>
+<img src="https://media.giphy.com/media/VGVWQYttrnLWEpRJ4I/giphy.gif" width="33%"/>
 </p>
 <br/><br/>
 <p align="center">
-<img src="https://media.giphy.com/media/J5kPj7GsSFijQgRxTG/giphy.gif" width="33%"/>
+<img src="https://media.giphy.com/media/VGVWQYttrnLWEpRJ4I/giphy.gif" width="33%"/>
 </p>
 <br/><br/>
 
