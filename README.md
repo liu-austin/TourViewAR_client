@@ -31,12 +31,12 @@ cd TourViewARClient_alpha
 For IOS setup:
 ```sh
 npm install
-./setup.sh --ios
+./setup-ide.sh --ios
 ```
 For Android setup:
 ```sh
 npm install
-./setup.sh android
+./setup-ide.sh android
 ```
 ### Running the app
 For IOS:
