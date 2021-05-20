@@ -61,7 +61,7 @@ For Android:
 ## Download the App
 To skip the build process, go to the following link and navigate to projects section to download the .ipa (IOS app bundle) and .apk (Android app bundle). 
 <br/><br/>
-[Download Links](austinliu.co)
+[Download Links](austin-liu.com)
 <br/><br/>
 For IOS:
 There are several ways to install an .ipa file onto IOS device.
